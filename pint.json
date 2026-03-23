@@ -9,7 +9,7 @@
     },
     "phpdoc_summary": false,
     "strict_comparison": true,
-    "void_return": true,
+    "void_return": false,
     "align_multiline_comment": true,
     "fully_qualified_strict_types": {
       "import_symbols": true,

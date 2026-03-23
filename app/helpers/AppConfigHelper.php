@@ -3,8 +3,6 @@
 namespace App\Helpers;
 
 use App\Exceptions\ApiException;
-use App\Http\Middleware\ApiTokenAuth;
-use App\Http\Middleware\OptionalApiTokenAuth;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
