@@ -9,8 +9,26 @@
     "herd_mcp": false,
     "mcp": true,
     "nightwatch_mcp": false,
+    "packages": [
+        "spatie/laravel-medialibrary",
+        "spatie/laravel-backup",
+        "spatie/laravel-responsecache"
+    ],
     "sail": false,
     "skills": [
-        "pest-testing"
+        "cashier-stripe-development",
+        "configuring-horizon",
+        "scout-development",
+        "socialite-development",
+        "pest-testing",
+        "tailwindcss-development",
+        "laravel-backup",
+        "medialibrary-development",
+        "responsecache-development",
+        "eloquent-best-practices",
+        "laravel-best-practices",
+        "laravel-specialist",
+        "laravel-tdd",
+        "php-pro"
     ]
 }
