@@ -273,13 +273,10 @@ class ResponseService
     ): array {
         $data = [
             'meta' => [
+                'total' => $paginator->total(),
                 'per_page' => $paginator->perPage(),
                 'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),
-                'has_more' => $paginator->hasMorePages(),
-                'total' => $paginator->total(),
-                'from' => $paginator->firstItem(),
-                'to' => $paginator->lastItem(),
             ],
         ];
 
