@@ -23,7 +23,7 @@ use RuntimeException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-class Util
+class AppHelper
 {
     /**
      * 构建微信 jscode2session 请求 URL

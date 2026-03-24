@@ -8,6 +8,7 @@ use Alipay\EasySDK\Kernel\Base;
 use Alipay\EasySDK\Kernel\Payment;
 use Alipay\EasySDK\Kernel\Util;
 use App\Exceptions\AlipayException;
+use Throwable;
 
 /**
  * Class AbstractAlipayService
@@ -17,19 +18,13 @@ use App\Exceptions\AlipayException;
  */
 abstract class AbstractAlipayService
 {
-    /**
-     * @var Payment|null EasySDK 支付客户端
-     */
+    /** @var Payment|null EasySDK 支付客户端 */
     protected ?Payment $payment = null;
 
-    /**
-     * @var Base|null EasySDK 基础客户端
-     */
+    /** @var Base|null EasySDK 基础客户端 */
     protected ?Base $base = null;
 
-    /**
-     * @var Util|null EasySDK 工具客户端
-     */
+    /** @var Util|null EasySDK 工具客户端 */
     protected ?Util $util = null;
 
     /**
@@ -53,22 +48,16 @@ abstract class AbstractAlipayService
 
     /**
      * 验证支付类型是否受支持
-     *
-     * @throws AlipayException
      */
     abstract protected function validateType(string $type): void;
 
     /**
      * 验证配置完整性
-     *
-     * @throws AlipayException
      */
     abstract protected function validateConfig(array $config): void;
 
     /**
-     * 初始化 EasySDK 内核，并将客户端赋值给 $payment / $base / $util
-     *
-     * @throws AlipayException
+     * 初始化 EasySDK 内核
      */
     abstract protected function initConfig(): void;
 
@@ -77,9 +66,7 @@ abstract class AbstractAlipayService
     // -------------------------------------------------------------------------
 
     /**
-     * 验证密钥格式（支持 PKCS#8 PEM 或 Base64 裸密钥）
-     *
-     * @throws AlipayException
+     * 验证密钥格式
      */
     protected function validateKeyFormat(string $key, string $keyName): void
     {
@@ -94,8 +81,6 @@ abstract class AbstractAlipayService
 
     /**
      * 验证订单公共参数
-     *
-     * @throws AlipayException
      */
     protected function validateOrderParams(string $outTradeNo, float|int $totalAmount, string $subject): void
     {
@@ -125,18 +110,58 @@ abstract class AbstractAlipayService
     }
 
     /**
-     * 格式化金额为两位小数字符串
+     * 获取支付类型描述
+     */
+    abstract public function getTypeDescription(): string;
+
+    /**
+     * 处理支付异步通知
+     */
+    public function handleCallback(array $params): array
+    {
+        try {
+            if (! $this->verifyNotify($params)) {
+                throw AlipayException::signatureError('支付宝签名验证失败');
+            }
+
+            $tradeStatus = $params['trade_status'] ?? '';
+            $isPaid = in_array($tradeStatus, ['TRADE_SUCCESS', 'TRADE_FINISHED'], true);
+
+            return [
+                'success' => true,
+                'is_paid' => $isPaid,
+                'trade_status' => $tradeStatus,
+                'out_trade_no' => $params['out_trade_no'] ?? '',
+                'trade_no' => $params['trade_no'] ?? '',
+                'total_amount' => $params['total_amount'] ?? '',
+                'raw' => $params,
+            ];
+        } catch (Throwable $e) {
+            throw ($e instanceof AlipayException) ? $e : AlipayException::signatureError($e->getMessage());
+        }
+    }
+
+    /**
+     * 验证异步通知签名
+     */
+    public function verifyNotify(array $params): bool
+    {
+        try {
+            return $this->payment->common()->verifyNotify($params);
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+    /**
+     * 格式化金额
      */
     protected function formatAmount(float|int $amount): string
     {
         return number_format((float) $amount, 2, '.', '');
     }
 
-    // -------------------------------------------------------------------------
-    // 公开辅助方法
-    // -------------------------------------------------------------------------
-
-    /** 获取当前支付类型 */
+    /** 获取支付类型 */
     public function getType(): string
     {
         return $this->type;

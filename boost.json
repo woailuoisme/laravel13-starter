@@ -12,7 +12,9 @@
     "packages": [
         "spatie/laravel-medialibrary",
         "spatie/laravel-backup",
-        "spatie/laravel-responsecache"
+        "spatie/laravel-responsecache",
+        "laravel/ai",
+        "filament/filament"
     ],
     "sail": false,
     "skills": [
@@ -22,6 +24,7 @@
         "socialite-development",
         "pest-testing",
         "tailwindcss-development",
+        "ai-sdk-development",
         "laravel-backup",
         "medialibrary-development",
         "responsecache-development",

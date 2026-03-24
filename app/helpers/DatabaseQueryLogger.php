@@ -17,7 +17,7 @@ use Throwable;
  * 在 debug 模式下监听所有 DB 查询，
  * 慢查询（> SLOW_QUERY_THRESHOLD ms）以 warning 级别记录，其余为 debug 级别。
  */
-class DBSql
+class DatabaseQueryLogger
 {
     /** 慢查询阈值（毫秒），超出该值将以 warning 级别记录 */
     private const int SLOW_QUERY_THRESHOLD = 100;

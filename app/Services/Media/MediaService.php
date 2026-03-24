@@ -2,7 +2,7 @@
 
 namespace App\Services\Media;
 
-use App\Helpers\Util;
+use App\Helpers\AppHelper;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -351,7 +351,7 @@ class MediaService
                 'file_name' => $item->file_name,
                 'mime_type' => $item->mime_type,
                 'size' => $item->size,
-                'human_readable_size' => Util::formatFileSize($item->size),
+                'human_readable_size' => AppHelper::formatFileSize($item->size),
                 'collection_name' => $item->collection_name,
                 'order_column' => $item->order_column,
                 'created_at' => $item->created_at?->format('Y-m-d H:i:s'),
@@ -539,7 +539,7 @@ class MediaService
         $stats = [
             'total_files' => $media->count(),
             'total_size' => $media->sum('size'),
-            'total_size_formatted' => Util::formatFileSize($media->sum('size')),
+            'total_size_formatted' => AppHelper::formatFileSize($media->sum('size')),
             'file_types' => [],
             'collections' => [],
         ];
@@ -549,7 +549,7 @@ class MediaService
             return [
                 'count' => $files->count(),
                 'total_size' => $files->sum('size'),
-                'size_formatted' => Util::formatFileSize($files->sum('size')),
+                'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
             ];
         });
 
@@ -560,7 +560,7 @@ class MediaService
             return [
                 'count' => $files->count(),
                 'total_size' => $files->sum('size'),
-                'size_formatted' => Util::formatFileSize($files->sum('size')),
+                'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
             ];
         });
 

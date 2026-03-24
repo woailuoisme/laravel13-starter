@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Cashier\Billable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -25,6 +26,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
     use Notifiable;
     use SoftDeletes;
     use InteractsWithMedia;
+    use Billable;
 
     protected function casts(): array
     {

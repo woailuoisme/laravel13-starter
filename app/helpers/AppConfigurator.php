@@ -37,7 +37,7 @@ use Tymon\JWTAuth\Exceptions\TokenInvalidException;
  * 应用配置助手类
  * 提供路由、中间件、异常处理等配置功能
  */
-class AppConfigHelper
+class AppConfigurator
 {
     private const string API_PREFIX = 'api';
 
@@ -319,6 +319,9 @@ class AppConfigHelper
         //        Schedule::command('pulse:clear')->hourly();
         // 自定义命令：删除90天前的Pulse历史数据
         //        Schedule::command('pulse:purge')->dailyAt('01:00');
+
+        // Horizon 快照
+        Schedule::command('horizon:snapshot')->everyFiveMinutes();
     }
 
     public static function configureLogColorStderr(): void

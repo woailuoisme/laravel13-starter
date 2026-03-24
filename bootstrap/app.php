@@ -1,6 +1,6 @@
 <?php
 
-use App\Helpers\AppConfigHelper;
+use App\Helpers\AppConfigurator;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,20 +12,20 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
         then: function (): void {
-            AppConfigHelper::configureRoutes();
+            AppConfigurator::configureRoutes();
         },
     )
     ->withEvents(
         discover: [__DIR__.'/../app/Listeners', __DIR__.'/../app/Events'],
     )
     ->withMiddleware(
-        fn (Middleware $middleware) => AppConfigHelper::configureMiddleware(
+        fn (Middleware $middleware) => AppConfigurator::configureMiddleware(
             $middleware,
         ),
     )
-    ->withSchedule(fn () => AppConfigHelper::configureSchedule())
+    ->withSchedule(fn () => AppConfigurator::configureSchedule())
     ->withExceptions(
-        fn (Exceptions $exceptions) => AppConfigHelper::configureExceptions(
+        fn (Exceptions $exceptions) => AppConfigurator::configureExceptions(
             $exceptions,
         ),
     )

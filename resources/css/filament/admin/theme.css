@@ -1,0 +1,8 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+
+/*@source '../../../../vendor/bezhansalleh/filament-language-switch/resources/views!**!*.blade.php';*/
+@source '../../../../vendor/awcodes/filament-quick-create/resources/**/*.blade.php'
