@@ -35,10 +35,10 @@ class AdminPanelProvider extends PanelProvider
 //            ])
 //            ->broadcasting(false)
 //            ->errorNotifications(false)
-            ->registerErrorNotification(
-                title: __('filament.notifications.error_title'),
-                body: __('filament.notifications.error_body'),
-            )
+            // ->registerErrorNotification(
+            //     title: __('filament.notifications.error_title'),
+            //     body: __('filament.notifications.error_body'),
+            // )
             ->errorNotifications()
             ->unsavedChangesAlerts()
             ->databaseTransactions()

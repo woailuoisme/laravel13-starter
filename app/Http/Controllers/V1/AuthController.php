@@ -7,6 +7,7 @@ namespace App\Http\Controllers\V1;
 use App\Enums\Gender;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\UserProfileResource;
+use App\Http\Resources\V1\NotificationResource;
 use App\Mail\V1\PasswordResetMail;
 use App\Models\User;
 use App\Services\Media\MediaService;
@@ -263,6 +264,63 @@ class AuthController extends AppBaseController
         $guard = auth('api');
 
         return $this->sendSuccess(data: ['token' => $guard->refresh()]);
+    }
+
+    /**
+     * 获取用户通知列表
+     *
+     * @authenticated
+     */
+    public function notifications(Request $request): JsonResponse
+    {
+        $user = auth('api')->user();
+        $notifications = $user->notifications()
+            ->paginate($request->integer('per_page', 15));
+
+        return $this->sendResponse(
+            NotificationResource::collection($notifications)->response()->getData(true),
+            __('admin.notifications_fetched'),
+        );
+    }
+
+    /**
+     * 标记通知为已读
+     *
+     * @authenticated
+     */
+    public function markNotificationAsRead(string $id): JsonResponse
+    {
+        $user = auth('api')->user();
+        $notification = $user->notifications()->findOrFail($id);
+        $notification->markAsRead();
+
+        return $this->sendSuccess(__('admin.notification_marked_as_read'));
+    }
+
+    /**
+     * 标记所有通知为已读
+     *
+     * @authenticated
+     */
+    public function markAllNotificationsAsRead(): JsonResponse
+    {
+        $user = auth('api')->user();
+        $user->unreadNotifications->markAsRead();
+
+        return $this->sendSuccess(__('admin.all_notifications_marked_as_read'));
+    }
+
+    /**
+     * 删除通知
+     *
+     * @authenticated
+     */
+    public function deleteNotification(string $id): JsonResponse
+    {
+        $user = auth('api')->user();
+        $user->notifications()->findOrFail($id)->delete();
+
+        return $this->sendSuccess(__('admin.notification_deleted'));
     }
 
     /**

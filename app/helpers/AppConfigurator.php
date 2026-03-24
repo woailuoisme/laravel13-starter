@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Helpers;
 
 use App\Exceptions\ApiException;
@@ -786,23 +788,20 @@ class AppConfigurator
      */
     private static function handleDatabaseException(Throwable $e, array $response): array
     {
+        $response['code'] = Response::HTTP_INTERNAL_SERVER_ERROR;
         if ($e instanceof UniqueConstraintViolationException) {
-            $response['code'] = Response::HTTP_INTERNAL_SERVER_ERROR;
             $response['message'] = config('app.debug')
                 ? 'Database query error: '.$e->getMessage()
                 : 'Database operation failed, please try again later';
         } elseif ($e instanceof QueryException) {
-            $response['code'] = Response::HTTP_INTERNAL_SERVER_ERROR;
             $response['message'] = config('app.debug')
                 ? 'Database query error: '.$e->getMessage()
                 : 'Database operation failed, please try again later';
         } elseif ($e instanceof \PDOException) {
-            $response['code'] = Response::HTTP_INTERNAL_SERVER_ERROR;
             $response['message'] = config('app.debug')
                 ? 'Database connection error: '.$e->getMessage()
                 : 'Database operation failed, please try again later';
         } else {
-            $response['code'] = Response::HTTP_INTERNAL_SERVER_ERROR;
             $response['message'] = config('app.debug')
                 ? 'Database error: '.$e->getMessage()
                 : 'Database operation failed, please try again later';

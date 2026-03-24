@@ -14,6 +14,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Number;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -98,15 +99,12 @@ class AppHelper
 
     /**
      * 格式化文件大小为人类可读字符串
+     *
+     * 委托给 Laravel 原生 Number::fileSize()，保持 API 兼容。
      */
     public static function formatFileSize(float|int $bytes): string
     {
-        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
-        $bytes = max((float) $bytes, 0.0);
-        $pow = $bytes > 0 ? (int) floor(log($bytes) / log(1024)) : 0;
-        $pow = min($pow, count($units) - 1);
-
-        return round($bytes / (1024 ** $pow), 2, PHP_ROUND_HALF_UP).' '.$units[$pow];
+        return Number::fileSize((int) max($bytes, 0));
     }
 
     /**
@@ -273,7 +271,7 @@ class AppHelper
 
         try {
             $client = new Client(['timeout' => 10, 'connect_timeout' => 5]);
-            $token = config('services.ipinfo.token', '10d7d07dfd43fc');
+            $token = config('services.ipinfo.token');
             $response = $client->get("https://ipinfo.io/{$ip}?token={$token}");
             $info = self::json_decode($response->getBody()->getContents());
 

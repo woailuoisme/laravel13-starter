@@ -47,4 +47,8 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'ipinfo' => [
+        'token' => env('IPINFO_TOKEN'),
+    ],
+
 ];
