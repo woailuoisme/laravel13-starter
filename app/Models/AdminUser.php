@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Database\Factories\AdminUserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,13 +16,21 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 #[Fillable(['username', 'name', 'email', 'phone', 'password', 'is_active', 'last_login_at', 'last_login_ip', 'avatar_url'])]
 #[Hidden(['password', 'remember_token'])]
-class AdminUser extends Authenticatable implements JWTSubject
+class AdminUser extends Authenticatable implements FilamentUser, JWTSubject
 {
     /** @use HasFactory<AdminUserFactory> */
     use HasFactory;
     use HasRoles;
-    use Notifiable;
     use SoftDeletes;
+    use Notifiable;
+
+    /**
+     * Determine if the user can access the Filament panel.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_active;
+    }
 
     /**
      * Get the attributes that should be cast.
