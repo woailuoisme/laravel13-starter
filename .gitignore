@@ -30,3 +30,11 @@ _ide_helper_models.php
 rr
 frankenphp
 .rr.yaml
+
+/.codex
+/.claude
+/.gemini
+/.ai
+/.cursor
+/.agent
+/.agents
