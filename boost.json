@@ -2,11 +2,9 @@
     "agents": [
         "claude_code",
         "codex",
-        "opencode",
         "gemini"
     ],
     "guidelines": true,
-    "herd_mcp": false,
     "mcp": true,
     "nightwatch_mcp": false,
     "packages": [
@@ -14,11 +12,14 @@
         "spatie/laravel-backup",
         "spatie/laravel-responsecache",
         "laravel/ai",
-        "filament/filament"
+        "filament/filament",
+        "spatie/laravel-activitylog",
+        "spatie/laravel-query-builder"
     ],
     "sail": false,
     "skills": [
         "cashier-stripe-development",
+        "laravel-best-practices",
         "configuring-horizon",
         "scout-development",
         "socialite-development",
@@ -27,9 +28,9 @@
         "ai-sdk-development",
         "laravel-backup",
         "medialibrary-development",
+        "laravel-query-builder",
         "responsecache-development",
         "eloquent-best-practices",
-        "laravel-best-practices",
         "laravel-specialist",
         "laravel-tdd",
         "php-pro"

@@ -17,7 +17,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/horizon (HORIZON) - v5
 - laravel/octane (OCTANE) - v2
 - laravel/prompts (PROMPTS) - v0
-- laravel/scout (SCOUT) - v10
+- laravel/scout (SCOUT) - v11
 - laravel/socialite (SOCIALITE) - v5
 - livewire/livewire (LIVEWIRE) - v4
 - laravel/boost (BOOST) - v2
@@ -33,6 +33,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 - `cashier-stripe-development` — Handles Laravel Cashier Stripe integration including subscriptions, webhooks, Stripe Checkout, invoices, charges, refunds, trials, coupons, metered billing, and payment failure handling. Triggered when a user mentions Cashier, Billable, IncompletePayment, stripe_id, newSubscription, Stripe subscriptions, or billing. Also applies when setting up webhooks, handling SCA/3DS payment failures, testing with Stripe test cards, or troubleshooting incomplete subscriptions, CSRF webhook errors, or migration publish issues.
+- `laravel-best-practices` — Laravel 13 conventions and best practices. Use when creating controllers, models, migrations, validation, services, or structuring Laravel applications. Triggers on tasks involving Laravel architecture, Eloquent, database, API development, or PHP patterns.
 - `configuring-horizon` — Use this skill whenever the user mentions Horizon by name in a Laravel context. Covers the full Horizon lifecycle: installing Horizon (horizon:install, Sail setup), configuring config/horizon.php (supervisor blocks, queue assignments, balancing strategies, minProcesses/maxProcesses), fixing the dashboard (authorization via Gate::define viewHorizon, blank metrics, horizon:snapshot scheduling), and troubleshooting production issues (worker crashes, timeout chain ordering, LongWaitDetected notifications, waits config). Also covers job tagging and silencing. Do not use for generic Laravel queues without Horizon, SQS or database drivers, standalone Redis setup, Linux supervisord, Telescope, or job batching.
 - `scout-development` — Develops full-text search with Laravel Scout. Activates when installing or configuring Scout; choosing a search engine (Algolia, Meilisearch, Typesense, Database, Collection); adding the Searchable trait to models; customizing toSearchableArray or searchableAs; importing or flushing search indexes; writing search queries with where clauses, pagination, or soft deletes; configuring index settings; troubleshooting search results; or when the user mentions Scout, full-text search, search indexing, or search engines in a Laravel project. Make sure to use this skill whenever the user works with search functionality in Laravel, even if they don't explicitly mention Scout.
 - `socialite-development` — Manages OAuth social authentication with Laravel Socialite. Activate when adding social login providers; configuring OAuth redirect/callback flows; retrieving authenticated user details; customizing scopes or parameters; setting up community providers; testing with Socialite fakes; or when the user mentions social login, OAuth, Socialite, or third-party authentication.
@@ -41,9 +42,9 @@ This project has domain-specific skills available. You MUST activate the relevan
 - `ai-sdk-development` — Builds AI agents, generates text and chat responses, produces images, synthesizes audio, transcribes speech, generates vector embeddings, reranks documents, and manages files and vector stores using the Laravel AI SDK (laravel/ai). Supports structured output, streaming, tools, conversation memory, middleware, queueing, broadcasting, and provider failover. Use when building, editing, updating, debugging, or testing any AI functionality, including agents, LLMs, chatbots, text generation, image generation, audio, transcription, embeddings, RAG, similarity search, vector stores, prompting, structured output, or any AI provider (OpenAI, Anthropic, Gemini, Cohere, Groq, xAI, ElevenLabs, Jina, OpenRouter).
 - `laravel-backup` — Configure and extend spatie/laravel-backup for database and file backups, cleanup strategies, health monitoring, and notifications. Activates when working with backup configuration, scheduling backups, creating custom cleanup strategies or health checks, customizing notifications, or when the user mentions backups, backup monitoring, backup cleanup, or spatie/laravel-backup.
 - `medialibrary-development` — Build and work with spatie/laravel-medialibrary features including associating files with Eloquent models, defining media collections and conversions, generating responsive images, and retrieving media URLs and paths.
+- `laravel-query-builder` — Build filtered, sorted, and included API endpoints using spatie/laravel-query-builder. Activates when working with QueryBuilder, AllowedFilter, AllowedSort, AllowedInclude, or when the user mentions query parameters, API filtering, sorting, includes, or spatie/laravel-query-builder.
 - `responsecache-development` — Cache entire HTTP responses using spatie/laravel-responsecache, including standard caching, flexible (stale-while-revalidate) caching, cache profiles, replacers, and selective cache clearing.
 - `eloquent-best-practices` — Best practices for Laravel Eloquent ORM including query optimization, relationship management, and avoiding common pitfalls like N+1 queries.
-- `laravel-best-practices` — Laravel 13 conventions and best practices. Use when creating controllers, models, migrations, validation, services, or structuring Laravel applications. Triggers on tasks involving Laravel architecture, Eloquent, database, API development, or PHP patterns.
 - `laravel-specialist` — Build and configure Laravel 10+ applications, including creating Eloquent models and relationships, implementing Sanctum authentication, configuring Horizon queues, designing RESTful APIs with API resources, and building reactive interfaces with Livewire. Use when creating Laravel models, setting up queue workers, implementing Sanctum auth flows, building Livewire components, optimising Eloquent queries, or writing Pest/PHPUnit tests for Laravel features.
 - `laravel-tdd` — Test-Driven Development specifically for Laravel applications using Pest PHP. Use when implementing any Laravel feature or bugfix - write the test first, watch it fail, write minimal code to pass.
 - `php-pro` — Use when building PHP applications with modern PHP 8.3+ features, Laravel, or Symfony frameworks. Invokes strict typing, PHPStan level 9, async patterns with Swoole, and PSR standards. Creates controllers, configures middleware, generates migrations, writes PHPUnit/Pest tests, defines typed DTOs and value objects, sets up dependency injection, and scaffolds REST/GraphQL APIs. Use when working with Eloquent, Doctrine, Composer, Psalm, ReactPHP, or any PHP API development.
@@ -79,83 +80,52 @@ This project has domain-specific skills available. You MUST activate the relevan
 
 # Laravel Boost
 
-- Laravel Boost is an MCP server that comes with powerful tools designed specifically for this application. Use them.
+## Tools
 
-## Artisan Commands
+- Laravel Boost is an MCP server with tools designed specifically for this application. Prefer Boost tools over manual alternatives like shell commands or file reads.
+- Use `database-query` to run read-only queries against the database instead of writing raw SQL in tinker.
+- Use `database-schema` to inspect table structure before writing migrations or models.
+- Use `get-absolute-url` to resolve the correct scheme, domain, and port for project URLs. Always use this before sharing a URL with the user.
+- Use `browser-logs` to read browser logs, errors, and exceptions. Only recent logs are useful, ignore old entries.
 
-- Run Artisan commands directly via the command line (e.g., `php artisan route:list`, `php artisan tinker --execute "..."`).
-- Use `php artisan list` to discover available commands and `php artisan [command] --help` to check parameters.
+## Searching Documentation (IMPORTANT)
 
-## URLs
+- Always use `search-docs` before making code changes. Do not skip this step. It returns version-specific docs based on installed packages automatically.
+- Pass a `packages` array to scope results when you know which packages are relevant.
+- Use multiple broad, topic-based queries: `['rate limiting', 'routing rate limiting', 'routing']`. Expect the most relevant results first.
+- Do not add package names to queries because package info is already shared. Use `test resource table`, not `filament 4 test resource table`.
 
-- Whenever you share a project URL with the user, you should use the `get-absolute-url` tool to ensure you're using the correct scheme, domain/IP, and port.
+### Search Syntax
 
-## Debugging
+1. Use words for auto-stemmed AND logic: `rate limit` matches both "rate" AND "limit".
+2. Use `"quoted phrases"` for exact position matching: `"infinite scroll"` requires adjacent words in order.
+3. Combine words and phrases for mixed queries: `middleware "rate limit"`.
+4. Use multiple queries for OR logic: `queries=["authentication", "middleware"]`.
 
-- Use the `database-query` tool when you only need to read from the database.
-- Use the `database-schema` tool to inspect table structure before writing migrations or models.
-- To execute PHP code for debugging, run `php artisan tinker --execute "your code here"` directly.
-- To read configuration values, read the config files directly or run `php artisan config:show [key]`.
-- To inspect routes, run `php artisan route:list` directly.
+## Artisan
+
+- Run Artisan commands directly via the command line (e.g., `php artisan route:list`). Use `php artisan list` to discover available commands and `php artisan [command] --help` to check parameters.
+- Inspect routes with `php artisan route:list`. Filter with: `--method=GET`, `--name=users`, `--path=api`, `--except-vendor`, `--only-vendor`.
+- Read configuration values using dot notation: `php artisan config:show app.name`, `php artisan config:show database.default`. Or read config files directly from the `config/` directory.
 - To check environment variables, read the `.env` file directly.
 
-## Reading Browser Logs With the `browser-logs` Tool
+## Tinker
 
-- You can read browser logs, errors, and exceptions using the `browser-logs` tool from Boost.
-- Only recent browser logs will be useful - ignore old logs.
-
-## Searching Documentation (Critically Important)
-
-- Boost comes with a powerful `search-docs` tool you should use before trying other approaches when working with Laravel or Laravel ecosystem packages. This tool automatically passes a list of installed packages and their versions to the remote Boost API, so it returns only version-specific documentation for the user's circumstance. You should pass an array of packages to filter on if you know you need docs for particular packages.
-- Search the documentation before making code changes to ensure we are taking the correct approach.
-- Use multiple, broad, simple, topic-based queries at once. For example: `['rate limiting', 'routing rate limiting', 'routing']`. The most relevant results will be returned first.
-- Do not add package names to queries; package information is already shared. For example, use `test resource table`, not `filament 4 test resource table`.
-
-### Available Search Syntax
-
-1. Simple Word Searches with auto-stemming - query=authentication - finds 'authenticate' and 'auth'.
-2. Multiple Words (AND Logic) - query=rate limit - finds knowledge containing both "rate" AND "limit".
-3. Quoted Phrases (Exact Position) - query="infinite scroll" - words must be adjacent and in that order.
-4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit".
-5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms.
+- Execute PHP in app context for debugging and testing code. Do not create models without user approval, prefer tests with factories instead. Prefer existing Artisan commands over custom tinker code.
+- Always use single quotes to prevent shell expansion: `php artisan tinker --execute 'Your::code();'`
+  - Double quotes for PHP strings inside: `php artisan tinker --execute 'User::where("active", true)->count();'`
 
 === php rules ===
 
 # PHP
 
-- Always use strict typing at the head of a `.php` file: `declare(strict_types=1);`.
+- Always declare `declare(strict_types=1);` at the top of every `.php` file.
 - Always use curly braces for control structures, even for single-line bodies.
-
-## Constructors
-
-- Use PHP 8 constructor property promotion in `__construct()`.
-    - `public function __construct(public GitHub $github) { }`
-- Do not allow empty `__construct()` methods with zero parameters unless the constructor is private.
-
-## Type Declarations
-
-- Always use explicit return type declarations for methods and functions.
-- Use appropriate PHP type hints for method parameters.
-
-<!-- Explicit Return Types and Method Params -->
-```php
-protected function isAccessible(User $user, ?string $path = null): bool
-{
-    ...
-}
-```
-
-## Enums
-
-- That being said, keys in an Enum should follow existing application Enum conventions.
-
-## Comments
-
-- Prefer PHPDoc blocks over inline comments. Never use comments within the code itself unless the logic is exceptionally complex.
-
-## PHPDoc Blocks
-
-- Add useful array shape type definitions when appropriate.
+- Use PHP 8 constructor property promotion: `public function __construct(public GitHub $github) { }`. Do not leave empty zero-parameter `__construct()` methods unless the constructor is private.
+- Use explicit return type declarations and type hints for all method parameters: `function isAccessible(User $user, ?string $path = null): bool`
+- Follow existing application Enum naming conventions.
+- Prefer PHPDoc blocks over inline comments. Only add inline comments for exceptionally complex logic.
+- Use array shape type definitions in PHPDoc blocks.
 
 === tests rules ===
 
@@ -172,42 +142,17 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - If you're creating a generic PHP class, use `php artisan make:class`.
 - Pass `--no-interaction` to all Artisan commands to ensure they work without user input. You should also pass the correct `--options` to ensure correct behavior.
 
-## Database
-
-- Always use proper Eloquent relationship methods with return type hints. Prefer relationship methods over raw queries or manual joins.
-- Use Eloquent models and relationships before suggesting raw database queries.
-- Avoid `DB::`; prefer `Model::query()`. Generate code that leverages Laravel's ORM capabilities rather than bypassing them.
-- Generate code that prevents N+1 query problems by using eager loading.
-- Use Laravel's query builder for very complex database operations.
-
 ### Model Creation
 
 - When creating new models, create useful factories and seeders for them too. Ask the user if they need any other things, using `php artisan make:model --help` to check the available options.
 
-### APIs & Eloquent Resources
+## APIs & Eloquent Resources
 
 - For APIs, default to using Eloquent API Resources and API versioning unless existing API routes do not, then you should follow existing application convention.
-
-## Controllers & Validation
-
-- Always create Form Request classes for validation rather than inline validation in controllers. Include both validation rules and custom error messages.
-- Check sibling Form Requests to see if the application uses array or string based validation rules.
-
-## Authentication & Authorization
-
-- Use Laravel's built-in authentication and authorization features (gates, policies, Sanctum, etc.).
 
 ## URL Generation
 
 - When generating links to other pages, prefer named routes and the `route()` function.
-
-## Queues
-
-- Use queued jobs for time-consuming operations with the `ShouldQueue` interface.
-
-## Configuration
-
-- Use environment variables only in configuration files - never use the `env()` function directly outside of config files. Always use `config('app.name')`, not `env('APP_NAME')`.
 
 ## Testing
 
@@ -408,6 +353,159 @@ livewire(ListUsers::class)
 
 - This application uses the Laravel AI SDK (`laravel/ai`) for all AI functionality.
 - Activate the `developing-with-ai-sdk` skill when building, editing, updating, debugging, or testing AI agents, text generation, chat, streaming, structured output, tools, image generation, audio, transcription, embeddings, reranking, vector stores, files, conversation memory, or any AI provider integration (OpenAI, Anthropic, Gemini, Cohere, Groq, xAI, ElevenLabs, Jina, OpenRouter).
+
+=== spatie/laravel-activitylog rules ===
+
+# spatie/laravel-activitylog
+
+Activity logging package for Laravel. Logs model events and manual activities to a database table.
+
+## Key Concepts
+
+- **Activity**: An Eloquent model (`Spatie\Activitylog\Models\Activity`) storing log entries with subject, causer, event, attribute_changes, and properties.
+- **Subject**: The model being acted upon (polymorphic `subject_type`/`subject_id`).
+- **Causer**: The model that caused the action, typically the authenticated user (polymorphic `causer_type`/`causer_id`).
+- **LogOptions**: Fluent configuration object returned by `getActivitylogOptions()` on models using the `LogsActivity` trait.
+- **ActivityEvent**: Enum with cases `Created`, `Updated`, `Deleted`, `Restored`.
+- **`attribute_changes`** column: stores `{"attributes": {...}, "old": {...}}` for tracked model changes.
+- **`properties`** column: stores custom user data set via `withProperties()`.
+
+## Traits
+
+### `LogsActivity`
+
+Add to models to automatically log create/update/delete events. Optionally implement `getActivitylogOptions()` to configure which attributes to track (defaults to logging events without attribute changes).
+
+```php
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+
+class Article extends Model
+{
+    use LogsActivity;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges();
+    }
+}
+```
+
+### `CausesActivity`
+
+Add to user/causer models. Provides `activitiesAsCauser()` relationship.
+
+### `HasActivity`
+
+Combines `LogsActivity` and `CausesActivity`. Provides `activities()`, `activitiesAsSubject()`, and `activitiesAsCauser()`.
+
+## Manual Logging
+
+```php
+activity()
+    ->performedOn($article)
+    ->causedBy($user)
+    ->event(ActivityEvent::Updated)
+    ->withProperties(['key' => 'value'])
+    ->log('Article was updated');
+```
+
+## LogOptions Methods
+
+| Method | Description |
+|--------|-------------|
+| `logFillable()` | Log all fillable attributes |
+| `logAll()` | Log all attributes |
+| `logOnly(array)` | Log specific attributes |
+| `logExcept(array)` | Exclude attributes |
+| `logOnlyDirty()` | Only log changed attributes |
+| `dontLogEmptyChanges()` | Skip logging when no tracked attributes changed |
+| `dontLogIfAttributesChangedOnly(array)` | Ignore updates that only change these attributes |
+| `useLogName(string)` | Set custom log name |
+| `setDescriptionForEvent(Closure)` | Custom description per event |
+| `useAttributeRawValues(array)` | Store raw (uncast) values |
+
+## Querying Activities
+
+```php
+use Spatie\Activitylog\Models\Activity;
+use Spatie\Activitylog\Enums\ActivityEvent;
+
+Activity::forEvent(ActivityEvent::Created)->get();
+Activity::causedBy($user)->get();
+Activity::forSubject($article)->get();
+Activity::inLog('orders')->get();
+```
+
+## Setting the causer
+
+Override the causer for a block of code:
+
+```php
+use Spatie\Activitylog\Facades\Activity;
+
+Activity::defaultCauser($admin, function () {
+    // all activities here are caused by $admin
+});
+
+// or set globally for the rest of the request
+Activity::defaultCauser($admin);
+```
+
+## Disabling Logging
+
+```php
+activity()->withoutLogging(function () {
+    // no activities logged here
+});
+```
+
+## Accessing Changes and Properties
+
+```php
+$activity = Activity::latest()->first();
+
+// Tracked model changes (set automatically by LogsActivity)
+$activity->attribute_changes; // Collection: {"attributes": {...}, "old": {...}}
+
+// Custom user data (set via withProperties)
+$activity->properties; // Collection
+$activity->getProperty('key'); // single value
+```
+
+## Custom Activity Model
+
+Set `activity_model` in `config/activitylog.php` to a class that extends `Model` and implements `Spatie\Activitylog\Contracts\Activity`. Use a custom model for custom table names or database connections.
+
+## Customizing Actions
+
+The package uses action classes (`LogActivityAction`, `CleanActivityLogAction`) that can be extended and swapped via config:
+
+```php
+// config/activitylog.php
+'actions' => [
+    'log_activity' => \App\Actions\CustomLogActivityAction::class,
+    'clean_log' => \App\Actions\CustomCleanAction::class,
+],
+```
+
+Custom action classes must extend the originals. Override protected methods (`save()`, `beforeActivityLogged()`, `resolveDescription()`, etc.) to customize behavior.
+
+## Configuration
+
+Key config options in `config/activitylog.php`:
+- `enabled`: Master on/off switch (env: `ACTIVITYLOG_ENABLED`)
+- `clean_after_days`: Days to keep records for `activitylog:clean` command
+- `default_log_name`: Default log name (string)
+- `default_auth_driver`: Auth driver for causer resolution
+- `include_soft_deleted_subjects`: Include soft-deleted subjects
+- `activity_model`: Custom Activity model class
+- `default_except_attributes`: Globally excluded attributes
+- `actions.log_activity`: Action class for logging activities
+- `actions.clean_log`: Action class for cleaning old activities
 
 === spatie/laravel-medialibrary rules ===
 
