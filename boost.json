@@ -31,6 +31,7 @@
         "laravel-query-builder",
         "responsecache-development",
         "eloquent-best-practices",
+        "filament-pro",
         "laravel-specialist",
         "laravel-tdd",
         "php-pro"

@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Filament\Actions\Exports\Models\Export;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -29,6 +32,8 @@ use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Hugomyb\FilamentMediaAction\Actions\MediaAction;
 use Illuminate\Support\ServiceProvider;
+use Malzariey\FilamentDaterangepickerFilter\Fields\DateRangePicker;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 /**
  * Filament 全局组件默认配置提供者
@@ -54,6 +59,10 @@ class ComponentDefaultsProvider extends ServiceProvider
         $this->configureLayoutComponents();
         $this->configureTableGlobalDefaults();
         $this->configureMediaActions();
+
+        LanguageSwitch::configureUsing(static function (LanguageSwitch $switch): void {
+            $switch->locales(['zh_CN','en'])->visible(); // also accepts a closure
+        });
     }
 
     /**
@@ -157,6 +166,12 @@ class ComponentDefaultsProvider extends ServiceProvider
                 ->reorderable(false);
         });
 
+        // 标签输入 (Spatie Tags)
+        SpatieTagsInput::configureUsing(static function (SpatieTagsInput $component): void {
+            $component->splitKeys(['Tab', ' ', ','])
+                ->reorderable();
+        });
+
         // 多行文本
         Textarea::configureUsing(static function (Textarea $component): void {
             $component->rows(3);
@@ -188,6 +203,45 @@ class ComponentDefaultsProvider extends ServiceProvider
                 ->locale(config('app.timezone'))
                 ->displayFormat('Y-m-d H:i:s');
         });
+        DatePicker::configureUsing(static function (
+            DatePicker $component,
+        ): void {
+            $component
+                ->native(false)
+                ->locale('zh_CN')
+                ->displayFormat('Y-m-d');
+        });
+
+        DateRangePicker::configureUsing(static function (
+            DateRangePicker $component,
+        ): void {
+            $component
+                ->timezone('Asia/Shanghai')
+                ->displayFormat('YYYY-MM-DD HH:mm:ss')
+                ->format('Y-m-d H:i:s')
+                ->rangeSeparator(' - ')
+                ->firstDayOfWeek(1)
+                ->useRangeLabels()
+                ->alwaysShowCalendar()
+                ->timePicker24()
+                ->autoApply();
+        });
+
+        DateRangeFilter::configureUsing(static function (
+            DateRangeFilter $component,
+        ): void {
+            $component
+                ->timezone('Asia/Shanghai')
+                ->displayFormat('YYYY-MM-DD HH:mm:ss') // 用于浏览器显示的 JS 格式 (Moment/DayJS)
+                ->format('Y-m-d H:i:s')                // 用于服务端解析的 PHP 格式 (Carbon)
+                ->rangeSeparator(' - ')                 // 范围分割符号
+                ->firstDayOfWeek(1)                    // 设置周一作为一周的第一天
+                ->useRangeLabels()                     // 启用侧边快捷选择标签（今天、昨天、近7天等）
+                ->alwaysShowCalendar()                 // 弹窗时始终直接显示日历界面
+                ->timePicker24()                       // 使用 24 小时制时间选择器
+                ->autoApply()                          // 选好范围后自动应用筛选，无需点击确定按钮
+                ->withIndicator();                     // 在表格顶部显示当前激活的筛选状态
+        });
 
         // 基础文件上传
         FileUpload::configureUsing(static function (FileUpload $component): void {
@@ -207,6 +261,12 @@ class ComponentDefaultsProvider extends ServiceProvider
             $component->searchable()
                 ->preload()
                 ->native(false);
+        });
+
+        /** 好像无效过 **/
+        Table::configureUsing(static function (Table $table): void {
+            $table->recordUrl(null);
+            $table->recordAction(null);
         });
     }
 
