@@ -14,10 +14,11 @@ return [
     'title' => config('app.name').' API 文档',
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
-    'description' => 'Restful Api 接口服务，为系统提供全面的接口端点',
+//    'description' => 'Restful Api 接口服务，为系统提供全面的接口端点',
+    'description' => file_get_contents(base_path('api_intro.md')),
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
-    'intro_text' => file_get_contents(base_path('api_intro.md')),
+//    'intro_text' => file_get_contents(base_path('api_intro.md')),
 
     // The base URL displayed in the docs.
     // If you're using `laravel` type, you can set this to a dynamic string, like '{{ config("app.tenant_url") }}' to get a dynamic base URL.
@@ -60,10 +61,16 @@ return [
     // - "static" will generate a static HTMl page in the /public/docs folder,
     // - "laravel" will generate the documentation as a Blade view, so you can add routing and authentication.
     // - "external_static" and "external_laravel" do the same as above, but pass the OpenAPI spec as a URL to an external UI template
-    'type' => 'laravel',
+//    'type' => 'laravel',
+
+    'type' => 'external_laravel',
 
     // See https://scribe.knuckles.wtf/laravel/reference/config#theme for supported options
-    'theme' => 'elements',
+//    'theme' => 'elements',
+    'theme' => 'scalar',
+//    When using static or laravel: default, elements (modelled after Stoplight Elements). See the theming guide.
+//When using external_static or external_laravel: scalar, elementsand rapidoc
+//    'theme' => 'rapidoc',
 
     'static' => [
         // HTML documentation, assets and Postman collection will be generated to this folder.

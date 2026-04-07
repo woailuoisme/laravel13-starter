@@ -17,7 +17,6 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
-use Filament\Navigation\UserMenuItem;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\Support\Colors\Color;
@@ -98,7 +97,7 @@ class FilamentConfigurator
     /**
      * 获取已注册的 Filament 插件
      *
-     * @return array<mixed>
+     * @return array
      */
     public static function getPlugins(): array
     {

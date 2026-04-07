@@ -13,6 +13,7 @@ use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Endroid\QrCode\Writer\SvgWriter;
 use Endroid\QrCode\Writer\WriterInterface;
+use Exception;
 use Illuminate\Support\Facades\Log;
 use RuntimeException;
 
@@ -46,7 +47,7 @@ class QrCodeHelper
             return self::makeWriter('png')
                 ->write(self::buildQrCode($text, $size))
                 ->getString();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('QR Code: Failed to generate PNG', [
                 'text' => $text,
                 'size' => $size,
@@ -119,7 +120,7 @@ class QrCodeHelper
             return self::makeWriter('svg')
                 ->write(self::buildQrCode($text, $size))
                 ->getString();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('QR Code: Failed to generate SVG', [
                 'text' => $text,
                 'size' => $size,

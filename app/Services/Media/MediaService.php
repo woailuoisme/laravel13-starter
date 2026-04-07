@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
@@ -136,7 +137,7 @@ class MediaService
     {
         // 验证文件
         if (! $file->isValid()) {
-            throw new \InvalidArgumentException('上传文件无效: '.$file->getErrorMessage());
+            throw new InvalidArgumentException('上传文件无效: '.$file->getErrorMessage());
         }
 
         // 生成基于文件内容的 MD5 哈希文件名

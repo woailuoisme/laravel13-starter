@@ -31,10 +31,14 @@ rr
 frankenphp
 .rr.yaml
 
-#/.codex
+/.codex
 /.claude
 /.gemini
-#/.ai
+/.codebuddy
+/.ai
 /.cursor
-#/.agent
-#/.agents
+/.agent
+/.agents
+/.specify
+/specs
+

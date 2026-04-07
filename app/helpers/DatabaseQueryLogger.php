@@ -53,7 +53,7 @@ class DatabaseQueryLogger
     /**
      * 格式化 SQL 查询并返回日志数据结构
      *
-     * @param array<mixed> $bindings 绑定参数
+     * @param array $bindings 绑定参数
      * @return array{connection: string, query: string, time: float}
      */
     public function logQuery(string $connection, string $query, array $bindings, float $time): array
@@ -70,7 +70,9 @@ class DatabaseQueryLogger
     /**
      * 将 SQL 中的 ? 占位符替换为实际绑定值
      *
-     * @param array<mixed> $bindings
+     * @param string $query
+     * @param array $bindings
+     * @return string
      */
     private function replaceBindings(string $query, array $bindings): string
     {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
+use CodeWithDennis\FilamentSelectTree\SelectTree;
 use Filament\Actions\Exports\Models\Export;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -62,6 +63,12 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         LanguageSwitch::configureUsing(static function (LanguageSwitch $switch): void {
             $switch->locales(['zh_CN','en'])->visible(); // also accepts a closure
+        });
+
+        SelectTree::configureUsing(static function (SelectTree $selectTree): void {
+            $selectTree->enableBranchNode(true)
+                ->multiple(false)
+                ->searchable();
         });
     }
 

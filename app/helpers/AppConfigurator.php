@@ -24,6 +24,7 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\LogRecord;
+use PDOException;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Spatie\ResponseCache\Middlewares\DoNotCacheResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -163,7 +164,7 @@ class AppConfigurator
         // 为特定路由组添加中间件
         self::registerGroupMiddleware($middleware);
 
-        $middleware->validateCsrfTokens(except: [
+        $middleware->preventRequestForgery(except: [
             'wechat',
             'api/v1/stripe/webhook',
         ]);
@@ -359,7 +360,7 @@ class AppConfigurator
                         $record->datetime->format('Y-m-d H:i:s'),
                         mb_strtoupper($record->level->getName()),
                         $record->message,
-                        empty($record->context) ? '' : json_encode($record->context),
+                        empty($record->context) ? '' : json_encode($record->context, JSON_THROW_ON_ERROR),
                     );
                 }
             };
@@ -780,7 +781,7 @@ class AppConfigurator
      */
     private static function isDatabaseException(Throwable $e): bool
     {
-        return $e instanceof \PDOException;
+        return $e instanceof PDOException;
     }
 
     /**
@@ -797,7 +798,7 @@ class AppConfigurator
             $response['message'] = config('app.debug')
                 ? 'Database query error: '.$e->getMessage()
                 : 'Database operation failed, please try again later';
-        } elseif ($e instanceof \PDOException) {
+        } elseif ($e instanceof PDOException) {
             $response['message'] = config('app.debug')
                 ? 'Database connection error: '.$e->getMessage()
                 : 'Database operation failed, please try again later';

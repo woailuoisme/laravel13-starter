@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\AbstractProvider;
+use Throwable;
 use Tymon\JWTAuth\JWTGuard;
 
 /**
@@ -68,6 +69,7 @@ class AuthController extends AppBaseController
      * 用户注册
      *
      * @unauthenticated
+     * @throws Throwable
      */
     public function register(Request $request): JsonResponse
     {
@@ -76,7 +78,7 @@ class AuthController extends AppBaseController
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
-        $user = DB::transaction(function () use ($data, $request) {
+        $user = DB::transaction(static function () use ($data, $request) {
             return User::create([
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
@@ -121,6 +123,7 @@ class AuthController extends AppBaseController
      * 更新用户个人资料
      *
      * @authenticated
+     * @throws Throwable
      */
     public function profileUpdate(Request $request): JsonResponse
     {
@@ -193,7 +196,7 @@ class AuthController extends AppBaseController
             'hash' => ['required', 'string'],
         ]);
 
-        if (!URL::hasValidSignature()) {
+        if (!URL::hasValidSignature($request)) {
             return $this->sendError(__('auth.password_reset_invalid_link'), 403);
         }
 

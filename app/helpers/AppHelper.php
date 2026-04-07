@@ -195,7 +195,7 @@ class AppHelper
     {
         return $prefix
             .date('YmdHis')
-            .mb_str_pad((string) ((int) ((microtime(true) * 10000) % 10000)), 4, '0', STR_PAD_LEFT)
+            .mb_str_pad((string) ((microtime(true) * 10000) % 10000), 4, '0', STR_PAD_LEFT)
             .random_int(100000, 999999);
     }
 
@@ -237,13 +237,17 @@ class AppHelper
         return self::generateOrderNo('WD');
     }
 
-    /** 生成退款订单编号（前缀 RF） */
+    /** 生成退款订单编号（前缀 RF）
+     * @throws RandomException
+     */
     public static function generateRefundOrderNo(): string
     {
         return self::generateOrderNo('RF');
     }
 
-    /** 生成产品退款单号（前缀 PR） */
+    /** 生成产品退款单号（前缀 PR）
+     * @throws RandomException
+     */
     public static function generateProductRefoundNo(): string
     {
         return self::generateOrderNo('PR');
@@ -333,7 +337,7 @@ class AppHelper
 
         foreach ($input as $key => $values) {
             if (! is_array($values)) {
-                throw new Exception("Input key '{$key}' must be an array");
+                throw new RuntimeException("Input key '{$key}' must be an array");
             }
         }
 
@@ -488,7 +492,7 @@ class AppHelper
 
         $formattedValue = $showDecimal && $suffix !== ''
             ? number_format($value, $decimals)
-            : number_format(floor($value), 0);
+            : number_format(floor($value),  decimals: 0);
 
         return ($isNegative ? '-' : '').$formattedValue.$suffix;
     }

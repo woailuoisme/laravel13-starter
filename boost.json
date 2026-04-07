@@ -13,8 +13,8 @@
         "spatie/laravel-responsecache",
         "laravel/ai",
         "filament/filament",
-        "spatie/laravel-activitylog",
-        "spatie/laravel-query-builder"
+        "spatie/laravel-query-builder",
+        "spatie/laravel-activitylog"
     ],
     "sail": false,
     "skills": [
@@ -32,7 +32,6 @@
         "responsecache-development",
         "eloquent-best-practices",
         "filament-pro",
-        "laravel-specialist",
         "laravel-tdd",
         "php-pro"
     ]
