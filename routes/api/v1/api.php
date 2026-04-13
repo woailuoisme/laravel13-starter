@@ -15,15 +15,19 @@ Route::prefix('auth')->group(function (): void {
     // Public routes
     Route::post('login', [AuthController::class, 'login'])->name('auth.login');
     Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('signup/request', [AuthController::class, 'signupRequest'])->name('auth.signup.request');
+    Route::post('signup/verify', [AuthController::class, 'signupVerify'])->name('auth.signup.verify');
+    Route::post('signin/request', [AuthController::class, 'signinRequest'])->name('auth.signin.request');
+    Route::post('signin/verify', [AuthController::class, 'signinVerify'])->name('auth.signin.verify');
+    Route::post('password/forgot', [AuthController::class, 'forgotPassword'])->name('auth.password.forgot');
+    Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('auth.password.reset');
+    Route::post('code/resend', [AuthController::class, 'resendCode'])->name('auth.code.resend');
 
     Route::get('{provider}/redirect', [AuthController::class, 'redirectToProvider'])->name('auth.social.redirect');
     Route::get('{provider}/callback', [AuthController::class, 'handleProviderCallback'])->name('auth.social.callback');
 
-    Route::post('password/request', [AuthController::class, 'requestPasswordReset'])->name('auth.password.request');
-    Route::get('password/confirm', [AuthController::class, 'confirmPasswordReset'])->name('auth.password.confirm');
-
     // Authenticated routes
-    Route::middleware('auth:api')->group(function (): void {
+    Route::middleware(['auth:api', 'jwt.auth_version'])->group(function (): void {
         Route::get('me', [AuthController::class, 'me'])->name('auth.me');
         Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
         Route::post('refresh', [AuthController::class, 'refresh'])->name('auth.refresh');

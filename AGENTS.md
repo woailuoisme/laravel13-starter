@@ -426,3 +426,10 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## Active Technologies
+- PHP 8.5 / Laravel 13.4 + `laravel/framework`, `tymon/jwt-auth`, `resend/resend-php`, `laravel/socialite`, `knuckleswtf/scribe`, `pestphp/pest`, `pestphp/pest-plugin-laravel` (002-jwt-email-auth)
+- 关系型数据库（Laravel 默认数据库连接，现有 `users` 与 `otp_records` 表） (002-jwt-email-auth)
+
+## Recent Changes
+- 002-jwt-email-auth: Added PHP 8.5 / Laravel 13.4 + `laravel/framework`, `tymon/jwt-auth`, `resend/resend-php`, `laravel/socialite`, `knuckleswtf/scribe`, `pestphp/pest`, `pestphp/pest-plugin-laravel`

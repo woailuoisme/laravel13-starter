@@ -38,7 +38,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord whereUserId($value)
  * @mixin \Eloquent
  */
-#[Fillable(['user_id', 'identifier', 'type', 'code', 'used_at', 'expires_at'])]
+#[Fillable(['user_id', 'identifier', 'type', 'action', 'code', 'used_at', 'expires_at'])]
 class OtpRecord extends Model
 {
     /** @use HasFactory<\Database\Factories\OtpRecordFactory> */
@@ -50,6 +50,16 @@ class OtpRecord extends Model
             'used_at' => 'datetime',
             'expires_at' => 'datetime',
         ];
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->expires_at !== null && $this->expires_at->isPast();
+    }
+
+    public function isUsed(): bool
+    {
+        return $this->used_at !== null;
     }
 
     /**

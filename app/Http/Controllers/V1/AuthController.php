@@ -6,21 +6,27 @@ namespace App\Http\Controllers\V1;
 
 use App\Enums\Gender;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\V1\Auth\ForgotPasswordRequest;
+use App\Http\Requests\V1\Auth\ResetPasswordRequest;
+use App\Http\Requests\V1\Auth\SigninRequest;
+use App\Http\Requests\V1\Auth\SigninVerifyRequest;
+use App\Http\Requests\V1\Auth\SignupRequest;
+use App\Http\Requests\V1\Auth\SignupVerifyRequest;
 use App\Http\Resources\UserProfileResource;
+use App\Http\Resources\V1\Auth\AuthChallengeResource;
+use App\Http\Resources\V1\Auth\AuthResultResource;
 use App\Http\Resources\V1\NotificationResource;
-use App\Mail\V1\PasswordResetMail;
 use App\Models\User;
+use App\Services\Auth\AuthFlowService;
 use App\Services\Media\MediaService;
 use App\Services\WechatService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\AbstractProvider;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 use Tymon\JWTAuth\JWTGuard;
 
@@ -32,14 +38,45 @@ class AuthController extends AppBaseController
     public function __construct(
         protected WechatService $wechatService,
         protected MediaService $mediaService,
+        protected AuthFlowService $authFlowService,
     ) {
         parent::__construct();
     }
 
     /**
-     * 用户登录 (昵称/邮箱/手机号 + 密码)
+     * 兼容登录入口 (昵称/邮箱/手机号 + 密码)
      *
      * @unauthenticated
+     * @bodyParam nickname string required 用户昵称、手机号或邮箱。Example: user@example.com
+     * @bodyParam password string required 登录密码，最少 6 位。Example: password123
+     * @response 200 {
+     *   "success": true,
+     *   "message": "登录成功",
+     *   "code": 200,
+     *   "data": {
+     *     "access_token": "jwt-token",
+     *     "token_type": "bearer",
+     *     "expires_in": 1209600,
+     *     "user": {
+     *       "id": 1,
+     *       "nickname": "user",
+     *       "email": "user@example.com",
+     *       "avatar": null
+     *     }
+     *   }
+     * }
+     * @response 200 {
+     *   "success": true,
+     *   "message": "需要完成安全验证",
+     *   "code": 200,
+     *   "data": {
+     *     "status": "challenge_required",
+     *     "action": "login",
+     *     "email": "user@example.com",
+     *     "challenge_token": "challenge-token",
+     *     "resend_in": 60
+     *   }
+     * }
      */
     public function login(Request $request): JsonResponse
     {
@@ -48,47 +85,347 @@ class AuthController extends AppBaseController
             'password' => ['required', 'string', 'min:6'],
         ]);
 
-        $user = User::where('nickname', $credentials['nickname'])
+        $user = User::query()
+            ->where('nickname', $credentials['nickname'])
             ->orWhere('telephone', $credentials['nickname'])
             ->orWhere('email', $credentials['nickname'])
             ->first();
 
-        if (!$user || !Hash::check($credentials['password'], $user->password ?? '')) {
-            return $this->sendError(__('auth.failed'), 401);
+        if (!$user) {
+            return $this->sendError(__('auth.invalid_credentials'), 401);
         }
 
-        $user->update([
-            'last_login_at' => now(),
-            'last_login_ip' => $request->ip(),
-        ]);
+        $result = $this->authFlowService->requestSignin(
+            email: $user->email,
+            password: $credentials['password'],
+            ip: $request->ip(),
+            forceChallenge: $this->forceChallenge($request),
+        );
 
-        return $this->sendResponse($this->generateTokenData($user), __('auth.login_success'));
+        if ($result['status'] === 'authenticated') {
+            /** @var User $authenticatedUser */
+            $authenticatedUser = $result['user'];
+
+            return $this->sendAuthResult($authenticatedUser, __('auth.login_success'));
+        }
+
+        return $this->sendResponse(
+            new AuthChallengeResource($result),
+            __('auth.challenge_required'),
+        );
     }
 
     /**
-     * 用户注册
+     * 兼容注册入口
      *
      * @unauthenticated
-     * @throws Throwable
+     * @bodyParam email string required 注册邮箱。Example: signup@example.com
+     * @bodyParam password string required 登录密码，最少 6 位。Example: password123
+     * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: password123
+     * @response 200 {
+     *   "success": true,
+     *   "message": "验证码已发送",
+     *   "code": 200,
+     *   "data": {
+     *     "status": "code_sent",
+     *     "action": "register",
+     *     "email": "signup@example.com",
+     *     "challenge_token": null,
+     *     "resend_in": 60
+     *   }
+     * }
      */
-    public function register(Request $request): JsonResponse
+    public function register(SignupRequest $request): JsonResponse
+    {
+        return $this->signupRequest($request);
+    }
+
+    /**
+     * 发起注册并发送邮箱验证码
+     *
+     * @unauthenticated
+     * @bodyParam email string required 注册邮箱。Example: signup@example.com
+     * @bodyParam password string required 登录密码，最少 6 位。Example: password123
+     * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: password123
+     * @response 200 {
+     *   "success": true,
+     *   "message": "验证码已发送",
+     *   "code": 200,
+     *   "data": {
+     *     "status": "code_sent",
+     *     "action": "register",
+     *     "email": "signup@example.com",
+     *     "challenge_token": null,
+     *     "resend_in": 60
+     *   }
+     * }
+     */
+    public function signupRequest(SignupRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->authFlowService->requestSignup(
+                email: $request->string('email')->toString(),
+                password: $request->string('password')->toString(),
+                ip: $request->ip(),
+            );
+        } catch (HttpException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getStatusCode());
+        }
+
+        return $this->sendResponse(
+            new AuthChallengeResource($result),
+            __('auth.verification_code_sent'),
+        );
+    }
+
+    /**
+     * 验证注册邮箱验证码并创建账号
+     *
+     * @unauthenticated
+     * @bodyParam email string required 注册邮箱。Example: signup@example.com
+     * @bodyParam code string required 6 位邮箱验证码。Example: 123456
+     * @response 200 {
+     *   "success": true,
+     *   "message": "注册成功",
+     *   "code": 200,
+     *   "data": {
+     *     "access_token": "jwt-token",
+     *     "token_type": "bearer",
+     *     "expires_in": 1209600,
+     *     "user": {
+     *       "id": 1,
+     *       "nickname": "signup",
+     *       "email": "signup@example.com",
+     *       "avatar": null
+     *     }
+     *   }
+     * }
+     */
+    public function signupVerify(SignupVerifyRequest $request): JsonResponse
+    {
+        try {
+            $user = $this->authFlowService->verifySignup(
+                email: $request->string('email')->toString(),
+                code: $request->string('code')->toString(),
+                ip: $request->ip(),
+            );
+        } catch (HttpException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getStatusCode());
+        }
+
+        return $this->sendAuthResult($user, __('auth.register_success'));
+    }
+
+    /**
+     * 发起登录
+     *
+     * @unauthenticated
+     * @bodyParam email string required 登录邮箱。Example: signin@example.com
+     * @bodyParam password string required 登录密码。Example: password123
+     * @response 200 {
+     *   "success": true,
+     *   "message": "登录成功",
+     *   "code": 200,
+     *   "data": {
+     *     "access_token": "jwt-token",
+     *     "token_type": "bearer",
+     *     "expires_in": 1209600,
+     *     "user": {
+     *       "id": 1,
+     *       "nickname": "signin",
+     *       "email": "signin@example.com",
+     *       "avatar": null
+     *     }
+     *   }
+     * }
+     * @response 200 {
+     *   "success": true,
+     *   "message": "需要完成安全验证",
+     *   "code": 200,
+     *   "data": {
+     *     "status": "challenge_required",
+     *     "action": "login",
+     *     "email": "signin@example.com",
+     *     "challenge_token": "challenge-token",
+     *     "resend_in": 60
+     *   }
+     * }
+     */
+    public function signinRequest(SigninRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->authFlowService->requestSignin(
+                email: $request->string('email')->toString(),
+                password: $request->string('password')->toString(),
+                ip: $request->ip(),
+                forceChallenge: $this->forceChallenge($request),
+            );
+        } catch (HttpException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getStatusCode());
+        }
+
+        if ($result['status'] === 'authenticated') {
+            /** @var User $user */
+            $user = $result['user'];
+
+            return $this->sendAuthResult($user, __('auth.login_success'));
+        }
+
+        return $this->sendResponse(
+            new AuthChallengeResource($result),
+            __('auth.challenge_required'),
+        );
+    }
+
+    /**
+     * 提交登录验证码挑战
+     *
+     * @unauthenticated
+     * @bodyParam challenge_token string required 登录挑战令牌。Example: challenge-token
+     * @bodyParam code string required 6 位邮箱验证码。Example: 123456
+     * @response 200 {
+     *   "success": true,
+     *   "message": "登录成功",
+     *   "code": 200,
+     *   "data": {
+     *     "access_token": "jwt-token",
+     *     "token_type": "bearer",
+     *     "expires_in": 1209600,
+     *     "user": {
+     *       "id": 1,
+     *       "nickname": "signin",
+     *       "email": "signin@example.com",
+     *       "avatar": null
+     *     }
+     *   }
+     * }
+     */
+    public function signinVerify(SigninVerifyRequest $request): JsonResponse
+    {
+        try {
+            $user = $this->authFlowService->verifySignin(
+                challengeToken: $request->string('challenge_token')->toString(),
+                code: $request->string('code')->toString(),
+                ip: $request->ip(),
+            );
+        } catch (HttpException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getStatusCode());
+        }
+
+        return $this->sendAuthResult($user, __('auth.login_success'));
+    }
+
+    /**
+     * 重发验证码
+     *
+     * @unauthenticated
+     * @bodyParam email string required 需要重发验证码的邮箱。Example: user@example.com
+     * @bodyParam action string required 验证码业务类型，可选 register、login、reset_password。Example: login
+     * @bodyParam challenge_token string 登录挑战令牌，action 为 login 时传入。Example: challenge-token
+     * @response 200 {
+     *   "success": true,
+     *   "message": "验证码已重新发送",
+     *   "code": 200,
+     *   "data": {
+     *     "status": "code_sent",
+     *     "action": "login",
+     *     "email": "user@example.com",
+     *     "challenge_token": "challenge-token",
+     *     "resend_in": 60
+     *   }
+     * }
+     */
+    public function resendCode(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'email' => ['required', 'email', 'max:255'],
+            'action' => ['required', Rule::in(['register', 'login', 'reset_password'])],
+            'challenge_token' => ['nullable', 'string'],
         ]);
 
-        $user = DB::transaction(static function () use ($data, $request) {
-            return User::create([
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                'nickname' => explode('@', $data['email'])[0],
-                'last_login_at' => now(),
-                'last_login_ip' => $request->ip(),
-            ]);
-        });
+        try {
+            $result = $this->authFlowService->resendCode(
+                email: (string) $data['email'],
+                action: (string) $data['action'],
+                challengeToken: $data['challenge_token'] ?? null,
+            );
+        } catch (HttpException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getStatusCode());
+        }
 
-        return $this->sendResponse($this->generateTokenData($user), __('auth.register_success'));
+        return $this->sendResponse(
+            new AuthChallengeResource($result),
+            __('auth.verification_code_resent'),
+        );
+    }
+
+    /**
+     * 发起忘记密码
+     *
+     * @unauthenticated
+     * @bodyParam email string required 需要找回密码的邮箱。Example: user@example.com
+     * @response 200 {
+     *   "success": true,
+     *   "message": "重置密码验证码已发送",
+     *   "code": 200,
+     *   "data": {
+     *     "status": "code_sent",
+     *     "action": "reset_password",
+     *     "email": "user@example.com",
+     *     "challenge_token": null,
+     *     "resend_in": 60
+     *   }
+     * }
+     */
+    public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
+    {
+        try {
+            $result = $this->authFlowService->requestPasswordReset(
+                email: $request->string('email')->toString(),
+            );
+        } catch (HttpException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getStatusCode());
+        }
+
+        return $this->sendResponse(
+            new AuthChallengeResource($result),
+            __('auth.password_reset_sent'),
+        );
+    }
+
+    /**
+     * 使用验证码重置密码
+     *
+     * @unauthenticated
+     * @bodyParam email string required 需要重置密码的邮箱。Example: user@example.com
+     * @bodyParam code string required 6 位邮箱验证码。Example: 123456
+     * @bodyParam password string required 新密码，最少 6 位。Example: new-password123
+     * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: new-password123
+     * @response 200 {
+     *   "success": true,
+     *   "message": "密码重置成功",
+     *   "code": 200,
+     *   "data": {
+     *     "status": "completed"
+     *   }
+     * }
+     */
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+        try {
+            $this->authFlowService->resetPassword(
+                email: $request->string('email')->toString(),
+                code: $request->string('code')->toString(),
+                password: $request->string('password')->toString(),
+            );
+        } catch (HttpException $exception) {
+            return $this->sendError($exception->getMessage(), $exception->getStatusCode());
+        }
+
+        return $this->sendSuccess(
+            __('auth.password_reset_success'),
+            ['status' => 'completed'],
+        );
     }
 
     /**
@@ -154,59 +491,6 @@ class AuthController extends AppBaseController
     }
 
     /**
-     * 请求重置密码邮件
-     *
-     * @unauthenticated
-     */
-    public function requestPasswordReset(Request $request): JsonResponse
-    {
-        $data = $request->validate([
-            'email' => ['required', 'email', 'exists:users,email'],
-            'old_password' => ['required', 'string'],
-            'new_password' => ['required', 'string', 'min:6', 'confirmed'],
-        ]);
-
-        $user = User::where('email', $data['email'])->first();
-
-        if (!$user || !Hash::check($data['old_password'], $user->password ?? '')) {
-            return $this->sendError(__('auth.password_reset_wrong_credentials'), 401);
-        }
-
-        $newPasswordHash = base64_encode(Hash::make($data['new_password']));
-        $resetUrl = URL::temporarySignedRoute(
-            'v1.auth.password.confirm',
-            now()->addMinutes(60),
-            ['user' => $user->id, 'hash' => $newPasswordHash],
-        );
-
-        Mail::to($user->email)->queue(new PasswordResetMail($resetUrl));
-
-        return $this->sendSuccess(__('auth.password_reset_sent'));
-    }
-
-    /**
-     * 确认并执行密码重置
-     *
-     * @unauthenticated
-     */
-    public function confirmPasswordReset(Request $request): JsonResponse
-    {
-        $request->validate([
-            'user' => ['required', 'integer', 'exists:users,id'],
-            'hash' => ['required', 'string'],
-        ]);
-
-        if (!URL::hasValidSignature($request)) {
-            return $this->sendError(__('auth.password_reset_invalid_link'), 403);
-        }
-
-        $user = User::findOrFail($request->user);
-        $user->update(['password' => base64_decode($request->hash)]);
-
-        return $this->sendSuccess(__('auth.password_reset_success'));
-    }
-
-    /**
      * 重定向至第三方登录 (OAuth)
      *
      * @unauthenticated
@@ -233,7 +517,8 @@ class AuthController extends AppBaseController
         $socialUser = $driver->stateless()->user();
         $idColumn = $provider . '_id';
 
-        $user = User::where($idColumn, $socialUser->getId())
+        $user = User::query()
+            ->where($idColumn, $socialUser->getId())
             ->orWhere('email', $socialUser->getEmail())
             ->first();
 
@@ -243,17 +528,20 @@ class AuthController extends AppBaseController
                 'last_login_at' => now(),
             ]);
         } else {
+            $displayName = $socialUser->getNickname() ?: $socialUser->getName() ?: 'social_user';
+
             $user = User::create([
+                'name' => $displayName,
+                'nickname' => $displayName,
                 $idColumn => $socialUser->getId(),
-                'nickname' => $socialUser->getNickname() ?: $socialUser->getName(),
                 'email' => $socialUser->getEmail(),
-                'password' => Hash::make(str()->random(24)),
+                'password' => str()->random(24),
                 'avatar' => $socialUser->getAvatar(),
                 'last_login_at' => now(),
             ]);
         }
 
-        return $this->sendResponse($this->generateTokenData($user), __('auth.login_success'));
+        return $this->sendAuthResult($user, __('auth.login_success'));
     }
 
     /**
@@ -326,25 +614,20 @@ class AuthController extends AppBaseController
         return $this->sendSuccess(__('admin.notification_deleted'));
     }
 
-    /**
-     * Generate Token Data
-     */
-    protected function generateTokenData(User $user): array
+    protected function sendAuthResult(User $user, string $message): JsonResponse
     {
         /** @var JWTGuard $guard */
         $guard = auth('api');
         $token = $guard->login($user);
 
-        return [
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => $guard->factory()->getTTL() * 60,
-            'user' => [
-                'id' => $user->id,
-                'nickname' => $user->nickname,
-                'email' => $user->email,
-                'avatar' => $user->avatar_url,
-            ],
-        ];
+        return $this->sendResponse(
+            new AuthResultResource($user, $token, $guard->factory()->getTTL() * 60),
+            $message,
+        );
+    }
+
+    private function forceChallenge(Request $request): bool
+    {
+        return mb_strtolower((string) $request->header('X-Auth-Risk')) === 'challenge';
     }
 }

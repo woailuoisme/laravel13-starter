@@ -4,41 +4,10 @@ declare(strict_types=1);
 
 namespace App\Mail\V1;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
-
-class PasswordResetMail extends Mailable
+class PasswordResetMail extends AuthVerificationCodeMail
 {
-    use Queueable;
-    use SerializesModels;
-
-    public function __construct(
-        public string $resetUrl,
-    ) {
-    }
-
-    public function envelope(): Envelope
+    public function __construct(string $code)
     {
-        return new Envelope(
-            subject: 'Password Reset Request',
-        );
-    }
-
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.v1.auth.password-reset',
-        );
-    }
-
-    /**
-     * @return array<int, mixed>
-     */
-    public function attachments(): array
-    {
-        return [];
+        parent::__construct(code: $code, action: 'reset_password');
     }
 }

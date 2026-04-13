@@ -138,7 +138,7 @@ return [
         'placeholder' => 'Bearer {YOUR_AUTH_TOKEN}',
 
         // Any extra authentication-related info for your users. Markdown and HTML are supported.
-        'extra_info' => '请通过 `api/v1/auth/login` 接口获取您的 JWT 访问令牌。',
+        'extra_info' => '推荐优先使用 `api/v1/auth/signin/request` 与 `api/v1/auth/signin/verify` 完成邮箱登录流程；兼容客户端仍可继续使用 `api/v1/auth/login`。',
     ],
 
     // Example requests for each endpoint will be shown in each of these languages.
@@ -174,7 +174,7 @@ return [
         // The OpenAPI spec version to generate. Supported versions: '3.0.3', '3.1.0'.
         // OpenAPI 3.1 is more compatible with JSON Schema and is becoming the dominant version.
         // See https://spec.openapis.org/oas/v3.1.0 for details on 3.1 changes.
-        'version' => '3.0.3',
+        'version' => '3.1.0',
 
         'overrides' => [
             // 'info.version' => '2.0.0',
@@ -269,7 +269,7 @@ return [
     // For response calls, API resource responses and transformer responses,
     // Scribe will try to start database transactions, so no changes are persisted to your database.
     // Tell Scribe which connections should be transacted here. If you only use one db connection, you can leave this as is.
-    'database_connections_to_transact' => [config('database.default')],
+    'database_connections_to_transact' => [],
 
     'fractal' => [
         // If you are using a custom serializer with league/fractal, you can specify it here.
