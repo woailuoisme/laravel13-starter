@@ -32,14 +32,14 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
+- `ai-sdk-development` — TRIGGER when working with ai-sdk which is Laravel official first-party AI SDK. Activate when building, editing AI agents, chatbots, text generation, image generation, audio/TTS, transcription/STT, embeddings, RAG, vector stores, reranking, structured output, streaming, conversation memory, tools, queueing, broadcasting, and provider failover across OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama, ElevenLabs, Cohere, Jina, and VoyageAI. Invoke when the user references ai-sdk, the `Laravel\Ai\` namespace, or this project's AI features — not for Prism PHP or other AI packages used directly.
 - `cashier-stripe-development` — Handles Laravel Cashier Stripe integration including subscriptions, webhooks, Stripe Checkout, invoices, charges, refunds, trials, coupons, metered billing, and payment failure handling. Triggered when a user mentions Cashier, Billable, IncompletePayment, stripe_id, newSubscription, Stripe subscriptions, or billing. Also applies when setting up webhooks, handling SCA/3DS payment failures, testing with Stripe test cards, or troubleshooting incomplete subscriptions, CSRF webhook errors, or migration publish issues.
 - `laravel-best-practices` — Laravel 13 conventions and best practices. Use when creating controllers, models, migrations, validation, services, or structuring Laravel applications. Triggers on tasks involving Laravel architecture, Eloquent, database, API development, or PHP patterns.
 - `configuring-horizon` — Use this skill whenever the user mentions Horizon by name in a Laravel context. Covers the full Horizon lifecycle: installing Horizon (horizon:install, Sail setup), configuring config/horizon.php (supervisor blocks, queue assignments, balancing strategies, minProcesses/maxProcesses), fixing the dashboard (authorization via Gate::define viewHorizon, blank metrics, horizon:snapshot scheduling), and troubleshooting production issues (worker crashes, timeout chain ordering, LongWaitDetected notifications, waits config). Also covers job tagging and silencing. Do not use for generic Laravel queues without Horizon, SQS or database drivers, standalone Redis setup, Linux supervisord, Telescope, or job batching.
 - `scout-development` — Develops full-text search with Laravel Scout. Activates when installing or configuring Scout; choosing a search engine (Algolia, Meilisearch, Typesense, Database, Collection); adding the Searchable trait to models; customizing toSearchableArray or searchableAs; importing or flushing search indexes; writing search queries with where clauses, pagination, or soft deletes; configuring index settings; troubleshooting search results; or when the user mentions Scout, full-text search, search indexing, or search engines in a Laravel project. Make sure to use this skill whenever the user works with search functionality in Laravel, even if they don't explicitly mention Scout.
 - `socialite-development` — Manages OAuth social authentication with Laravel Socialite. Activate when adding social login providers; configuring OAuth redirect/callback flows; retrieving authenticated user details; customizing scopes or parameters; setting up community providers; testing with Socialite fakes; or when the user mentions social login, OAuth, Socialite, or third-party authentication.
-- `pest-testing` — Use this skill for Pest PHP testing in Laravel projects only. Trigger whenever any test is being written, edited, fixed, or refactored — including fixing tests that broke after a code change, adding assertions, converting PHPUnit to Pest, adding datasets, and TDD workflows. Always activate when the user asks how to write something in Pest, mentions test files or directories (tests/Feature, tests/Unit, tests/Browser), or needs browser testing, smoke testing multiple pages for JS errors, or architecture tests. Covers: it()/expect() syntax, datasets, mocking, browser testing (visit/click/fill), smoke testing, arch(), Livewire component tests, RefreshDatabase, and all Pest 4 features. Do not use for factories, seeders, migrations, controllers, models, or non-test PHP code.
+- `pest-testing` — Use this skill for Pest PHP testing in Laravel projects only. Trigger whenever any test is being written, edited, fixed, or refactored — including fixing tests that broke after a code change, adding assertions, converting PHPUnit to Pest, adding datasets, and TDD workflows. Always activate when the user asks how to write something in Pest, mentions test files or directories (tests/Feature, tests/Unit, tests/Browser), or needs browser testing, smoke testing multiple pages for JS errors, or architecture tests. Covers: test()/it()/expect() syntax, datasets, mocking, browser testing (visit/click/fill), smoke testing, arch(), Livewire component tests, RefreshDatabase, and all Pest 4 features. Do not use for factories, seeders, migrations, controllers, models, or non-test PHP code.
 - `tailwindcss-development` — Always invoke when the user's message includes 'tailwind' in any form. Also invoke for: building responsive grid layouts (multi-column card grids, product grids), flex/grid page structures (dashboards with sidebars, fixed topbars, mobile-toggle navs), styling UI components (cards, tables, navbars, pricing sections, forms, inputs, badges), adding dark mode variants, fixing spacing or typography, and Tailwind v3/v4 work. The core use case: writing or fixing Tailwind utility classes in HTML templates (Blade, JSX, Vue). Skip for backend PHP logic, database queries, API routes, JavaScript with no HTML/CSS component, CSS file audits, build tool configuration, and vanilla CSS.
-- `ai-sdk-development` — TRIGGER when working with ai-sdk which is Laravel official first-party AI SDK. Activate when building, editing AI agents, chatbots, text generation, image generation, audio/TTS, transcription/STT, embeddings, RAG, vector stores, reranking, structured output, streaming, conversation memory, tools, queueing, broadcasting, and provider failover across OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama, ElevenLabs, Cohere, Jina, and VoyageAI. Invoke when the user references ai-sdk, the `Laravel\Ai\` namespace, or this project's AI features — not for Prism PHP or other AI packages used directly.
 - `laravel-backup` — Configure and extend spatie/laravel-backup for database and file backups, cleanup strategies, health monitoring, and notifications. Activates when working with backup configuration, scheduling backups, creating custom cleanup strategies or health checks, customizing notifications, or when the user mentions backups, backup monitoring, backup cleanup, or spatie/laravel-backup.
 - `medialibrary-development` — Build and work with spatie/laravel-medialibrary features including associating files with Eloquent models, defining media collections and conversions, generating responsive images, and retrieving media URLs and paths.
 - `laravel-query-builder` — Build filtered, sorted, and included API endpoints using spatie/laravel-query-builder. Activates when working with QueryBuilder, AllowedFilter, AllowedSort, AllowedInclude, or when the user mentions query parameters, API filtering, sorting, includes, or spatie/laravel-query-builder.
@@ -123,7 +123,7 @@ This project has domain-specific skills available. You MUST activate the relevan
 - Always use curly braces for control structures, even for single-line bodies.
 - Use PHP 8 constructor property promotion: `public function __construct(public GitHub $github) { }`. Do not leave empty zero-parameter `__construct()` methods unless the constructor is private.
 - Use explicit return type declarations and type hints for all method parameters: `function isAccessible(User $user, ?string $path = null): bool`
-- Follow existing application Enum naming conventions.
+- Use TitleCase for Enum keys: `FavoritePerson`, `BestLake`, `Monthly`.
 - Prefer PHPDoc blocks over inline comments. Only add inline comments for exceptionally complex logic.
 - Use array shape type definitions in PHPDoc blocks.
 
@@ -163,6 +163,10 @@ This project has domain-specific skills available. You MUST activate the relevan
 ## Vite Error
 
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `pnpm run build` or ask the user to run `pnpm run dev` or `composer run dev`.
+
+## Deployment
+
+- Laravel can be deployed using [Laravel Cloud](https://cloud.laravel.com/), which is the fastest way to deploy and scale production Laravel applications.
 
 === octane/core rules ===
 
@@ -346,159 +350,6 @@ livewire(ListUsers::class)
 
 - **Never assume public file visibility.** File visibility is `private` by default. Always use `->visibility('public')` when public access is needed.
 - **Never assume full-width layout.** `Grid`, `Section`, and `Fieldset` do not span all columns by default. Explicitly set column spans when needed.
-
-=== spatie/laravel-activitylog rules ===
-
-# spatie/laravel-activitylog
-
-Activity logging package for Laravel. Logs model events and manual activities to a database table.
-
-## Key Concepts
-
-- **Activity**: An Eloquent model (`Spatie\Activitylog\Models\Activity`) storing log entries with subject, causer, event, attribute_changes, and properties.
-- **Subject**: The model being acted upon (polymorphic `subject_type`/`subject_id`).
-- **Causer**: The model that caused the action, typically the authenticated user (polymorphic `causer_type`/`causer_id`).
-- **LogOptions**: Fluent configuration object returned by `getActivitylogOptions()` on models using the `LogsActivity` trait.
-- **ActivityEvent**: Enum with cases `Created`, `Updated`, `Deleted`, `Restored`.
-- **`attribute_changes`** column: stores `{"attributes": {...}, "old": {...}}` for tracked model changes.
-- **`properties`** column: stores custom user data set via `withProperties()`.
-
-## Traits
-
-### `LogsActivity`
-
-Add to models to automatically log create/update/delete events. Optionally implement `getActivitylogOptions()` to configure which attributes to track (defaults to logging events without attribute changes).
-
-```php
-use Spatie\Activitylog\Models\Concerns\LogsActivity;
-use Spatie\Activitylog\Support\LogOptions;
-
-class Article extends Model
-{
-    use LogsActivity;
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->logFillable()
-            ->logOnlyDirty()
-            ->dontLogEmptyChanges();
-    }
-}
-```
-
-### `CausesActivity`
-
-Add to user/causer models. Provides `activitiesAsCauser()` relationship.
-
-### `HasActivity`
-
-Combines `LogsActivity` and `CausesActivity`. Provides `activities()`, `activitiesAsSubject()`, and `activitiesAsCauser()`.
-
-## Manual Logging
-
-```php
-activity()
-    ->performedOn($article)
-    ->causedBy($user)
-    ->event(ActivityEvent::Updated)
-    ->withProperties(['key' => 'value'])
-    ->log('Article was updated');
-```
-
-## LogOptions Methods
-
-| Method | Description |
-|--------|-------------|
-| `logFillable()` | Log all fillable attributes |
-| `logAll()` | Log all attributes |
-| `logOnly(array)` | Log specific attributes |
-| `logExcept(array)` | Exclude attributes |
-| `logOnlyDirty()` | Only log changed attributes |
-| `dontLogEmptyChanges()` | Skip logging when no tracked attributes changed |
-| `dontLogIfAttributesChangedOnly(array)` | Ignore updates that only change these attributes |
-| `useLogName(string)` | Set custom log name |
-| `setDescriptionForEvent(Closure)` | Custom description per event |
-| `useAttributeRawValues(array)` | Store raw (uncast) values |
-
-## Querying Activities
-
-```php
-use Spatie\Activitylog\Models\Activity;
-use Spatie\Activitylog\Enums\ActivityEvent;
-
-Activity::forEvent(ActivityEvent::Created)->get();
-Activity::causedBy($user)->get();
-Activity::forSubject($article)->get();
-Activity::inLog('orders')->get();
-```
-
-## Setting the causer
-
-Override the causer for a block of code:
-
-```php
-use Spatie\Activitylog\Facades\Activity;
-
-Activity::defaultCauser($admin, function () {
-    // all activities here are caused by $admin
-});
-
-// or set globally for the rest of the request
-Activity::defaultCauser($admin);
-```
-
-## Disabling Logging
-
-```php
-activity()->withoutLogging(function () {
-    // no activities logged here
-});
-```
-
-## Accessing Changes and Properties
-
-```php
-$activity = Activity::latest()->first();
-
-// Tracked model changes (set automatically by LogsActivity)
-$activity->attribute_changes; // Collection: {"attributes": {...}, "old": {...}}
-
-// Custom user data (set via withProperties)
-$activity->properties; // Collection
-$activity->getProperty('key'); // single value
-```
-
-## Custom Activity Model
-
-Set `activity_model` in `config/activitylog.php` to a class that extends `Model` and implements `Spatie\Activitylog\Contracts\Activity`. Use a custom model for custom table names or database connections.
-
-## Customizing Actions
-
-The package uses action classes (`LogActivityAction`, `CleanActivityLogAction`) that can be extended and swapped via config:
-
-```php
-// config/activitylog.php
-'actions' => [
-    'log_activity' => \App\Actions\CustomLogActivityAction::class,
-    'clean_log' => \App\Actions\CustomCleanAction::class,
-],
-```
-
-Custom action classes must extend the originals. Override protected methods (`save()`, `beforeActivityLogged()`, `resolveDescription()`, etc.) to customize behavior.
-
-## Configuration
-
-Key config options in `config/activitylog.php`:
-- `enabled`: Master on/off switch (env: `ACTIVITYLOG_ENABLED`)
-- `clean_after_days`: Days to keep records for `activitylog:clean` command
-- `default_log_name`: Default log name (string)
-- `default_auth_driver`: Auth driver for causer resolution
-- `include_soft_deleted_subjects`: Include soft-deleted subjects
-- `activity_model`: Custom Activity model class
-- `default_except_attributes`: Globally excluded attributes
-- `actions.log_activity`: Action class for logging activities
-- `actions.clean_log`: Action class for cleaning old activities
 
 === spatie/laravel-medialibrary rules ===
 

@@ -11,13 +11,12 @@
         "spatie/laravel-medialibrary",
         "spatie/laravel-backup",
         "spatie/laravel-responsecache",
-        "laravel/ai",
         "filament/filament",
-        "spatie/laravel-query-builder",
-        "spatie/laravel-activitylog"
+        "spatie/laravel-query-builder"
     ],
     "sail": false,
     "skills": [
+        "ai-sdk-development",
         "cashier-stripe-development",
         "laravel-best-practices",
         "configuring-horizon",
@@ -25,7 +24,6 @@
         "socialite-development",
         "pest-testing",
         "tailwindcss-development",
-        "ai-sdk-development",
         "laravel-backup",
         "medialibrary-development",
         "laravel-query-builder",

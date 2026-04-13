@@ -7,6 +7,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 应用基础控制器
@@ -34,7 +35,7 @@ class AppBaseController extends Controller
      * @param string $message 响应消息
      * @param int $code HTTP状态码
      */
-    public function sendResponse(mixed $data, string $message, int $code = JsonResponse::HTTP_OK): JsonResponse
+    public function sendResponse(mixed $data, string $message, int $code = Response::HTTP_OK): JsonResponse
     {
         return $this->responseService->sendResponse($data, $message, $code);
     }
