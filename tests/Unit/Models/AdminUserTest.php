@@ -22,6 +22,14 @@ describe('AdminUser model casts', function () {
         expect($admin->password)->not->toBe('adminpass');
         expect(password_verify('adminpass', $admin->password))->toBeTrue();
     });
+
+    it('uses the filament guard by default', function () {
+        $admin = AdminUser::factory()->make();
+        $property = new ReflectionProperty($admin, 'guard_name');
+        $property->setAccessible(true);
+
+        expect($property->getValue($admin))->toBe('filament');
+    });
 });
 
 describe('AdminUser Filament panel access', function () {

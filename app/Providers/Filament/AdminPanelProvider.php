@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\Pages\Login;
 use App\Helpers\FilamentConfigurator;
 use Filament\Enums\ThemeMode;
 use Filament\Panel;
@@ -22,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
             ->spa(hasPrefetching: true)
             ->id('admin')
             ->path('admin')
+            ->login(Login::class)
             ->brandName(config('app.name'))
             ->unsavedChangesAlerts()
 //            ->topbar(false)

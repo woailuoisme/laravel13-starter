@@ -10,6 +10,7 @@ return [
     'register_success' => '注册成功。',
     'register_failed' => '注册时发生错误，请稍后再试。',
     'logout_success' => '登出成功。',
+    'login_identifier' => '邮箱或用户名',
     'profile_update_failed' => '资料更新失败。',
     'phone_update_failed' => '手机号更新失败。',
     'invalid_phone_format' => '手机号格式不正确。',

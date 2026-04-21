@@ -10,6 +10,7 @@ return [
     'register_success' => 'Registered successfully.',
     'register_failed' => 'Registration failed, please try again.',
     'logout_success' => 'Logged out successfully.',
+    'login_identifier' => 'Email or username',
     'profile_update_failed' => 'Profile update failed.',
     'phone_update_failed' => 'Phone update failed.',
     'invalid_phone_format' => 'Invalid phone number format.',

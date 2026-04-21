@@ -151,9 +151,13 @@ class AppConfigurator
      */
     public static function configureMiddleware(Middleware $middleware): void
     {
-        // 强制所有未认证的请求返回 401，不进行重定向
-        // 这样当用户未登录访问受限接口时，会直接收到 401 错误码
-        $middleware->redirectGuestsTo(fn () => null);
+        $middleware->redirectGuestsTo(static function (Request $request): ?string {
+            if ($request->is('admin') || $request->is('admin/*')) {
+                return route('filament.admin.auth.login');
+            }
+
+            return null;
+        });
 
         // 注册全局中间件
         self::registerGlobalMiddleware($middleware);

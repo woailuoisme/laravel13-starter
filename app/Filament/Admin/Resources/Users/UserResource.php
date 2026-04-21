@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Users;
 
+use App\Enums\FilamentNavigationGroup;
 use App\Filament\Admin\Resources\Users\Pages\CreateUser;
 use App\Filament\Admin\Resources\Users\Pages\EditUser;
 use App\Filament\Admin\Resources\Users\Pages\ListUsers;
@@ -17,12 +18,30 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|UnitEnum|null $navigationGroup = FilamentNavigationGroup::BackendManagement;
+    protected static ?int $navigationSort = -20;
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.users.model_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.users.plural_label');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('navigation.users');
+    }
 
     public static function form(Schema $schema): Schema
     {

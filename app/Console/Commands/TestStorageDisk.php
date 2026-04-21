@@ -15,7 +15,7 @@ use Throwable;
 use function Laravel\Prompts\multiselect;
 
 #[Signature('test:disk {--disk=* : 指定要测试的存储磁盘（可多选）} {--all : 测试所有配置的存储磁盘}')]
-#[Description('测试存储服务是否正常工作（支持 MinIO、Cloudflare R2、阿里云 OSS 等）')]
+#[Description('测试存储服务是否正常工作（支持 MinIO、Cloudflare R2、Garage、阿里云 OSS 等）')]
 class TestStorageDisk extends Command
 {
     /**

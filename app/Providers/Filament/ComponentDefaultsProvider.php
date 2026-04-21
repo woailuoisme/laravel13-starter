@@ -21,7 +21,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use Filament\Notifications\Notification;
-use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Support\Enums\Alignment;
 use Filament\Support\Enums\VerticalAlignment;
@@ -285,16 +284,6 @@ class ComponentDefaultsProvider extends ServiceProvider
         // 区块
         Section::configureUsing(static function (Section $component): void {
             $component->collapsible();
-        });
-
-        // 网格
-        Grid::configureUsing(static function (Grid $component): void {
-            $component->columns([
-                'default' => 1,
-                'sm' => 2,
-                'md' => 4,
-                'lg' => 12,
-            ]);
         });
     }
 

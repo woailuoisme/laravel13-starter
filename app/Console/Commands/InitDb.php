@@ -30,7 +30,7 @@ class InitDb extends Command
         // 调用刚才优化的 bucket:clear 命令
         $this->info('正在清理存储桶数据...');
         $this->call('bucket:clear', [
-            '--disk' => 'minio',
+            '--disk' => 'garage',
             '--force' => true,
         ]);
 

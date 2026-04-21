@@ -80,6 +80,8 @@ class AdminUser extends Authenticatable implements FilamentUser, JWTSubject
     use SoftDeletes;
     use Notifiable;
 
+    protected string $guard_name = 'filament';
+
     /**
      * Determine if the user can access the Filament panel.
      */

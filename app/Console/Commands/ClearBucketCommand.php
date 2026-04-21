@@ -13,7 +13,7 @@ use Throwable;
 
 #[Signature('bucket:clear 
     {--path= : 指定要删除的路径前缀} 
-    {--disk=minio : 指定存储磁盘} 
+    {--disk=garage : 指定存储磁盘} 
     {--force : 强制删除} 
     {--media-only : 仅删除媒体库记录} 
     {--files-only : 仅删除文件} 

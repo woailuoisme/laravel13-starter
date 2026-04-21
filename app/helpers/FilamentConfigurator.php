@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Enums\FilamentNavigationGroup;
+use App\Filament\Auth\Pages\Login;
 use App\Filament\Admin\Resources\Users\UserResource;
 use App\Models\User;
 use Awcodes\QuickCreate\QuickCreatePlugin;
@@ -17,13 +18,10 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
@@ -48,7 +46,7 @@ class FilamentConfigurator
             ->default()
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(Login::class)
             ->profile() // 启用默认个人中心
             ->spa() // 启用 SPA 模式提升体验
             ->unsavedChangesAlerts() // 启用未保存内容提示
@@ -60,14 +58,9 @@ class FilamentConfigurator
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
+            ->widgets([])
             ->navigationGroups(self::getNavigationGroups())
             ->plugins(self::getPlugins())
             ->middleware(self::getMiddleware())
@@ -146,9 +139,7 @@ class FilamentConfigurator
      */
     public static function getPages(): array
     {
-        return [
-            Dashboard::class,
-        ];
+        return [];
     }
 
     /**
@@ -158,10 +149,7 @@ class FilamentConfigurator
      */
     public static function getWidgets(): array
     {
-        return [
-            AccountWidget::class,
-            FilamentInfoWidget::class,
-        ];
+        return [];
     }
 
     /**
@@ -195,6 +183,7 @@ class FilamentConfigurator
     private static function buildShieldPlugin(): FilamentShieldPlugin
     {
         return FilamentShieldPlugin::make()
+            ->navigationGroup(FilamentNavigationGroup::BackendManagement)
             ->gridColumns(['default' => 1, 'sm' => 2, 'lg' => 3])
             ->sectionColumnSpan(1)
             ->checkboxListColumns(['default' => 1, 'sm' => 2, 'lg' => 4])

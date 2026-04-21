@@ -46,16 +46,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User Model
+    | Panel User Model
     |--------------------------------------------------------------------------
     |
-    | This value contains the class name of your user model. This model will
-    | be used for role assignments and must implement the HasRoles trait
+    | This value contains the class name of your panel user model. This model
+    | will be used for role assignments and must implement the HasRoles trait
     | provided by the Spatie\Permission package.
     |
     */
 
-    'auth_provider_model' => 'App\\Models\\User',
+    'auth_provider_model' => 'App\\Models\\AdminUser',
 
     /*
     |--------------------------------------------------------------------------
