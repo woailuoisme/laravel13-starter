@@ -32,4 +32,18 @@ class SigninRequest extends FormRequest
             'password' => ['required', 'string', 'min:6'],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'email' => [
+                'description' => 'The account email address.',
+                'example' => 'user@example.com',
+            ],
+            'password' => [
+                'description' => 'The account password.',
+                'example' => 'password123',
+            ],
+        ];
+    }
 }

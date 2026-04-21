@@ -20,7 +20,6 @@ it('increments auth version and updates password after a valid reset code', func
         'nickname' => 'unit_reset',
         'email' => 'unit-reset@example.com',
         'password' => Hash::make('old-password'),
-        'auth_version' => 1,
     ]);
 
     /** @var AuthFlowService $service */
@@ -43,6 +42,5 @@ it('increments auth version and updates password after a valid reset code', func
 
     $user->refresh();
 
-    expect(Hash::check('new-password123', (string) $user->password))->toBeTrue()
-        ->and($user->auth_version)->toBe(2);
+    expect(Hash::check('new-password123', (string) $user->password))->toBeTrue();
 });

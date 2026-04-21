@@ -96,6 +96,11 @@
       "sourceType": "github",
       "computedHash": "66fb92309a38bba54c8730a0efccc0f3092cf7dbfb71b294ff33c1becae91285"
     },
+    "livewire-development": {
+      "source": "spatie/freek.dev",
+      "sourceType": "github",
+      "computedHash": "f8cd31cb3bcbe866949268cb51f2cb4fe24932b6c0572419e0baf2b07dbf98d5"
+    },
     "php-best-practices": {
       "source": "asyrafhussin/agent-skills",
       "sourceType": "github",

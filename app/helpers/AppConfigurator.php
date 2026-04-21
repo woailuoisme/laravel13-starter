@@ -206,7 +206,6 @@ class AppConfigurator
             'throttle' => ThrottleRequests::class,
             'doNotCacheResponse' => DoNotCacheResponse::class,
             'cacheResponse' => CacheResponse::class,
-            'jwt.auth_version' => \App\Http\Middleware\EnsureJwtAuthVersionIsCurrent::class,
         ]);
     }
 

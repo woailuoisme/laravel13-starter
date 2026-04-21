@@ -33,4 +33,22 @@ class SignupRequest extends FormRequest
             'password_confirmation' => ['required', 'string', 'min:6'],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'email' => [
+                'description' => 'The email address used to create the account.',
+                'example' => 'new-user@example.com',
+            ],
+            'password' => [
+                'description' => 'The account password.',
+                'example' => 'new-password123',
+            ],
+            'password_confirmation' => [
+                'description' => 'Confirmation for the account password.',
+                'example' => 'new-password123',
+            ],
+        ];
+    }
 }

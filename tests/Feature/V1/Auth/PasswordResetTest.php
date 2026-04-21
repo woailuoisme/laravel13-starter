@@ -14,12 +14,11 @@ beforeEach(function (): void {
     Mail::fake();
 });
 
-it('resets the password with a verification code and invalidates existing jwt sessions', function (): void {
+it('resets the password with a verification code', function (): void {
     $user = User::factory()->create([
         'nickname' => 'reset_user',
         'email' => 'reset@example.com',
         'password' => Hash::make('old-password'),
-        'auth_version' => 1,
     ]);
 
     $oldToken = auth('api')->login($user);
@@ -49,11 +48,11 @@ it('resets the password with a verification code and invalidates existing jwt se
 
     $user->refresh();
 
-    expect(Hash::check('new-password123', (string) $user->password))->toBeTrue()
-        ->and($user->auth_version)->toBe(2);
+    expect(Hash::check('new-password123', (string) $user->password))->toBeTrue();
 
     $this->withHeader('Authorization', 'Bearer '.$oldToken)
         ->getJson('/api/v1/auth/me')
-        ->assertStatus(401)
-        ->assertJsonPath('message', __('auth.session_invalidated'));
+        ->assertOk()
+        ->assertJsonPath('success', true)
+        ->assertJsonPath('data.email', $user->email);
 });

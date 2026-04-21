@@ -49,6 +49,8 @@ return [
                 // 'GET /health', 'admin.*'
                 'GET /health',
                 'api/v1/auth/test_login',
+                'api/v1/auth/*/redirect',
+                'api/v1/auth/*/callback',
                 'api/v1/excel/*',
                 'api/v1/webhooks/*',
                 //                'api/v1/stripe/webhook',

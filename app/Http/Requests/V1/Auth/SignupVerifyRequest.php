@@ -32,4 +32,18 @@ class SignupVerifyRequest extends FormRequest
             'code' => ['required', 'digits:6'],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'email' => [
+                'description' => 'The email address used during signup.',
+                'example' => 'new-user@example.com',
+            ],
+            'code' => [
+                'description' => 'The 6-digit verification code sent to the email address.',
+                'example' => '123456',
+            ],
+        ];
+    }
 }

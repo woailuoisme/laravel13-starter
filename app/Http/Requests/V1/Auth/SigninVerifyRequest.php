@@ -24,4 +24,18 @@ class SigninVerifyRequest extends FormRequest
             'code' => ['required', 'digits:6'],
         ];
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'challenge_token' => [
+                'description' => 'The challenge token returned by the signin request.',
+                'example' => '4f0a9f6b1d2c3e4f5a6b7c8d9e0f123456789012',
+            ],
+            'code' => [
+                'description' => 'The 6-digit verification code sent to the user email address.',
+                'example' => '123456',
+            ],
+        ];
+    }
 }

@@ -37,7 +37,6 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string|null $bio 个人简介
  * @property Carbon|null $email_verified_at
  * @property string $password
- * @property int $auth_version
  * @property string|null $open_id 微信 openid
  * @property string|null $github_id GitHub ID
  * @property string|null $google_id Google ID
@@ -102,7 +101,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
  * @mixin \Eloquent
  */
-#[Fillable(['name', 'nickname', 'username', 'email', 'telephone', 'avatar', 'birthday', 'gender', 'bio', 'email_verified_at', 'password', 'auth_version', 'last_login_at', 'last_login_ip', 'open_id', 'github_id', 'google_id'])]
+#[Fillable(['name', 'nickname', 'username', 'email', 'telephone', 'avatar', 'birthday', 'gender', 'bio', 'email_verified_at', 'password', 'last_login_at', 'last_login_ip', 'open_id', 'github_id', 'google_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements JWTSubject, HasMedia
 {
@@ -138,9 +137,7 @@ class User extends Authenticatable implements JWTSubject, HasMedia
      */
     public function getJWTCustomClaims(): array
     {
-        return [
-            'av' => $this->auth_version,
-        ];
+        return [];
     }
 
     public function otpRecords(): HasMany

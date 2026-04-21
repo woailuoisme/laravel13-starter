@@ -192,7 +192,6 @@ class AuthFlowService
         DB::transaction(function () use ($user, $password, $otp): void {
             $user->forceFill([
                 'password' => Hash::make($password),
-                'auth_version' => $user->auth_version + 1,
             ])->save();
 
             $otp->forceFill([
