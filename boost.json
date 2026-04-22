@@ -8,7 +8,6 @@
     "nightwatch_mcp": false,
     "packages": [
         "spatie/laravel-medialibrary",
-        "spatie/laravel-backup",
         "spatie/laravel-responsecache",
         "filament/filament",
         "spatie/laravel-query-builder"
@@ -23,7 +22,6 @@
         "socialite-development",
         "pest-testing",
         "tailwindcss-development",
-        "laravel-backup",
         "medialibrary-development",
         "laravel-query-builder",
         "responsecache-development"

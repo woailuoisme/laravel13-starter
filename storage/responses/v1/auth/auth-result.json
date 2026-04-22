@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "message": "登录成功",
+  "data": {
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9",
+    "token_type": "bearer",
+    "expires_in": 3600,
+    "user": {
+      "id": 1,
+      "nickname": "testuser",
+      "email": "test@example.com",
+      "avatar": "https://example.com/avatar.jpg"
+    }
+  }
+}

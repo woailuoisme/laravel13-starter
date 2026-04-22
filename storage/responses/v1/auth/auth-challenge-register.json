@@ -1,0 +1,11 @@
+{
+  "success": true,
+  "message": "验证码已发送",
+  "data": {
+    "status": "code_sent",
+    "action": "register",
+    "email": "signup@example.com",
+    "challenge_token": "challenge-token",
+    "resend_in": 60
+  }
+}

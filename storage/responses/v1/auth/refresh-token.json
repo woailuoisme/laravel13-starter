@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "message": "success",
+  "data": {
+    "token": "new-jwt-token"
+  }
+}

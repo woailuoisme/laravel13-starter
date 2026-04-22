@@ -64,16 +64,13 @@ return [
     // - "laravel" will generate the documentation as a Blade view, so you can add routing and authentication.
     // - "external_static" and "external_laravel" do the same as above, but pass the OpenAPI spec as a URL to an external UI template
 //    'type' => 'laravel',
-
     'type' => 'external_laravel',
-
     // See https://scribe.knuckles.wtf/laravel/reference/config#theme for supported options
 //    'theme' => 'elements',
     'theme' => 'scalar',
 //    When using static or laravel: default, elements (modelled after Stoplight Elements). See the theming guide.
 //When using external_static or external_laravel: scalar, elementsand rapidoc
 //    'theme' => 'rapidoc',
-
     'static' => [
         // HTML documentation, assets and Postman collection will be generated to this folder.
         // Source Markdown will still be in resources/docs.

@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "message": "success",
+  "data": {
+    "id": 1,
+    "nickname": "testuser",
+    "email": "test@example.com",
+    "telephone": "13800000000",
+    "gender": "male",
+    "avatar": "https://example.com/avatar.jpg",
+    "last_login_at": "2026-04-22 10:00:00",
+    "coupon_count": 0,
+    "created_at": "2026-04-22 09:00:00"
+  }
+}

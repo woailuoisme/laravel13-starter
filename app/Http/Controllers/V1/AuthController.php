@@ -48,6 +48,17 @@ class AuthController extends AppBaseController
      * @unauthenticated
      * @bodyParam nickname string required 用户昵称、手机号或邮箱。Example: user@example.com
      * @bodyParam password string required 登录密码，最少 6 位。Example: password123
+     *
+     * 登录成功时返回 token 和用户信息；需要验证码时返回挑战信息。
+     *
+     * @responseField data.access_token 访问令牌
+     * @responseField data.user.id 用户 ID
+     * @responseField data.user.nickname 用户昵称
+     * @responseField data.status 登录挑战状态
+     * @responseField data.challenge_token 登录挑战令牌
+     *
+     * @responseFile storage/responses/v1/auth/auth-result.json
+     * @responseFile storage/responses/v1/auth/auth-challenge-login.json
      */
     public function login(Request $request): JsonResponse
     {
@@ -92,6 +103,17 @@ class AuthController extends AppBaseController
      * @unauthenticated
      * @bodyParam email string required 登录邮箱。Example: signin@example.com
      * @bodyParam password string required 登录密码。Example: password123
+     *
+     * 登录成功时返回 token 和用户信息；需要验证码时返回挑战信息。
+     *
+     * @responseField data.access_token 访问令牌
+     * @responseField data.user.id 用户 ID
+     * @responseField data.user.nickname 用户昵称
+     * @responseField data.status 登录挑战状态
+     * @responseField data.challenge_token 登录挑战令牌
+     *
+     * @responseFile storage/responses/v1/auth/auth-result.json
+     * @responseFile storage/responses/v1/auth/auth-challenge-login.json
      */
     public function signinRequest(SigninRequest $request): JsonResponse
     {
@@ -121,6 +143,14 @@ class AuthController extends AppBaseController
      * @unauthenticated
      * @bodyParam challenge_token string required 登录挑战令牌。Example: challenge-token
      * @bodyParam code string required 6 位邮箱验证码。Example: 123456
+     *
+     * 验证成功后返回 token 和用户信息。
+     *
+     * @responseField data.access_token 访问令牌
+     * @responseField data.user.id 用户 ID
+     * @responseField data.user.nickname 用户昵称
+     *
+     * @responseFile storage/responses/v1/auth/auth-result.json
      */
     public function signinVerify(SigninVerifyRequest $request): JsonResponse
     {
@@ -140,6 +170,14 @@ class AuthController extends AppBaseController
      * @bodyParam email string required 注册邮箱。Example: signup@example.com
      * @bodyParam password string required 登录密码，最少 6 位。Example: password123
      * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: password123
+     *
+     * 返回注册验证码挑战信息。
+     *
+     * @responseField data.status 验证码发送状态
+     * @responseField data.email 目标邮箱
+     * @responseField data.challenge_token 验证挑战令牌
+     *
+     * @responseFile storage/responses/v1/auth/auth-challenge-register.json
      */
     public function register(SignupRequest $request): JsonResponse
     {
@@ -153,6 +191,14 @@ class AuthController extends AppBaseController
      * @bodyParam email string required 注册邮箱。Example: signup@example.com
      * @bodyParam password string required 登录密码，最少 6 位。Example: password123
      * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: password123
+     *
+     * 返回注册验证码挑战信息。
+     *
+     * @responseField data.status 验证码发送状态
+     * @responseField data.email 目标邮箱
+     * @responseField data.challenge_token 验证挑战令牌
+     *
+     * @responseFile storage/responses/v1/auth/auth-challenge-register.json
      */
     public function signupRequest(SignupRequest $request): JsonResponse
     {
@@ -174,6 +220,14 @@ class AuthController extends AppBaseController
      * @unauthenticated
      * @bodyParam email string required 注册邮箱。Example: signup@example.com
      * @bodyParam code string required 6 位邮箱验证码。Example: 123456
+     *
+     * 验证成功后返回 token 和用户信息。
+     *
+     * @responseField data.access_token 访问令牌
+     * @responseField data.user.id 用户 ID
+     * @responseField data.user.email 用户邮箱
+     *
+     * @responseFile storage/responses/v1/auth/auth-result.json
      */
     public function signupVerify(SignupVerifyRequest $request): JsonResponse
     {
@@ -193,6 +247,13 @@ class AuthController extends AppBaseController
      * @bodyParam email string required 需要重发验证码的邮箱。Example: user@example.com
      * @bodyParam action string required 验证码业务类型，可选 register、login、reset_password。Example: login
      * @bodyParam challenge_token string 登录挑战令牌，action 为 login 时传入。Example: challenge-token
+     *
+     * 返回新的验证码挑战信息。
+     *
+     * @responseField data.status 验证码发送状态
+     * @responseField data.challenge_token 验证挑战令牌
+     *
+     * @responseFile storage/responses/v1/auth/auth-challenge-login.json
      */
     public function resendCode(Request $request): JsonResponse
     {
@@ -219,6 +280,13 @@ class AuthController extends AppBaseController
      *
      * @unauthenticated
      * @bodyParam email string required 需要找回密码的邮箱。Example: user@example.com
+     *
+     * 返回找回密码验证码挑战信息。
+     *
+     * @responseField data.status 验证码发送状态
+     * @responseField data.challenge_token 验证挑战令牌
+     *
+     * @responseFile storage/responses/v1/auth/auth-challenge-reset-password.json
      */
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
@@ -240,6 +308,12 @@ class AuthController extends AppBaseController
      * @bodyParam code string required 6 位邮箱验证码。Example: 123456
      * @bodyParam password string required 新密码，最少 6 位。Example: new-password123
      * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: new-password123
+     *
+     * 重置结果只包含 `data.status`。
+     *
+     * @responseField data.status 重置结果状态
+     *
+     * @responseFile storage/responses/v1/auth/reset-password.json
      */
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
@@ -259,6 +333,15 @@ class AuthController extends AppBaseController
      * 获取当前认证用户信息
      *
      * @authenticated
+     *
+     * 返回当前用户资料，包含常用展示字段。
+     *
+     * @responseField data.id 用户 ID
+     * @responseField data.nickname 用户昵称
+     * @responseField data.email 用户邮箱
+     * @responseField data.avatar 用户头像地址
+     *
+     * @responseFile storage/responses/v1/auth/user-profile.json
      */
     public function me(): JsonResponse
     {
@@ -274,6 +357,15 @@ class AuthController extends AppBaseController
      *
      * @authenticated
      * @throws Throwable
+     *
+     * 返回更新后的用户资料，字段与 `me()` 一致。
+     *
+     * @responseField data.id 用户 ID
+     * @responseField data.nickname 用户昵称
+     * @responseField data.email 用户邮箱
+     * @responseField data.avatar 用户头像地址
+     *
+     * @responseFile storage/responses/v1/auth/user-profile.json
      */
     public function profileUpdate(Request $request): JsonResponse
     {
@@ -321,6 +413,12 @@ class AuthController extends AppBaseController
      * 刷新访问令牌 (Token)
      *
      * @authenticated
+     *
+     * 返回刷新后的访问令牌。
+     *
+     * @responseField data.token 刷新后的访问令牌
+     *
+     * @responseFile storage/responses/v1/auth/refresh-token.json
      */
     public function refresh(): JsonResponse
     {
@@ -334,6 +432,12 @@ class AuthController extends AppBaseController
      * 重定向至第三方登录 (OAuth)
      *
      * @unauthenticated
+     *
+     * 返回第三方授权地址。
+     *
+     * @responseField url 第三方授权地址
+     *
+     * @responseFile storage/responses/v1/auth/provider-redirect.json
      */
     public function redirectToProvider(string $provider): JsonResponse
     {
@@ -349,6 +453,15 @@ class AuthController extends AppBaseController
      * 处理第三方登录回调
      *
      * @unauthenticated
+     *
+     * 返回 token 和用户信息。
+     *
+     * @responseField data.access_token 访问令牌
+     * @responseField data.user.id 用户 ID
+     * @responseField data.user.nickname 用户昵称
+     * @responseField data.user.email 用户邮箱
+     *
+     * @responseFile storage/responses/v1/auth/auth-result.json
      */
     public function handleProviderCallback(string $provider): JsonResponse
     {
@@ -388,6 +501,15 @@ class AuthController extends AppBaseController
      * 获取用户通知列表
      *
      * @authenticated
+     *
+     * 返回分页后的通知列表。
+     *
+     * @responseField data.data.id 通知 ID
+     * @responseField data.data.title 通知标题
+     * @responseField data.data.body 通知内容
+     * @responseField data.data.read_at 已读时间
+     *
+     * @responseFile storage/responses/v1/auth/notifications.json
      */
     public function notifications(Request $request): JsonResponse
     {
