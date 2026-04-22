@@ -26,10 +26,6 @@
         "laravel-backup",
         "medialibrary-development",
         "laravel-query-builder",
-        "responsecache-development",
-        "eloquent-best-practices",
-        "filament-pro",
-        "laravel-tdd",
-        "php-pro"
+        "responsecache-development"
     ]
 }

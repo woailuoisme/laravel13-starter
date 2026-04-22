@@ -46,6 +46,7 @@ class WechatPayService
     /**
      * @param string $type 默认支付类型 (native / js / app / h5)
      * @param array $config 覆盖配置 (默认读取 config('pay.wechat'))
+     * @throws WePayException
      */
     public function __construct(
         protected string $type = 'native',
@@ -112,6 +113,7 @@ class WechatPayService
 
     /**
      * 查询订单状态
+     * @throws WePayException
      */
     public function query(string $outTradeNo): array
     {
@@ -231,6 +233,9 @@ class WechatPayService
         }
     }
 
+    /**
+     * @throws WePayException|\JsonException
+     */
     protected function callApi(string $endpoint, string $method, array $json = [], array $query = []): array
     {
         try {
@@ -250,7 +255,7 @@ class WechatPayService
                 throw WePayException::fromWechatResponse($body, $response->getStatusCode());
             }
 
-            return json_decode($body, true) ?: [];
+            return json_decode($body, true, 512, JSON_THROW_ON_ERROR) ?: [];
         } catch (ClientException|ServerException $e) {
             $body = $e->getResponse()->getBody()->getContents();
             throw WePayException::fromWechatResponse($body, $e->getResponse()->getStatusCode());
@@ -332,6 +337,9 @@ class WechatPayService
 
     // --- 签名与证书辅助 ---
 
+    /**
+     * @throws WePayException
+     */
     protected function verifySignature(array $headers, string $body): bool
     {
         $signature = $headers['wechatpay-signature'][0] ?? '';
@@ -353,6 +361,9 @@ class WechatPayService
         return Rsa::verify($message, $signature, Rsa::from($certs[$serial], Rsa::KEY_TYPE_PUBLIC));
     }
 
+    /**
+     * @throws \JsonException
+     */
     protected function decryptResource(array $resource): array
     {
         $decrypted = AesGcm::decrypt(
@@ -362,7 +373,7 @@ class WechatPayService
             $resource['associated_data'] ?? '',
         );
 
-        return json_decode($decrypted, true) ?: [];
+        return json_decode($decrypted, true, 512, JSON_THROW_ON_ERROR) ?: [];
     }
 
     protected function getPlatformCerts(string $serial): array
@@ -424,6 +435,9 @@ class WechatPayService
         throw WePayException::configError('缺少 certificate_serial 或 cert_path');
     }
 
+    /**
+     * @throws WePayException
+     */
     protected function ensureConfigIsValid(): void
     {
         $keys = ['app_id', 'mch_id', 'key', 'private_key_path'];
@@ -438,6 +452,9 @@ class WechatPayService
         }
     }
 
+    /**
+     * @throws WePayException
+     */
     protected function validateOrderParams(array $params): void
     {
         if (empty($params['out_trade_no']) || empty($params['amount'])) {

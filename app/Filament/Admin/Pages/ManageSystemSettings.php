@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Pages;
 
 use App\Enums\FilamentNavigationGroup;
-use App\Settings\EcommerceSettings;
+use App\Settings\SystemSettings;
 use BackedEnum;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\TextInput;
@@ -21,7 +21,7 @@ class ManageSystemSettings extends SettingsPage
     protected static string|UnitEnum|null $navigationGroup = FilamentNavigationGroup::SystemSettings;
     protected static ?int $navigationSort = -10;
 
-    protected static string $settings = EcommerceSettings::class;
+    protected static string $settings = SystemSettings::class;
 
     public static function getNavigationLabel(): string
     {

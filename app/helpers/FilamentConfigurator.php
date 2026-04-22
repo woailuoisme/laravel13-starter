@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Enums\FilamentNavigationGroup;
-use App\Filament\Auth\Pages\Login;
+use App\Filament\Admin\Pages\Login;
 use App\Filament\Admin\Resources\Users\UserResource;
 use App\Models\User;
 use Awcodes\QuickCreate\QuickCreatePlugin;
@@ -47,26 +47,25 @@ class FilamentConfigurator
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
-            ->profile() // 启用默认个人中心
-            ->spa() // 启用 SPA 模式提升体验
+            ->profile()
+            ->spa()
             ->unsavedChangesAlerts() // 启用未保存内容提示
             ->databaseTransactions() // 启用数据库事务自动管理
-            ->brandName('Laravel Admin')
+            ->brandName('Admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([])
             ->navigationGroups(self::getNavigationGroups())
+            ->widgets(self::getWidgets())
+            ->pages(self::getPages())
             ->plugins(self::getPlugins())
             ->middleware(self::getMiddleware())
             ->authMiddleware(self::getAuthMiddleware())
-            ->font('Inter') // 设置全球主流字体
-            ->maxContentWidth(Width::Full); // 默认内容宽度设为全屏优化
+            ->maxContentWidth(Width::Full);
     }
 
     /**
@@ -104,7 +103,6 @@ class FilamentConfigurator
     /**
      * 获取标准中间件列表
      * 已针对 Laravel 13 优化，并移除了过时引用。
-     *
      * @return array<class-string>
      */
     public static function getMiddleware(): array

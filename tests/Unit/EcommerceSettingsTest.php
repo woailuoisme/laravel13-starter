@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Settings\EcommerceSettings;
+use App\Settings\SystemSettings;
 
 it('defines defaults for every ecommerce setting property', function (): void {
-    $settings = app(EcommerceSettings::class);
+    $settings = app(SystemSettings::class);
 
     expect($settings->site_name)->toBe('My Shop')
         ->and($settings->is_shop_open)->toBeTrue()

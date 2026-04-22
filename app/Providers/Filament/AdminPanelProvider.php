@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use App\Filament\Auth\Pages\Login;
+use App\Filament\Admin\Pages\Login;
 use App\Helpers\FilamentConfigurator;
 use Filament\Enums\ThemeMode;
 use Filament\Panel;

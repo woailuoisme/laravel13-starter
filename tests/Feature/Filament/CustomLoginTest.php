@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Filament\Auth\Pages\Login;
+use App\Filament\Admin\Pages\Login;
 use App\Models\AdminUser;
 use Livewire\Livewire;
 

@@ -4,7 +4,7 @@ namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class EcommerceSettings extends Settings
+class SystemSettings extends Settings
 {
     public string $site_name = 'My Shop';
     public bool $is_shop_open = true;
@@ -14,6 +14,6 @@ class EcommerceSettings extends Settings
 
     public static function group(): string
     {
-        return 'ecommerce';
+        return 'system';
     }
 }

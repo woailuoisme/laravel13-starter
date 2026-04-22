@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Auth\Pages;
+namespace App\Filament\Admin\Pages;
 
 use App\Models\AdminUser;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
