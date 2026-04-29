@@ -14,9 +14,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Number;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use JsonException;
 use Random\RandomException;
@@ -492,7 +492,7 @@ class AppHelper
 
         $formattedValue = $showDecimal && $suffix !== ''
             ? number_format($value, $decimals)
-            : number_format(floor($value),  decimals: 0);
+            : number_format(floor($value), decimals: 0);
 
         return ($isNegative ? '-' : '').$formattedValue.$suffix;
     }

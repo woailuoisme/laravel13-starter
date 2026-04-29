@@ -1,0 +1,8 @@
+glob_matcher: doublestar
+
+pre-commit:
+  jobs:
+    - name: pint
+      glob: "**/*.php"
+      run: vendor/bin/pint --format agent {staged_files}
+      stage_fixed: true

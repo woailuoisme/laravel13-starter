@@ -253,11 +253,11 @@ class MediaService
     private function validateUpload(UploadedFile $file): void
     {
         if (! $file->isValid()) {
-            throw new \InvalidArgumentException('上传文件无效: '.$file->getErrorMessage());
+            throw new InvalidArgumentException('上传文件无效: '.$file->getErrorMessage());
         }
 
         if (! $this->validateFileType($file)) {
-            throw new \InvalidArgumentException('不支持的文件类型: '.$file->getMimeType());
+            throw new InvalidArgumentException('不支持的文件类型: '.$file->getMimeType());
         }
     }
 

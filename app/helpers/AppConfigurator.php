@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Validation\ValidationException;
-use Maatwebsite\Excel\Validators\ValidationException as ExcelValidationException;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -439,11 +438,6 @@ class AppConfigurator
      */
     private static function getHttpStatusCode(Throwable $e): int
     {
-        // Excel 验证异常返回 422
-        if ($e instanceof ExcelValidationException) {
-            return Response::HTTP_UNPROCESSABLE_ENTITY;
-        }
-
         // Laravel 验证异常返回 422
         if ($e instanceof ValidationException) {
             return Response::HTTP_UNPROCESSABLE_ENTITY;
@@ -488,19 +482,6 @@ class AppConfigurator
     private static function extractErrors(Throwable $e): array
     {
         $errors = [];
-
-        // Excel 验证异常
-        if ($e instanceof ExcelValidationException) {
-            $failures = $e->failures();
-            foreach ($failures as $failure) {
-                $errors[] = [
-                    'row' => $failure->row(),
-                    'attribute' => $failure->attribute(),
-                    'errors' => $failure->errors(),
-                    'values' => $failure->values(),
-                ];
-            }
-        }
 
         // Laravel 验证异常
         if ($e instanceof ValidationException) {
@@ -632,11 +613,6 @@ class AppConfigurator
      */
     private static function customizeExceptionResponse(Throwable $e, int $statusCode, array $response): array
     {
-        // Excel验证异常
-        if ($e instanceof ExcelValidationException) {
-            return self::handleExcelValidationException($e, $response);
-        }
-
         // 验证异常
         if ($e instanceof ValidationException) {
             return self::handleValidationException($e, $response);
@@ -678,31 +654,6 @@ class AppConfigurator
         }
 
         return [$statusCode, $response];
-    }
-
-    /**
-     * 处理Excel验证异常
-     * 统一处理Excel导入过程中的数据验证异常
-     */
-    private static function handleExcelValidationException(ExcelValidationException $e, array $response): array
-    {
-        $failures = $e->failures();
-        $errorMessages = [];
-
-        foreach ($failures as $failure) {
-            $errorMessages[] = [
-                'row' => $failure->row(),
-                'attribute' => $failure->attribute(),
-                'errors' => $failure->errors(),
-                'values' => $failure->values(),
-            ];
-        }
-
-        $response['code'] = Response::HTTP_UNPROCESSABLE_ENTITY;
-        $response['message'] = 'Data validation failed, please check the Excel file and data';
-        $response['errors'] = $errorMessages;
-
-        return [Response::HTTP_UNPROCESSABLE_ENTITY, $response];
     }
 
     /**

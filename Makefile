@@ -26,3 +26,6 @@ stress-8000:
 # 压测 8001，使用接近生产的并发和持续时间。
 stress-8001:
 	@./vendor/bin/pest stress http://127.0.0.1:8001 --concurrency=10 --duration=60
+
+composer-update-ignore:
+	composer update --ignore-platform-reqs

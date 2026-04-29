@@ -188,7 +188,7 @@ class QrCodeHelper
             );
 
             return self::makeWriter($format)->write($qrCode)->getString();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('QR Code: Failed to generate custom QR code', [
                 'text' => $text,
                 'format' => $format,
@@ -265,7 +265,7 @@ class QrCodeHelper
             $logo = new Logo(path: $logoPath, resizeToWidth: (int) ($size * $logoPercentage));
 
             return (new PngWriter())->write($qrCode, $logo)->getString();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('QR Code: Failed to generate QR code with logo', [
                 'text' => $text,
                 'logoPath' => $logoPath,
@@ -352,7 +352,7 @@ class QrCodeHelper
             }
 
             return file_put_contents($filePath, $data) !== false;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('QR Code: Failed to save QR code to file', [
                 'text' => $text,
                 'filePath' => $filePath,
@@ -392,7 +392,7 @@ class QrCodeHelper
             return self::makeWriter($format)
                 ->write(self::buildQrCode($text, $size), null, $label)
                 ->getString();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('QR Code: Failed to generate QR code with label', [
                 'text' => $text,
                 'labelText' => $labelText,
@@ -446,7 +446,7 @@ class QrCodeHelper
             $label = new Label(text: $labelText, textColor: self::colorFromArray($labelColor));
 
             return (new PngWriter())->write($qrCode, $logo, $label)->getString();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('QR Code: Failed to generate QR code with logo and label', [
                 'text' => $text,
                 'logoPath' => $logoPath,

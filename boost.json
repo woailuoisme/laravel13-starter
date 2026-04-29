@@ -3,14 +3,16 @@
         "claude_code",
         "codex"
     ],
+    "cloud": false,
     "guidelines": true,
     "mcp": true,
-    "nightwatch_mcp": false,
+    "nightwatch": false,
     "packages": [
         "spatie/laravel-medialibrary",
         "spatie/laravel-responsecache",
         "filament/filament",
-        "spatie/laravel-query-builder"
+        "spatie/laravel-query-builder",
+        "sandermuller/laravel-fluent-validation"
     ],
     "sail": false,
     "skills": [
@@ -22,6 +24,10 @@
         "socialite-development",
         "pest-testing",
         "tailwindcss-development",
+        "fluent-validation",
+        "fluent-validation-livewire",
+        "migrate-messages-array",
+        "optimize-validation",
         "medialibrary-development",
         "laravel-query-builder",
         "responsecache-development"
