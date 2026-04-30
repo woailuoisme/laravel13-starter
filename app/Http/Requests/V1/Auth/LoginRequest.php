@@ -4,28 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\V1\Auth;
 
-use Illuminate\Support\Str;
 use SanderMuller\FluentValidation\FluentFormRequest;
 use SanderMuller\FluentValidation\FluentRule;
 
-class SigninRequest extends FluentFormRequest
+class LoginRequest extends FluentFormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'email' => Str::lower((string) $this->input('email')),
-        ]);
-    }
-
     public function rules(): array
     {
         return [
-            'email' => FluentRule::email(defaults: false)->required()->max(255),
+            'nickname' => FluentRule::string()->required(),
             'password' => FluentRule::string()->required()->min(6),
         ];
     }
@@ -33,8 +25,8 @@ class SigninRequest extends FluentFormRequest
     public function bodyParameters(): array
     {
         return [
-            'email' => [
-                'description' => 'The account email address.',
+            'nickname' => [
+                'description' => 'The account nickname, email address, or telephone number.',
                 'example' => 'user@example.com',
             ],
             'password' => [

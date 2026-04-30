@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\V1\Auth;
 
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use SanderMuller\FluentValidation\FluentFormRequest;
+use SanderMuller\FluentValidation\FluentRule;
 
-class ResetPasswordRequest extends FormRequest
+class ResetPasswordRequest extends FluentFormRequest
 {
     public function authorize(): bool
     {
@@ -22,16 +22,13 @@ class ResetPasswordRequest extends FormRequest
         ]);
     }
 
-    /**
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'max:255'],
-            'code' => ['required', 'digits:6'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'password_confirmation' => ['required', 'string', 'min:6'],
+            'email' => FluentRule::email(defaults: false)->required()->max(255),
+            'code' => FluentRule::numeric()->required()->digits(6),
+            'password' => FluentRule::string()->required()->min(6)->confirmed(),
+            'password_confirmation' => FluentRule::string()->required()->min(6),
         ];
     }
 

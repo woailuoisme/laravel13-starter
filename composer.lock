@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be5602f5be08e60ee589099c80261f77",
+    "content-hash": "b2fc360bd0c100129464cf7c8f644be5",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -351,16 +351,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.379.8",
+            "version": "3.379.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "856ddf3d241c29132fe1eb946e112351ab043542"
+                "reference": "aaa9aab5d077018dbc9af63338b2c5aa44a5add3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/856ddf3d241c29132fe1eb946e112351ab043542",
-                "reference": "856ddf3d241c29132fe1eb946e112351ab043542",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/aaa9aab5d077018dbc9af63338b2c5aa44a5add3",
+                "reference": "aaa9aab5d077018dbc9af63338b2c5aa44a5add3",
                 "shasum": ""
             },
             "require": {
@@ -442,9 +442,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.379.8"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.379.9"
             },
-            "time": "2026-04-27T19:13:21+00:00"
+            "time": "2026-04-29T18:07:13+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1250,17 +1250,102 @@
             "time": "2026-03-20T21:10:52+00:00"
         },
         {
-            "name": "codewithdennis/filament-select-tree",
-            "version": "v4.1.0",
+            "name": "clickbar/laravel-magellan",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/CodeWithDennis/filament-select-tree.git",
-                "reference": "f7b7a9359542e7dbda873a19812b2b810b46f226"
+                "url": "https://github.com/clickbar/laravel-magellan.git",
+                "reference": "cc16837c97bd6ddce3a85b2d7a4abe801c0f1360"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CodeWithDennis/filament-select-tree/zipball/f7b7a9359542e7dbda873a19812b2b810b46f226",
-                "reference": "f7b7a9359542e7dbda873a19812b2b810b46f226",
+                "url": "https://api.github.com/repos/clickbar/laravel-magellan/zipball/cc16837c97bd6ddce3a85b2d7a4abe801c0f1360",
+                "reference": "cc16837c97bd6ddce3a85b2d7a4abe801c0f1360",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^11.0|^12.0|^13.0",
+                "illuminate/contracts": "^11.0|^12.0|^13.0",
+                "illuminate/database": "^11.0|^12.0|^13.0",
+                "illuminate/support": "^11.0|^12.0|^13.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.14.0"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.1",
+                "laravel/pint": "1.29.0",
+                "nunomaduro/collision": "^v8.1",
+                "orchestra/testbench": "^9.0|^10.0|^11.0",
+                "pestphp/pest": "^3.7|^4.4",
+                "pestphp/pest-plugin-laravel": "^3.1|^4.1",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "WKBParser": "Clickbar\\Magellan\\Facades\\WKBParser",
+                        "WKTParser": "Clickbar\\Magellan\\Facades\\WKTParser",
+                        "WKBGenerator": "Clickbar\\Magellan\\Facades\\WKBGenerator",
+                        "WKTGenerator": "Clickbar\\Magellan\\Facades\\WKTGenerator",
+                        "GeojsonParser": "Clickbar\\Magellan\\Facades\\GeojsonParser",
+                        "GeojsonGenerator": "Clickbar\\Magellan\\Facades\\GeojsonGenerator"
+                    },
+                    "providers": [
+                        "Clickbar\\Magellan\\MagellanServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Clickbar\\Magellan\\": "src",
+                    "Clickbar\\Magellan\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adrian Hawlitschek",
+                    "email": "ah@clickbar.dev",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tobias Kröll",
+                    "email": "tk@clickbar.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This package provides functionality for working with the postgis extension in Laravel.",
+            "homepage": "https://github.com/clickbar/laravel-magellan",
+            "keywords": [
+                "clickbar",
+                "laravel",
+                "magellan",
+                "postgis"
+            ],
+            "support": {
+                "issues": "https://github.com/clickbar/laravel-magellan/issues",
+                "source": "https://github.com/clickbar/laravel-magellan/tree/2.1.0"
+            },
+            "time": "2026-03-17T08:29:27+00:00"
+        },
+        {
+            "name": "codewithdennis/filament-select-tree",
+            "version": "v4.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CodeWithDennis/filament-select-tree.git",
+                "reference": "39f8ada8c8f1c5e9f61ef4dfdc0fa7fbec2c1a9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CodeWithDennis/filament-select-tree/zipball/39f8ada8c8f1c5e9f61ef4dfdc0fa7fbec2c1a9d",
+                "reference": "39f8ada8c8f1c5e9f61ef4dfdc0fa7fbec2c1a9d",
                 "shasum": ""
             },
             "require": {
@@ -1318,7 +1403,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-08T09:28:24+00:00"
+            "time": "2026-04-29T07:31:26+00:00"
         },
         {
             "name": "composer/semver",
@@ -3860,16 +3945,16 @@
         },
         {
             "name": "laravel/ai",
-            "version": "v0.6.4",
+            "version": "v0.6.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/ai.git",
-                "reference": "32296ee5fc7a6a1dd007a66f32abb15d877b434b"
+                "reference": "548f4b247c1c5f9e6a94252628eeb8a5f8fc5e6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/ai/zipball/32296ee5fc7a6a1dd007a66f32abb15d877b434b",
-                "reference": "32296ee5fc7a6a1dd007a66f32abb15d877b434b",
+                "url": "https://api.github.com/repos/laravel/ai/zipball/548f4b247c1c5f9e6a94252628eeb8a5f8fc5e6e",
+                "reference": "548f4b247c1c5f9e6a94252628eeb8a5f8fc5e6e",
                 "shasum": ""
             },
             "require": {
@@ -3924,7 +4009,7 @@
                 "issues": "https://github.com/laravel/ai/issues",
                 "source": "https://github.com/laravel/ai"
             },
-            "time": "2026-04-28T05:42:50+00:00"
+            "time": "2026-04-29T13:08:02+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -8626,16 +8711,16 @@
         },
         {
             "name": "sandermuller/laravel-fluent-validation",
-            "version": "1.24.0",
+            "version": "1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SanderMuller/laravel-fluent-validation.git",
-                "reference": "f9dc7a189bd092c91867a0a60bc625ca2d2ae104"
+                "reference": "c84a0482d7d2e2c1087a9048165f51a203797793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SanderMuller/laravel-fluent-validation/zipball/f9dc7a189bd092c91867a0a60bc625ca2d2ae104",
-                "reference": "f9dc7a189bd092c91867a0a60bc625ca2d2ae104",
+                "url": "https://api.github.com/repos/SanderMuller/laravel-fluent-validation/zipball/c84a0482d7d2e2c1087a9048165f51a203797793",
+                "reference": "c84a0482d7d2e2c1087a9048165f51a203797793",
                 "shasum": ""
             },
             "require": {
@@ -8698,7 +8783,7 @@
             ],
             "support": {
                 "issues": "https://github.com/SanderMuller/laravel-fluent-validation/issues",
-                "source": "https://github.com/SanderMuller/laravel-fluent-validation/tree/1.24.0"
+                "source": "https://github.com/SanderMuller/laravel-fluent-validation/tree/1.25.0"
             },
             "funding": [
                 {
@@ -8706,7 +8791,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-24T06:38:55+00:00"
+            "time": "2026-04-29T14:44:56+00:00"
         },
         {
             "name": "scrivo/highlight.php",
@@ -9628,16 +9713,16 @@
         },
         {
             "name": "spatie/laravel-permission",
-            "version": "7.4.0",
+            "version": "7.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-permission.git",
-                "reference": "6f60746145bbdb1692021d44860d7850c1d2041a"
+                "reference": "ef42ecb781e5534d368a3853fa161e420ad51397"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/6f60746145bbdb1692021d44860d7850c1d2041a",
-                "reference": "6f60746145bbdb1692021d44860d7850c1d2041a",
+                "url": "https://api.github.com/repos/spatie/laravel-permission/zipball/ef42ecb781e5534d368a3853fa161e420ad51397",
+                "reference": "ef42ecb781e5534d368a3853fa161e420ad51397",
                 "shasum": ""
             },
             "require": {
@@ -9703,7 +9788,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-permission/issues",
-                "source": "https://github.com/spatie/laravel-permission/tree/7.4.0"
+                "source": "https://github.com/spatie/laravel-permission/tree/7.4.1"
             },
             "funding": [
                 {
@@ -9711,7 +9796,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-28T14:02:19+00:00"
+            "time": "2026-04-29T07:59:45+00:00"
         },
         {
             "name": "spatie/laravel-query-builder",
@@ -19468,9 +19553,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.3",
-        "ext-openssl": "*",
-        "ext-pdo": "*"
+        "php": "^8.5",
+        "ext-openssl": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"

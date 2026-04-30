@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\V1;
 
-use App\Enums\Gender;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\V1\Auth\ForgotPasswordRequest;
+use App\Http\Requests\V1\Auth\LoginRequest;
+use App\Http\Requests\V1\Auth\ProfileUpdateRequest;
+use App\Http\Requests\V1\Auth\ResendCodeRequest;
 use App\Http\Requests\V1\Auth\ResetPasswordRequest;
 use App\Http\Requests\V1\Auth\SigninRequest;
 use App\Http\Requests\V1\Auth\SigninVerifyRequest;
@@ -23,7 +25,6 @@ use App\Services\WechatService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\AbstractProvider;
 use Throwable;
@@ -60,17 +61,14 @@ class AuthController extends AppBaseController
      * @responseFile storage/responses/v1/auth/auth-result.json
      * @responseFile storage/responses/v1/auth/auth-challenge-login.json
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $credentials = $request->validate([
-            'nickname' => ['required', 'string'],
-            'password' => ['required', 'string', 'min:6'],
-        ]);
+        $nickname = $request->string('nickname')->toString();
 
         $user = User::query()
-            ->where('nickname', $credentials['nickname'])
-            ->orWhere('telephone', $credentials['nickname'])
-            ->orWhere('email', $credentials['nickname'])
+            ->where('nickname', $nickname)
+            ->orWhere('telephone', $nickname)
+            ->orWhere('email', $nickname)
             ->first();
 
         if (!$user) {
@@ -79,7 +77,7 @@ class AuthController extends AppBaseController
 
         $result = $this->authFlowService->requestSignin(
             email: $user->email,
-            password: $credentials['password'],
+            password: $request->string('password')->toString(),
             ip: $request->ip(),
             forceChallenge: $this->forceChallenge($request),
         );
@@ -255,18 +253,14 @@ class AuthController extends AppBaseController
      *
      * @responseFile storage/responses/v1/auth/auth-challenge-login.json
      */
-    public function resendCode(Request $request): JsonResponse
+    public function resendCode(ResendCodeRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'email' => ['required', 'email', 'max:255'],
-            'action' => ['required', Rule::in(['register', 'login', 'reset_password'])],
-            'challenge_token' => ['nullable', 'string'],
-        ]);
-
         $result = $this->authFlowService->resendCode(
-            email: (string) $data['email'],
-            action: (string) $data['action'],
-            challengeToken: $data['challenge_token'] ?? null,
+            email: $request->string('email')->toString(),
+            action: $request->string('action')->toString(),
+            challengeToken: $request->filled('challenge_token')
+                ? $request->string('challenge_token')->toString()
+                : null,
         );
 
         return $this->sendResponse(
@@ -367,22 +361,10 @@ class AuthController extends AppBaseController
      *
      * @responseFile storage/responses/v1/auth/user-profile.json
      */
-    public function profileUpdate(Request $request): JsonResponse
+    public function profileUpdate(ProfileUpdateRequest $request): JsonResponse
     {
         $user = auth('api')->user();
-
-        $data = $request->validate([
-            'avatar' => ['nullable', 'image', 'max:2048', 'mimes:jpeg,jpg,png,gif,webp'],
-            'telephone' => [
-                'nullable',
-                'string',
-                'min:10',
-                'regex:/^1[3-9]\d{9}$/',
-                Rule::unique('users', 'telephone')->ignore($user->id),
-            ],
-            'nickname' => ['nullable', 'string', 'max:255'],
-            'gender' => ['nullable', 'string', Rule::in(Gender::values())],
-        ]);
+        $data = $request->validated();
 
         DB::transaction(function () use ($user, $data): void {
             $user->update($data);

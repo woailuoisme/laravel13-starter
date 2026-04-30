@@ -8,12 +8,12 @@
     "require": {
         "php": "^8.5",
         "ext-openssl": "*",
-        "ext-pdo": "*",
         "alipaysdk/easysdk": "^2.2",
         "awcodes/filament-quick-create": "^5.0",
         "bezhansalleh/filament-language-switch": "^4.2",
         "bezhansalleh/filament-shield": "^4.2",
         "charrafimed/global-search-modal": "^5.0",
+        "clickbar/laravel-magellan": "^2.1",
         "codewithdennis/filament-select-tree": "4.x",
         "eduardoribeirodev/filament-leaflet": "^4.7",
         "endroid/qr-code": "^6.1",

@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\V1\Auth;
 
-use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Foundation\Http\FormRequest;
+use SanderMuller\FluentValidation\FluentFormRequest;
+use SanderMuller\FluentValidation\FluentRule;
 
-class SigninVerifyRequest extends FormRequest
+class SigninVerifyRequest extends FluentFormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * @return array<string, ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'challenge_token' => ['required', 'string', 'min:20'],
-            'code' => ['required', 'digits:6'],
+            'challenge_token' => FluentRule::string()->required()->min(20),
+            'code' => FluentRule::numeric()->required()->digits(6),
         ];
     }
 
