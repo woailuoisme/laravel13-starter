@@ -30,6 +30,7 @@
         "optimize-validation",
         "medialibrary-development",
         "laravel-query-builder",
-        "responsecache-development"
+        "responsecache-development",
+        "laravel-tdd"
     ]
 }

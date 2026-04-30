@@ -4,6 +4,7 @@
     "eloquent-best-practices": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/eloquent-best-practices/SKILL.md",
       "computedHash": "370e1502efc9d179f5df7470a45a10302de81de9cf378641403e4ade9eb7d67f"
     },
     "filament-pro": {
@@ -14,11 +15,13 @@
     "laravel-api-resource-patterns": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-api-resource-patterns/SKILL.md",
       "computedHash": "b140eaa32c967c9bbde994a47dc56491132efd97f06a534920e13dbbc36db887"
     },
     "laravel-authorization-patterns": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-authorization-patterns/SKILL.md",
       "computedHash": "57418ddc3eea7b850c96dbcd431070e75b2abff5a4bd010f759133e225c5e216"
     },
     "laravel-best-practices": {
@@ -29,41 +32,49 @@
     "laravel-blade-component-patterns": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-blade-component-patterns/SKILL.md",
       "computedHash": "4fe35eb514db82613a195b4c3d790618adb88e70e68a84ff9c50d086fa288759"
     },
     "laravel-brainstorming": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-brainstorming/SKILL.md",
       "computedHash": "ff3aa9135e3e2573bb7edb664b611baefeef893c9425f52ccda87a56618e9089"
     },
     "laravel-caching-strategies": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-caching-strategies/SKILL.md",
       "computedHash": "7b5d23808f7355be3de5328f8c0f5ca80ab194b252aeed697c3ee505fc90b270"
     },
     "laravel-event-driven-architecture": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-event-driven-architecture/SKILL.md",
       "computedHash": "5b43a13e97cc0b9dcd5df9bf819a15b254f1dd016ccadb94bb5e6d3c77710de9"
     },
     "laravel-feature-flags": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-feature-flags/SKILL.md",
       "computedHash": "46214cd3e065d109cfcba59dce63cb75563b97efc200deac8b6c1333bda48f75"
     },
     "laravel-middleware-patterns": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-middleware-patterns/SKILL.md",
       "computedHash": "44414ad9a3dbe8753d0861673b8fdf10d9bec931564c0e552c9accecdefbedf3"
     },
     "laravel-notification-patterns": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-notification-patterns/SKILL.md",
       "computedHash": "658eaf3f166438e7d5e5403c3bd0b9e2670a2858a45d70da68289fa18c01ce60"
     },
     "laravel-queue-patterns": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-queue-patterns/SKILL.md",
       "computedHash": "4bfe5b51ed89506df59a32de0f4be4ab2cc106356b98149953441a109bd2f951"
     },
     "laravel-security": {
@@ -79,21 +90,25 @@
     "laravel-systematic-debugging": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-systematic-debugging/SKILL.md",
       "computedHash": "82db3f7d4e3cfc3b3d1605a96c06612f93121dd3c879208d9dba23f30495518d"
     },
     "laravel-task-scheduling": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-task-scheduling/SKILL.md",
       "computedHash": "833b36a2ae73833137431c6b7b5d9d393adfe93b3ab4d135e87acead31a7cc20"
     },
     "laravel-tdd": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-tdd/SKILL.md",
       "computedHash": "f895a09949a45fb610d8f033c168fc7ed70ef33323c38ef176add410ddd58e8e"
     },
     "laravel-validation-patterns": {
       "source": "iserter/laravel-claude-agents",
       "sourceType": "github",
+      "skillPath": "skills/laravel-validation-patterns/SKILL.md",
       "computedHash": "66fb92309a38bba54c8730a0efccc0f3092cf7dbfb71b294ff33c1becae91285"
     },
     "livewire-development": {
