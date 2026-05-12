@@ -4,7 +4,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "k6:mini-load": "node tests/Performance/k6/run.mjs mini-load",
+        "k6:smoke": "node tests/Performance/k6/run.mjs smoke"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.2.2",

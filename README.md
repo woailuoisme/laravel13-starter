@@ -1,58 +1,129 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 13 Starter
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Laravel 13 Starter is a backend-first Laravel application template for building admin panels and API-driven products with Filament v5, Livewire v4, Tailwind CSS v4, and a broad set of production-ready integrations.
 
-## About Laravel
+## Highlights
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Filament admin panel mounted at `/admin`
+- Custom Filament login experience
+- Global search, database notifications, and dark-mode defaults in the admin panel
+- Octane, Horizon, Scout, Cashier, Socialite, and AI support
+- Media, settings, tags, backup, activity log, and response cache integrations
+- Payment and messaging building blocks for Stripe, Alipay, WeChat Pay, and QR code workflows
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.5
+- Laravel 13
+- Filament v5
+- Livewire v4
+- Tailwind CSS v4
+- Pest v4
+- Laravel Boost
 
-## Learning Laravel
+## Requirements
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.5 or newer
+- Composer
+- Node.js and npm
+- PostgreSQL by default
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Installation
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+npm install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Environment
+
+The default environment file is configured for local development:
+
+- `APP_URL=http://localhost`
+- `DB_CONNECTION=pgsql`
+- `SESSION_DRIVER=database`
+- `QUEUE_CONNECTION=database`
+- `CACHE_STORE=database`
+
+Optional integrations are also present in `.env.example` for:
+
+- Stripe
+- Alipay
+- WeChat Pay
+- Garage / S3-compatible storage
+- IPInfo
+
+## Running the App
+
+Start the standard local stack:
+
+```bash
+composer run dev
+```
+
+Start the RoadRunner / Octane stack:
+
+```bash
+composer run dev:rr
+```
+
+Build frontend assets:
+
+```bash
+npm run build
+```
+
+## Testing
+
+Run the application test suite:
+
+```bash
+composer run test
+```
+
+Run k6 smoke or mini-load checks against a running local server:
+
+```bash
+pnpm run k6:smoke
+pnpm run k6:mini-load
+make k6-root-smoke
+make k6-root-load
+```
+
+k6 由 `tests/Performance/k6/run.mjs` 使用 Node.js 加载 `tests/Performance/k6/.env` 后执行，目标地址读取 `K6_BASE_URL`。
+
+## Project Structure
+
+- `app/Filament/` - Filament resources, pages, and widgets
+- `app/Helpers/` - application and panel configurators
+- `app/Providers/Filament/` - Filament-specific service providers
+- `tests/` - Pest test suite
+- `tests/Performance/k6/` - k6 smoke and mini-load performance tests
+
+## Architecture Notes
+
+The project uses a configuration-separation approach to keep framework bootstrap files and panel providers small:
+
+- `AppConfigurator` manages application routing, middleware, exception handling, and scheduling
+- `FilamentConfigurator` centralizes panel settings, plugins, navigation, and search behavior
+- `ComponentDefaultsProvider` sets global Filament component defaults
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for details.
+
+## Development Workflow
+
+1. Generate framework files with `php artisan make:*`
+2. Write tests before implementation when possible
+3. Format PHP code with `vendor/bin/pint`
+4. Keep changes small and focused
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Contributions are welcome. Please keep pull requests focused, tested, and aligned with the existing code style.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT

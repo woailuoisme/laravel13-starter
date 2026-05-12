@@ -1,6 +1,5 @@
 {
     "agents": [
-        "claude_code",
         "codex"
     ],
     "cloud": false,
@@ -12,7 +11,10 @@
         "spatie/laravel-responsecache",
         "filament/filament",
         "spatie/laravel-query-builder",
-        "sandermuller/laravel-fluent-validation"
+        "sandermuller/laravel-fluent-validation",
+        "spatie/laravel-pdf",
+        "spatie/laravel-activitylog",
+        "spatie/laravel-backup"
     ],
     "sail": false,
     "skills": [
@@ -28,7 +30,9 @@
         "fluent-validation-livewire",
         "fluent-validation-migrate-messages",
         "fluent-validation-optimize",
+        "laravel-backup",
         "medialibrary-development",
+        "laravel-pdf",
         "laravel-query-builder",
         "responsecache-development",
         "laravel-tdd"
