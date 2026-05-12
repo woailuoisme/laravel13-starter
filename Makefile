@@ -27,3 +27,11 @@ k6-mini-load: k6-root-load
 
 composer-update-ignore:
 	composer update --ignore-platform-reqs
+pint:
+	./vendor/bin/pint -p
+
+pint-dirty:
+	./vendor/bin/pint --parallel --dirty --test
+
+pint-dirty-check:
+	./vendor/bin/pint --parallel --dirty --test
