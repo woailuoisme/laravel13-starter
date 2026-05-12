@@ -1,4 +1,4 @@
-.PHONY: link-rr dev dev-rr stress-local stress-8000 stress-8001 k6-root-smoke k6-root-load k6-smoke k6-mini-load
+.PHONY: link-rr dev dev-rr k6-root-smoke k6-root-load k6-smoke k6-mini-load
 
 # 在项目根目录创建 rr 软链接，方便直接使用 RoadRunner。
 # 如果系统里找不到 rr，就直接报错。
@@ -14,18 +14,6 @@ dev:
 # 适合和前端 Vite 单独配合使用；这里不再启动 Vite。
 dev-rr:
 	@npx concurrently -c "#93c5fd,#c4b5fd,#fdba74" "php artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=8001" "php artisan queue:listen --tries=1 --timeout=0" "php artisan schedule:work" --names=server,queue,schedule --kill-others
-
-# 运行本地压力测试，检查 8000 和 8001 两个地址是否都能稳定响应。
-stress-local:
-	@php artisan test --compact --filter=LocalServerStressTest
-
-# 压测 8000，使用接近生产的并发和持续时间。
-stress-8000:
-	@./vendor/bin/pest stress http://127.0.0.1:8000 --concurrency=10 --duration=60
-
-# 压测 8001，使用接近生产的并发和持续时间。
-stress-8001:
-	@./vendor/bin/pest stress http://127.0.0.1:8001 --concurrency=10 --duration=60
 
 k6-root-smoke:
 	@node tests/Performance/k6/run.mjs smoke
