@@ -10,6 +10,7 @@
     "filament-pro": {
       "source": "marcelorodrigo/agent-skills",
       "sourceType": "github",
+      "skillPath": "skills/filament-pro/SKILL.md",
       "computedHash": "8e7763e017b3cfbdbf16bd968cfdb62e138a7e89f9494766e1d91c4e339fcd5f"
     },
     "laravel-api-resource-patterns": {
@@ -27,6 +28,7 @@
     "laravel-best-practices": {
       "source": "laravel/boost",
       "sourceType": "github",
+      "skillPath": ".ai/laravel/skill/laravel-best-practices/SKILL.md",
       "computedHash": "34991fb552d41fd9a8258be16775c286820aa33b2c84b12b2888dd7b20afd17a"
     },
     "laravel-blade-component-patterns": {
@@ -80,12 +82,14 @@
     "laravel-security": {
       "source": "affaan-m/everything-claude-code",
       "sourceType": "github",
+      "skillPath": "skills/laravel-security/SKILL.md",
       "computedHash": "83f5d1d663a9e51bed330ec1d790eb45c943ba8255d70500e42e9eedd9a5fe55"
     },
     "laravel-specialist": {
       "source": "jeffallan/claude-skills",
       "sourceType": "github",
-      "computedHash": "d42a21cb81a384d31b90d4a563570fa3e33441a6beb968487fcf95a338985a7e"
+      "skillPath": "skills/laravel-specialist/SKILL.md",
+      "computedHash": "d58e2ed3488398cb94a039f25b9d270e55dc434e16102abff9035608bec3db90"
     },
     "laravel-systematic-debugging": {
       "source": "iserter/laravel-claude-agents",
@@ -114,12 +118,20 @@
     "livewire-development": {
       "source": "spatie/freek.dev",
       "sourceType": "github",
+      "skillPath": ".claude/skills/livewire-development/SKILL.md",
       "computedHash": "f8cd31cb3bcbe866949268cb51f2cb4fe24932b6c0572419e0baf2b07dbf98d5"
     },
     "php-best-practices": {
       "source": "asyrafhussin/agent-skills",
       "sourceType": "github",
+      "skillPath": "skills/php-best-practices/SKILL.md",
       "computedHash": "1b25a60572ddd8b206eaf68b067cde70a9d002df572de8fefda703532cecfdad"
+    },
+    "postgresql-table-design": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/database-design/skills/postgresql/SKILL.md",
+      "computedHash": "dcace78e5cef7d8dce8ffef7ebee146e6c83a438aa4cf80bf502730e870c02d4"
     }
   }
 }

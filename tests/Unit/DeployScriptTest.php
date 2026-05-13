@@ -16,7 +16,7 @@ function runDepCommand(string $arguments): string
     return (string) shell_exec($command);
 }
 
-it('registers the envoy-equivalent tasks', function () {
+it('registers the deployer tasks', function () {
     $output = runDepCommand('list');
 
     expect($output)
@@ -28,11 +28,21 @@ it('registers the envoy-equivalent tasks', function () {
         ->toContain('restart-queues')
         ->toContain('scribe-docs')
         ->toContain('quick')
+        ->toContain('quick-deploy')
+        ->toContain('Quick deploy story: update code and rebuild caches.')
         ->toContain('clear-all')
         ->toContain('reload');
 });
 
-it('keeps the deploy story order aligned with Envoy', function () {
+it('reports a clear error when the RoadRunner container is unavailable', function () {
+    $script = file_get_contents(base_path('deploy.php'));
+
+    expect($script)
+        ->toContain('docker inspect')
+        ->toContain('错误：容器 %1$s 未运行或不可访问');
+});
+
+it('keeps the full deploy story order stable', function () {
     $output = runDepCommand('tree deploy');
 
     expect($output)

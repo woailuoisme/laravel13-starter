@@ -31,6 +31,12 @@ class QrCodeHelper
     /** 默认二维码尺寸（像素） */
     private const int DEFAULT_SIZE = 300;
 
+    /** @var array<int, int> */
+    private const array DEFAULT_BACKGROUND_COLOR = [255, 255, 255];
+
+    /** @var array<int, int> */
+    private const array DEFAULT_FOREGROUND_COLOR = [0, 0, 0];
+
     /**
      * 生成 PNG 格式二维码（原始二进制数据）
      *
@@ -39,23 +45,7 @@ class QrCodeHelper
      */
     public static function generatePng(string $text, int $size = self::DEFAULT_SIZE): string
     {
-        if (empty($text)) {
-            return '';
-        }
-
-        try {
-            return self::makeWriter('png')
-                ->write(self::buildQrCode($text, $size))
-                ->getString();
-        } catch (Exception $e) {
-            Log::error('QR Code: Failed to generate PNG', [
-                'text' => $text,
-                'size' => $size,
-                'exception' => $e->getMessage(),
-            ]);
-
-            return '';
-        }
+        return self::generateBasic($text, $size, 'png', 'QR Code: Failed to generate PNG');
     }
 
     /**
@@ -86,9 +76,11 @@ class QrCodeHelper
             return '';
         }
 
-        return $useBase64
-            ? 'data:image/svg+xml;base64,'.base64_encode($svg)
-            : 'data:image/svg+xml;charset=utf-8,'.rawurlencode($svg);
+        if ($useBase64) {
+            return 'data:image/svg+xml;base64,'.base64_encode($svg);
+        }
+
+        return 'data:image/svg+xml;charset=utf-8,'.rawurlencode($svg);
     }
 
     /**
@@ -112,23 +104,7 @@ class QrCodeHelper
      */
     public static function generateSvg(string $text, int $size = self::DEFAULT_SIZE): string
     {
-        if (empty($text)) {
-            return '';
-        }
-
-        try {
-            return self::makeWriter('svg')
-                ->write(self::buildQrCode($text, $size))
-                ->getString();
-        } catch (Exception $e) {
-            Log::error('QR Code: Failed to generate SVG', [
-                'text' => $text,
-                'size' => $size,
-                'exception' => $e->getMessage(),
-            ]);
-
-            return '';
-        }
+        return self::generateBasic($text, $size, 'svg', 'QR Code: Failed to generate SVG');
     }
 
     /**
@@ -136,9 +112,7 @@ class QrCodeHelper
      */
     public static function generateEps(string $text, int $size = self::DEFAULT_SIZE): string
     {
-        Log::warning('QR Code: EPS format is no longer supported, falling back to PNG', ['text' => $text]);
-
-        return self::generatePng($text, $size);
+        return self::fallbackEpsToPng($text, $size);
     }
 
     /**
@@ -177,17 +151,16 @@ class QrCodeHelper
         }
 
         try {
-            $qrCode = new QrCode(
-                data: $text,
-                encoding: new Encoding('UTF-8'),
-                errorCorrectionLevel: self::resolveErrorCorrectionLevel($errorCorrection),
+            $qrCode = self::buildQrCode(
+                text: $text,
                 size: $size,
+                errorCorrectionLevel: self::resolveErrorCorrectionLevel($errorCorrection),
                 margin: $margin,
-                foregroundColor: self::colorFromArray($foregroundColor),
-                backgroundColor: self::colorFromArray($backgroundColor),
+                foregroundColor: $foregroundColor,
+                backgroundColor: $backgroundColor,
             );
 
-            return self::makeWriter($format)->write($qrCode)->getString();
+            return self::writeQrCode($format, $qrCode);
         } catch (Exception $e) {
             Log::error('QR Code: Failed to generate custom QR code', [
                 'text' => $text,
@@ -205,6 +178,7 @@ class QrCodeHelper
      * @param array<int, int> $startColor
      * @param array<int, int> $endColor
      * @param array<int, int> $backgroundColor
+     * @noinspection PhpUnusedParameterInspection
      */
     public static function generateGradient(
         string $text,
@@ -232,6 +206,8 @@ class QrCodeHelper
      * @param float $logoPercentage Logo 宽度占二维码的比例（建议 0.1–0.3）
      * @param array<int, int> $foregroundColor 前景色 [r, g, b]
      * @param array<int, int> $backgroundColor 背景色 [r, g, b]
+     * @api
+     * @noinspection PhpUnused
      */
     public static function generateWithLogo(
         string $text,
@@ -252,19 +228,16 @@ class QrCodeHelper
         }
 
         try {
-            $qrCode = new QrCode(
-                data: $text,
-                encoding: new Encoding('UTF-8'),
-                errorCorrectionLevel: ErrorCorrectionLevel::High,
+            $qrCode = self::buildQrCode(
+                text: $text,
                 size: $size,
-                margin: self::DEFAULT_MARGIN,
-                foregroundColor: self::colorFromArray($foregroundColor),
-                backgroundColor: self::colorFromArray($backgroundColor),
+                errorCorrectionLevel: ErrorCorrectionLevel::High,
+                foregroundColor: $foregroundColor,
+                backgroundColor: $backgroundColor,
             );
-
             $logo = new Logo(path: $logoPath, resizeToWidth: (int) ($size * $logoPercentage));
 
-            return (new PngWriter())->write($qrCode, $logo)->getString();
+            return self::writeQrCode('png', $qrCode, $logo);
         } catch (Exception $e) {
             Log::error('QR Code: Failed to generate QR code with logo', [
                 'text' => $text,
@@ -296,18 +269,7 @@ class QrCodeHelper
         $results = [];
 
         foreach ($formats as $format) {
-            $results[$format] = match ($format) {
-                'png' => self::generatePng($text, $size),
-                'svg' => self::generateSvg($text, $size),
-                'base64' => self::generateBase64($text, $size),
-                'data_url' => self::generateDataUrl($text, $size),
-                'eps' => (static function () use ($text): string {
-                    Log::warning('QR Code: EPS format is no longer supported, skipping', ['text' => $text]);
-
-                    return '';
-                })(),
-                default => '',
-            };
+            $results[$format] = self::generateFormat($text, $format, $size);
 
             if ($results[$format] === '') {
                 unset($results[$format]);
@@ -338,7 +300,7 @@ class QrCodeHelper
         try {
             $data = match (mb_strtolower($format)) {
                 'svg' => self::generateSvg($text, $size),
-                'eps' => self::generateEps($text, $size),
+                'eps' => self::fallbackEpsToPng($text, $size),
                 default => self::generatePng($text, $size),
             };
 
@@ -373,6 +335,7 @@ class QrCodeHelper
      * @param string $format 格式：png | svg
      * @param array<int, int> $labelColor 标签色 [r, g, b]
      * @param int $fontSize 字体大小（像素）
+     * @noinspection PhpUnusedParameterInspection
      */
     public static function generateWithLabel(
         string $text,
@@ -389,9 +352,7 @@ class QrCodeHelper
         try {
             $label = new Label(text: $labelText, textColor: self::colorFromArray($labelColor));
 
-            return self::makeWriter($format)
-                ->write(self::buildQrCode($text, $size), null, $label)
-                ->getString();
+            return self::writeQrCode($format, self::buildQrCode($text, $size), null, $label);
         } catch (Exception $e) {
             Log::error('QR Code: Failed to generate QR code with label', [
                 'text' => $text,
@@ -432,20 +393,11 @@ class QrCodeHelper
         }
 
         try {
-            $qrCode = new QrCode(
-                data: $text,
-                encoding: new Encoding('UTF-8'),
-                errorCorrectionLevel: ErrorCorrectionLevel::High,
-                size: $size,
-                margin: self::DEFAULT_MARGIN,
-                foregroundColor: new Color(0, 0, 0),
-                backgroundColor: new Color(255, 255, 255),
-            );
-
+            $qrCode = self::buildQrCode($text, $size, ErrorCorrectionLevel::High);
             $logo = new Logo(path: $logoPath, resizeToWidth: (int) ($size * $logoPercentage));
             $label = new Label(text: $labelText, textColor: self::colorFromArray($labelColor));
 
-            return (new PngWriter())->write($qrCode, $logo, $label)->getString();
+            return self::writeQrCode('png', $qrCode, $logo, $label);
         } catch (Exception $e) {
             Log::error('QR Code: Failed to generate QR code with logo and label', [
                 'text' => $text,
@@ -462,18 +414,81 @@ class QrCodeHelper
 
     /**
      * 构建标准 QrCode 实例（黑白配色，Medium 纠错级别）
+     *
+     * @param array<int, int> $foregroundColor
+     * @param array<int, int> $backgroundColor
      */
-    private static function buildQrCode(string $text, int $size): QrCode
-    {
+    private static function buildQrCode(
+        string $text,
+        int $size,
+        ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::Medium,
+        int $margin = self::DEFAULT_MARGIN,
+        array $foregroundColor = self::DEFAULT_FOREGROUND_COLOR,
+        array $backgroundColor = self::DEFAULT_BACKGROUND_COLOR,
+    ): QrCode {
         return new QrCode(
             data: $text,
             encoding: new Encoding('UTF-8'),
-            errorCorrectionLevel: ErrorCorrectionLevel::Medium,
+            errorCorrectionLevel: $errorCorrectionLevel,
             size: $size,
-            margin: self::DEFAULT_MARGIN,
-            foregroundColor: new Color(0, 0, 0),
-            backgroundColor: new Color(255, 255, 255),
+            margin: $margin,
+            foregroundColor: self::colorFromArray($foregroundColor),
+            backgroundColor: self::colorFromArray($backgroundColor),
         );
+    }
+
+    private static function generateBasic(string $text, int $size, string $format, string $errorMessage): string
+    {
+        if (empty($text)) {
+            return '';
+        }
+
+        try {
+            return self::writeQrCode($format, self::buildQrCode($text, $size));
+        } catch (Exception $e) {
+            Log::error($errorMessage, [
+                'text' => $text,
+                'size' => $size,
+                'exception' => $e->getMessage(),
+            ]);
+
+            return '';
+        }
+    }
+
+    private static function generateFormat(string $text, string $format, int $size): string
+    {
+        return match ($format) {
+            'png' => self::generatePng($text, $size),
+            'svg' => self::generateSvg($text, $size),
+            'base64' => self::generateBase64($text, $size),
+            'data_url' => self::generateDataUrl($text, $size),
+            'eps' => self::skipUnsupportedEps($text),
+            default => '',
+        };
+    }
+
+    private static function skipUnsupportedEps(string $text): string
+    {
+        Log::warning('QR Code: EPS format is no longer supported, skipping', ['text' => $text]);
+
+        return '';
+    }
+
+    private static function fallbackEpsToPng(string $text, int $size): string
+    {
+        Log::warning('QR Code: EPS format is no longer supported, falling back to PNG', ['text' => $text]);
+
+        return self::generatePng($text, $size);
+    }
+
+    private static function writeQrCode(
+        string $format,
+        QrCode $qrCode,
+        ?Logo $logo = null,
+        ?Label $label = null,
+    ): string {
+        return self::makeWriter($format)->write($qrCode, $logo, $label)->getString();
     }
 
     /**

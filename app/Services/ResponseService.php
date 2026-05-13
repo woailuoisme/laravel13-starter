@@ -275,8 +275,10 @@ class ResponseService
             'meta' => [
                 'total' => $paginator->total(),
                 'per_page' => $paginator->perPage(),
-                'current_page' => $paginator->currentPage(),
                 'last_page' => $paginator->lastPage(),
+                'current_page' => $paginator->currentPage(),
+                'from' => $paginator->firstItem(),
+                'to' => $paginator->lastItem(),
             ],
         ];
 

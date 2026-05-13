@@ -6,6 +6,17 @@ namespace Deployer;
 
 require 'recipe/laravel.php';
 
+/**
+ * 部署执行序列说明：
+ * - deploy：完整发布流程，依次执行 pre-check、update-code、composer-install、
+ *   migrate、optimize、restart-queues、scribe-docs。
+ * - quick-deploy：轻量发布流程，只执行 update-code、optimize。
+ * - quick：极简单任务流程，在容器内拉取代码后执行 optimize 与 octane:reload。
+ * - clear-all / reload：独立维护任务，不属于完整发布流程。
+ *
+ * 所有远端应用命令都通过 dockerCommand() 进入 RoadRunner 容器，并在 app_dir
+ * 指向的应用目录中执行。
+ */
 set('repository', 'https://github.com/woailuoisme/laravel13-starter.git');
 set('branch', 'main');
 set('env', 'production');
@@ -35,9 +46,14 @@ function dockerCommand(string $command): string
 
 desc('Check that the remote RoadRunner container is available.');
 task('pre-check', function (): void {
+    $container = escapeshellarg((string) get('rr_container'));
+
     writeln('开始环境检查...');
 
-    run(sprintf('docker inspect %s > /dev/null 2>&1', escapeshellarg((string) get('rr_container'))));
+    run(sprintf(
+        'docker inspect %1$s > /dev/null 2>&1 || (echo "错误：容器 %1$s 未运行或不可访问" && exit 1)',
+        $container,
+    ));
 
     writeln('环境检查通过');
 });
@@ -117,6 +133,7 @@ task('deploy', [
     'scribe-docs',
 ]);
 
+desc('Quick deploy story: update code and rebuild caches.');
 task('quick-deploy', [
     'update-code',
     'optimize',
