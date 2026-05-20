@@ -25,7 +25,7 @@
         "kalnoy/nestedset": "^v7.0.1",
         "knuckleswtf/scribe": "^5.8",
         "laravel-notification-channels/telegram": "^7.0",
-        "laravel/ai": "^v0.6.0",
+        "laravel/ai": "^v0.7.0.0",
         "laravel/cashier": "^16.3",
         "laravel/framework": "^13.0",
         "laravel/horizon": "^5.34",

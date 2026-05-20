@@ -1,6 +1,7 @@
 {
     "agents": [
-        "codex"
+        "codex",
+        "gemini"
     ],
     "cloud": false,
     "guidelines": true,

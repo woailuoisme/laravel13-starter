@@ -1,0 +1,32 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_octane_app
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY= # Remember to set this or copy from .env
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql # 需修改为外部网络中的 MySQL 容器名称或 IP
+      - DB_PORT=3306
+      - DB_DATABASE=laravel
+      - DB_USERNAME=laravel
+      - DB_PASSWORD=password
+      - OCTANE_SERVER=roadrunner
+      - CACHE_STORE=redis
+      - QUEUE_CONNECTION=redis
+      - SESSION_DRIVER=redis
+      - REDIS_HOST=redis # 需修改为外部网络中的 Redis 容器名称或 IP
+    networks:
+      - backend
+    volumes:
+      # 可选: 将日志同步到宿主机以便查看
+      - ./storage/logs:/app/storage/logs
+
+networks:
+  backend:
+    external: true
