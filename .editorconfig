@@ -3,16 +3,32 @@ root = true
 [*]
 charset = utf-8
 end_of_line = lf
-indent_size = 4
+indent_size = 2
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# PHP 遵循 PSR-12 / Laravel Pint 标准：4 spaces
+[*.php]
+indent_size = 4
+
+# Blade 模板同 PHP
+[*.blade.php]
+indent_size = 4
+
+# Docker Compose 使用 4 spaces（与项目保持一致）
+[compose.yaml]
+indent_size = 4
+
+# Markdown：保留行尾空格（两个空格 = 强制换行）
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{yml,yaml}]
-indent_size = 2
+# 二进制 / lockfile：不做任何处理
+[*.lock]
+insert_final_newline = false
+trim_trailing_whitespace = false
 
-[compose.yaml]
-indent_size = 4
+# Makefile 必须用 tab
+[Makefile]
+indent_style = tab

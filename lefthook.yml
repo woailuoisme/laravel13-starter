@@ -6,3 +6,16 @@ pre-commit:
       glob: "**/*.php"
       run: vendor/bin/pint --format agent {staged_files}
       stage_fixed: true
+
+    - name: hadolint
+      glob: "**/Dockerfile"
+      run: hadolint {staged_files}
+
+    - name: actionlint
+      glob: ".github/workflows/**/*.yml"
+      run: actionlint {staged_files}
+
+pre-push:
+  jobs:
+    - name: pest
+      run: php artisan test --compact

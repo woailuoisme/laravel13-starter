@@ -1,0 +1,8 @@
+[tools]
+# PHP 推荐通过 Homebrew 安装，mise 编译源码较慢：
+#   brew install php@8.5
+bun = "latest"
+just = "latest"
+hadolint = "latest"
+actionlint = "latest"
+lefthook = "latest"
