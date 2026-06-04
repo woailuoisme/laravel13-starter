@@ -4,7 +4,7 @@ pre-commit:
   jobs:
     - name: pint
       glob: "**/*.php"
-      run: vendor/bin/pint --format agent {staged_files}
+      run: vendor/bin/pint -p --format agent {staged_files}
       stage_fixed: true
 
     - name: hadolint
