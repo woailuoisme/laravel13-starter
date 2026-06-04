@@ -8,9 +8,11 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
+use function Pest\Laravel\seed;
 
 it('seeds shield roles and permissions so the role page is reachable', function (): void {
-    $this->seed(DatabaseSeeder::class);
+    seed(DatabaseSeeder::class);
 
     expect(Role::query()->where('name', 'super_admin')->exists())->toBeTrue()
         ->and(Permission::query()->exists())->toBeTrue();
@@ -19,5 +21,5 @@ it('seeds shield roles and permissions so the role page is reachable', function 
 
     actingAs($admin, 'filament');
 
-    $this->get('/admin/shield/roles')->assertSuccessful();
+    get('/admin/shield/roles')->assertSuccessful();
 });

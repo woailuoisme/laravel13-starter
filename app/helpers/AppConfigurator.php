@@ -352,7 +352,7 @@ class AppConfigurator
                 public function format(LogRecord $record): string
                 {
                     // 获取当前日志级别的颜色
-                    $colorCode = $this->levelColors[mb_strtoupper($record->level->getName())] ?? '37';
+                    $colorCode = $this->levelColors[mb_strtoupper((string) $record->level->getName())] ?? '37';
 
                     // 构建带颜色的格式
                     $format = "\033[32m%s\033[0m \033[{$colorCode}m%s\033[0m: %s %s\n";
@@ -361,7 +361,7 @@ class AppConfigurator
                     return sprintf(
                         $format,
                         $record->datetime->format('Y-m-d H:i:s'),
-                        mb_strtoupper($record->level->getName()),
+                        mb_strtoupper((string) $record->level->getName()),
                         $record->message,
                         empty($record->context) ? '' : json_encode($record->context, JSON_THROW_ON_ERROR),
                     );
@@ -802,7 +802,7 @@ class AppConfigurator
     private static function handleHttpException(HttpExceptionInterface $e, int $statusCode, array $response): array
     {
         $response['code'] = $statusCode;
-        $response['message'] = Response::$statusTexts[$statusCode] ?? $response['message'];
+        $response['message'] = $e->getMessage() ?: (Response::$statusTexts[$statusCode] ?? $response['message']);
 
         return [$statusCode, $response];
     }

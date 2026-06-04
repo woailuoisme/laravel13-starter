@@ -18,11 +18,9 @@ function shieldAdminUser(string $ability, bool $allowed = true, bool $superAdmin
         ->with(config('filament-shield.super_admin.name', 'super_admin'))
         ->andReturn($superAdmin);
 
-    if (! $superAdmin) {
-        $user->shouldReceive('can')
-            ->with($ability)
-            ->andReturn($allowed);
-    }
+    $user->shouldReceive('can')
+        ->with($ability)
+        ->andReturn($superAdmin ? true : $allowed);
 
     return $user;
 }

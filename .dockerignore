@@ -19,3 +19,24 @@
 /npm-debug.log
 /yarn-error.log
 /rr
+/bootstrap/cache/*.php
+
+# IDE & OS files
+.DS_Store
+Thumbs.db
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+
+# Developer & AI tools
+/justfile
+/lefthook.yml
+/.agents
+/.ai
+/.claude
+/.gemini
+/.codex
+/.kiro
+/.specify
+/.rtk
+/.scribe
