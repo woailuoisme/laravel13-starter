@@ -1,0 +1,25 @@
+services:
+  app:
+    image: ${DOCKER_IMAGE:-laravel-fpm:latest}
+    build:
+      context: ../..
+      dockerfile: docker/fpm/Dockerfile
+    env_file:
+      - ../../.env.production
+    environment:
+      APP_PATH: /app
+      APP_DEBUG: "false"
+    ports:
+      - "${FPM_PUBLISHED_PORT:-9000}:9000"
+    volumes:
+      - app-storage:/app/storage
+    networks:
+      - backend
+
+volumes:
+  app-storage:
+
+networks:
+  backend:
+    name: ${DOCKER_NETWORK:-backend}
+    external: true

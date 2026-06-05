@@ -1,0 +1,33 @@
+services:
+  app:
+    image: ${DOCKER_IMAGE:-laravel-franken:latest}
+    build:
+      context: ../..
+      dockerfile: docker/franken/Dockerfile
+    env_file:
+      - ../../.env.production
+    environment:
+      APP_PATH: /app
+      APP_DEBUG: "false"
+      OCTANE_HOST: 0.0.0.0
+      OCTANE_WORKERS: ${OCTANE_WORKERS:-4}
+      OCTANE_MAX_REQUESTS: ${OCTANE_MAX_REQUESTS:-1000}
+      WATCH: "false"
+      OCTANE_POLL: "false"
+      OCTANE_HTTPS: "false"
+      OCTANE_HTTP_REDIRECT: "false"
+    ports:
+      - "${APP_PUBLISHED_PORT:-8801}:${APP_PORT:-8001}"
+      - "${FRANKEN_ADMIN_PUBLISHED_PORT:-12019}:${OCTANE_ADMIN_PORT:-2019}"
+    volumes:
+      - app-storage:/app/storage
+    networks:
+      - backend
+
+volumes:
+  app-storage:
+
+networks:
+  backend:
+    name: ${DOCKER_NETWORK:-backend}
+    external: true

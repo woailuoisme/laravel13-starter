@@ -7,15 +7,14 @@ set -e
 
 # 日志工具
 RED='\033[0;31m' GREEN='\033[0;32m' YELLOW='\033[1;33m' BLUE='\033[0;34m' NC='\033[0m'
-# shellcheck disable=SC3037
-log() { echo -e "${1}[$(date '+%Y-%m-%d %H:%M:%S %z')] [${2}]${NC} ${3}"; }
+log() { printf '%b[%s] [%s]%b %s\n' "$1" "$(date '+%Y-%m-%d %H:%M:%S %z')" "$2" "${NC}" "$3"; }
 log_info()    { log "${BLUE}" "INFO" "$1"; }
 log_success() { log "${GREEN}" "SUCCESS" "$1"; }
 log_warning() { log "${YELLOW}" "WARNING" "$1"; }
 log_error()   { log "${RED}" "ERROR" "$1"; }
 
 # 全局变量
-readonly APP_PATH=${APP_PATH:-/var/www/lunchbox}
+readonly APP_PATH=${APP_PATH:-/app}
 readonly APP_ENV=${APP_ENV:-docker}
 OCTANE_LOG_LEVEL=${OCTANE_LOG_LEVEL:-${LOG_LEVEL:-info}}
 
@@ -55,22 +54,20 @@ start_direct() {
     log_info "执行命令: php artisan octane:start --server=roadrunner"
     log_info "使用 RoadRunner 路径: ${OCTANE_RR_BINARY}"
 
-    # 构建完整的启动命令
-    # shellcheck disable=SC3043
-    local cmd="php artisan octane:start"
-    cmd="${cmd} --server=${OCTANE_SERVER:-roadrunner}"
-    cmd="${cmd} --env=${APP_ENV}"
-    cmd="${cmd} --port=${APP_PORT}"
-    cmd="${cmd} --host=${OCTANE_HOST}"
-    cmd="${cmd} --workers=${OCTANE_WORKERS}"
-    cmd="${cmd} --max-requests=${OCTANE_MAX_REQUESTS}"
-    cmd="${cmd} --log-level=${OCTANE_LOG_LEVEL}"
+    set -- php artisan octane:start \
+        "--server=${OCTANE_SERVER:-roadrunner}" \
+        "--env=${APP_ENV}" \
+        "--port=${APP_PORT}" \
+        "--host=${OCTANE_HOST}" \
+        "--workers=${OCTANE_WORKERS}" \
+        "--max-requests=${OCTANE_MAX_REQUESTS}" \
+        "--log-level=${OCTANE_LOG_LEVEL}"
 
     if [ "${WATCH}" = "true" ]; then
-        cmd="${cmd} --watch"
+        set -- "$@" --watch
     fi
 
-    log_info "完整命令: ${cmd}"
+    log_info "完整命令: $*"
 
     # 确保环境变量传递
     export OCTANE_SERVER="${OCTANE_SERVER:-roadrunner}"
@@ -80,7 +77,7 @@ start_direct() {
     export OCTANE_MAX_REQUESTS="${OCTANE_MAX_REQUESTS}"
     export OCTANE_LOG_LEVEL="${OCTANE_LOG_LEVEL}"
 
-    exec ${cmd}
+    exec "$@"
 }
 
 # 主函数
@@ -102,8 +99,7 @@ main() {
 }
 
 # 捕获退出信号
-# shellcheck disable=SC3048
-trap 'log_warning "接收到终止信号，正在停止服务..."; exit 0' SIGTERM SIGINT
+trap 'log_warning "接收到终止信号，正在停止服务..."; exit 0' TERM INT
 
 # 运行主函数
 main "$@"

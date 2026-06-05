@@ -1,0 +1,3 @@
+# 项目使用滚动 Alpine 仓库，apk 包版本不强制固定。
+ignored:
+  - DL3018

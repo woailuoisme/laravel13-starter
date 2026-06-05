@@ -31,12 +31,17 @@ _ide_helper_models.php
 # Developer & AI tools
 /justfile
 /lefthook.yml
+/.hadolint.yaml
+/.shellcheckrc
+/.mcp.json
+/.mise.toml
 /.agents
 /.ai
 /.claude
 /.gemini
 /.codex
 /.kiro
+/.serena
 /.specify
 /.rtk
 /.scribe

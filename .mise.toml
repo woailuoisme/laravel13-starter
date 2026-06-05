@@ -1,12 +1,30 @@
 [tools]
-# PHP 推荐通过 Homebrew 安装，mise 编译源码较慢：
-# brew install php@8.5
+# --- Runtimes ---
+node = "latest"
 bun = "latest"
+
+# --- Development Tools ---
 just = "latest"
+lefthook = "latest"
+k6 = "latest"
+
+# --- Code Quality & Linters ---
 hadolint = "latest"
 shellcheck = "latest"
 actionlint = "latest"
 markdownlint-cli2  = "latest"
-lefthook = "latest"
-k6 = "latest"
 shfmt = "latest"
+
+# --- CLI Utilities ---
+rg = "latest"
+fd = "latest"
+sd = "latest"
+
+[env]
+# 将 macOS Homebrew 的 PHP@8.5 目录和 Composer 全局 binaries 注入到 PATH 最前方
+# 确保在该项目目录下，所有的 php/composer 命令都始终绑定到项目要求的 PHP 8.5 环境
+_.path = [
+  "/opt/homebrew/opt/php@8.5/bin",
+  "/opt/homebrew/opt/php@8.5/sbin",
+  "{{env.HOME}}/.composer/vendor/bin"
+]
