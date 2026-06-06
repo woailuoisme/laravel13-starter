@@ -45,3 +45,15 @@ _ide_helper_models.php
 /.specify
 /.rtk
 /.scribe
+/.code-review-graph
+/.phpunit.cache
+/.gitleaks.toml
+/.gitleaksignore
+/.markdownlint-cli2.jsonc
+/phpstan*.neon
+/pint.json
+/boost.json
+/cliff.toml
+/deploy.php
+/skills-lock.json
+_ide_helper*.php

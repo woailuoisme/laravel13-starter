@@ -7,13 +7,16 @@ set -e
 RED='\033[0;31m' GREEN='\033[0;32m' NC='\033[0m'
 log() { printf '%b[%s] [HEALTH]%b %s\n' "$1" "$(date '+%Y-%m-%d %H:%M:%S %z')" "${NC}" "$2" >&2; }
 log_info() { log "${GREEN}" "$1"; }
-log_err()  { log "${RED}" "$1"; }
+log_err() { log "${RED}" "$1"; }
 
 APP_PATH="${APP_PATH:-/app}"
 ROLE="${1:-}"
 
 # 1. 检查应用目录
-[ -f "${APP_PATH}/artisan" ] || { log_err "应用目录或 artisan 不存在"; exit 1; }
+[ -f "${APP_PATH}/artisan" ] || {
+    log_err "应用目录或 artisan 不存在"
+    exit 1
+}
 
 cd "${APP_PATH}"
 
@@ -25,7 +28,7 @@ has_process() {
         [ "${pid_dir}" = "/proc/$$/" ] && continue
         [ -r "${pid_dir}cmdline" ] || continue
 
-        cmdline="$(tr '\000' ' ' < "${pid_dir}cmdline")"
+        cmdline="$(tr '\000' ' ' <"${pid_dir}cmdline")"
 
         if printf '%s\n' "${cmdline}" | grep -Fq "${pattern}"; then
             return 0
@@ -41,7 +44,7 @@ check_octane() {
         exit 1
     fi
 
-    if curl -f -s -m 5 "http://localhost:${APP_PORT:-8001}/up" > /dev/null 2>&1; then
+    if curl -f -s -m 5 "http://localhost:${APP_PORT:-8001}/up" >/dev/null 2>&1; then
         log_info "RoadRunner/HTTP 服务正常"
         exit 0
     fi
@@ -56,7 +59,7 @@ check_horizon() {
         exit 1
     fi
 
-    if php artisan horizon:status --no-interaction > /dev/null 2>&1; then
+    if php artisan horizon:status --no-interaction >/dev/null 2>&1; then
         log_info "Horizon 服务正常"
         exit 0
     fi
@@ -76,17 +79,17 @@ check_schedule() {
 }
 
 case "${ROLE}" in
-    octane)
-        check_octane
-        ;;
-    horizon)
-        check_horizon
-        ;;
-    schedule)
-        check_schedule
-        ;;
-    *)
-        log_err "健康检查角色无效: ${ROLE:-未指定}"
-        exit 1
-        ;;
+octane)
+    check_octane
+    ;;
+horizon)
+    check_horizon
+    ;;
+schedule)
+    check_schedule
+    ;;
+*)
+    log_err "健康检查角色无效: ${ROLE:-未指定}"
+    exit 1
+    ;;
 esac

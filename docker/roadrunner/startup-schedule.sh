@@ -5,10 +5,10 @@ set -e
 
 RED='\033[0;31m' GREEN='\033[0;32m' YELLOW='\033[1;33m' BLUE='\033[0;34m' NC='\033[0m'
 log() { printf '%b[%s] [%s]%b %s\n' "$1" "$(date '+%Y-%m-%d %H:%M:%S %z')" "$2" "${NC}" "$3"; }
-log_info()    { log "${BLUE}" "INFO" "$1"; }
+log_info() { log "${BLUE}" "INFO" "$1"; }
 log_success() { log "${GREEN}" "SUCCESS" "$1"; }
 log_warning() { log "${YELLOW}" "WARNING" "$1"; }
-log_error()   { log "${RED}" "ERROR" "$1"; }
+log_error() { log "${RED}" "ERROR" "$1"; }
 
 APP_PATH="${APP_PATH:-/app}"
 APP_ENV="${APP_ENV:-docker}"
