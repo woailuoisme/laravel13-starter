@@ -40,8 +40,8 @@ class QrCodeHelper
     /**
      * 生成 PNG 格式二维码（原始二进制数据）
      *
-     * @param string $text 要编码的文本
-     * @param int $size 尺寸（像素）
+     * @param  string  $text  要编码的文本
+     * @param  int  $size  尺寸（像素）
      */
     public static function generatePng(string $text, int $size = self::DEFAULT_SIZE): string
     {
@@ -51,8 +51,8 @@ class QrCodeHelper
     /**
      * 生成 PNG Data URL 格式二维码（可直接用于 HTML img src 属性）
      *
-     * @param string $text 要编码的文本
-     * @param int $size 尺寸（像素）
+     * @param  string  $text  要编码的文本
+     * @param  int  $size  尺寸（像素）
      */
     public static function generateDataUrl(string $text, int $size = self::DEFAULT_SIZE): string
     {
@@ -64,9 +64,9 @@ class QrCodeHelper
     /**
      * 生成 SVG Data URL 格式二维码
      *
-     * @param string $text 要编码的文本
-     * @param int $size 尺寸（像素）
-     * @param bool $useBase64 true 使用 base64 编码，false 使用 URL 编码（体积更小）
+     * @param  string  $text  要编码的文本
+     * @param  int  $size  尺寸（像素）
+     * @param  bool  $useBase64  true 使用 base64 编码，false 使用 URL 编码（体积更小）
      */
     public static function generateSvgDataUrl(string $text, int $size = self::DEFAULT_SIZE, bool $useBase64 = false): string
     {
@@ -86,8 +86,8 @@ class QrCodeHelper
     /**
      * 生成 Base64 编码的 PNG 二维码
      *
-     * @param string $text 要编码的文本
-     * @param int $size 尺寸（像素）
+     * @param  string  $text  要编码的文本
+     * @param  int  $size  尺寸（像素）
      */
     public static function generateBase64(string $text, int $size = self::DEFAULT_SIZE): string
     {
@@ -99,8 +99,8 @@ class QrCodeHelper
     /**
      * 生成 SVG 格式二维码（矢量图，可无损缩放）
      *
-     * @param string $text 要编码的文本
-     * @param int $size 尺寸（像素）
+     * @param  string  $text  要编码的文本
+     * @param  int  $size  尺寸（像素）
      */
     public static function generateSvg(string $text, int $size = self::DEFAULT_SIZE): string
     {
@@ -118,15 +118,15 @@ class QrCodeHelper
     /**
      * 生成自定义颜色与错误纠正级别的二维码
      *
-     * @param string $text 要编码的文本
-     * @param string $format 输出格式：png | svg
-     * @param int $size 尺寸（像素）
-     * @param string $style 已废弃参数，保留以向后兼容
-     * @param string $eyeStyle 已废弃参数，保留以向后兼容
-     * @param array<int, int> $foregroundColor 前景色 [r, g, b]
-     * @param array<int, int> $backgroundColor 背景色 [r, g, b]
-     * @param int $margin 边距（像素）
-     * @param string $errorCorrection 错误纠正级别：L | M | Q | H
+     * @param  string  $text  要编码的文本
+     * @param  string  $format  输出格式：png | svg
+     * @param  int  $size  尺寸（像素）
+     * @param  string  $style  已废弃参数，保留以向后兼容
+     * @param  string  $eyeStyle  已废弃参数，保留以向后兼容
+     * @param  array<int, int>  $foregroundColor  前景色 [r, g, b]
+     * @param  array<int, int>  $backgroundColor  背景色 [r, g, b]
+     * @param  int  $margin  边距（像素）
+     * @param  string  $errorCorrection  错误纠正级别：L | M | Q | H
      */
     public static function generateCustom(
         string $text,
@@ -175,9 +175,10 @@ class QrCodeHelper
     /**
      * @deprecated 渐变效果在 endroid/qr-code v6 起不再支持，降级为普通 SVG
      *
-     * @param array<int, int> $startColor
-     * @param array<int, int> $endColor
-     * @param array<int, int> $backgroundColor
+     * @param  array<int, int>  $startColor
+     * @param  array<int, int>  $endColor
+     * @param  array<int, int>  $backgroundColor
+     *
      * @noinspection PhpUnusedParameterInspection
      */
     public static function generateGradient(
@@ -200,13 +201,15 @@ class QrCodeHelper
     /**
      * 生成嵌入 Logo 的二维码（PNG 格式，内部自动使用 High 错误纠正）
      *
-     * @param string $text 要编码的文本
-     * @param string $logoPath Logo 图片的绝对路径
-     * @param int $size 尺寸（像素）
-     * @param float $logoPercentage Logo 宽度占二维码的比例（建议 0.1–0.3）
-     * @param array<int, int> $foregroundColor 前景色 [r, g, b]
-     * @param array<int, int> $backgroundColor 背景色 [r, g, b]
+     * @param  string  $text  要编码的文本
+     * @param  string  $logoPath  Logo 图片的绝对路径
+     * @param  int  $size  尺寸（像素）
+     * @param  float  $logoPercentage  Logo 宽度占二维码的比例（建议 0.1–0.3）
+     * @param  array<int, int>  $foregroundColor  前景色 [r, g, b]
+     * @param  array<int, int>  $backgroundColor  背景色 [r, g, b]
+     *
      * @api
+     *
      * @noinspection PhpUnused
      */
     public static function generateWithLogo(
@@ -252,9 +255,9 @@ class QrCodeHelper
     /**
      * 批量生成多种格式的二维码
      *
-     * @param string $text 要编码的文本
-     * @param array<int, string> $formats 格式列表，支持：png | svg | base64 | data_url
-     * @param int $size 尺寸（像素）
+     * @param  string  $text  要编码的文本
+     * @param  array<int, string>  $formats  格式列表，支持：png | svg | base64 | data_url
+     * @param  int  $size  尺寸（像素）
      * @return array<string, string> 格式 => 二维码数据
      */
     public static function generateMultipleFormats(
@@ -282,10 +285,10 @@ class QrCodeHelper
     /**
      * 将二维码保存到指定文件路径
      *
-     * @param string $text 要编码的文本
-     * @param string $filePath 目标文件绝对路径
-     * @param string $format 格式：png | svg
-     * @param int $size 尺寸（像素）
+     * @param  string  $text  要编码的文本
+     * @param  string  $filePath  目标文件绝对路径
+     * @param  string  $format  格式：png | svg
+     * @param  int  $size  尺寸（像素）
      */
     public static function saveToFile(
         string $text,
@@ -329,12 +332,13 @@ class QrCodeHelper
     /**
      * 生成带底部文字标签的二维码
      *
-     * @param string $text 要编码的文本
-     * @param string $labelText 标签文字
-     * @param int $size 尺寸（像素）
-     * @param string $format 格式：png | svg
-     * @param array<int, int> $labelColor 标签色 [r, g, b]
-     * @param int $fontSize 字体大小（像素）
+     * @param  string  $text  要编码的文本
+     * @param  string  $labelText  标签文字
+     * @param  int  $size  尺寸（像素）
+     * @param  string  $format  格式：png | svg
+     * @param  array<int, int>  $labelColor  标签色 [r, g, b]
+     * @param  int  $fontSize  字体大小（像素）
+     *
      * @noinspection PhpUnusedParameterInspection
      */
     public static function generateWithLabel(
@@ -367,12 +371,12 @@ class QrCodeHelper
     /**
      * 生成同时带 Logo 和标签的二维码（PNG 格式）
      *
-     * @param string $text 要编码的文本
-     * @param string $logoPath Logo 图片的绝对路径
-     * @param string $labelText 标签文字
-     * @param int $size 尺寸（像素）
-     * @param float $logoPercentage Logo 占比（建议 0.1–0.3）
-     * @param array<int, int> $labelColor 标签色 [r, g, b]
+     * @param  string  $text  要编码的文本
+     * @param  string  $logoPath  Logo 图片的绝对路径
+     * @param  string  $labelText  标签文字
+     * @param  int  $size  尺寸（像素）
+     * @param  float  $logoPercentage  Logo 占比（建议 0.1–0.3）
+     * @param  array<int, int>  $labelColor  标签色 [r, g, b]
      */
     public static function generateWithLogoAndLabel(
         string $text,
@@ -415,8 +419,8 @@ class QrCodeHelper
     /**
      * 构建标准 QrCode 实例（黑白配色，Medium 纠错级别）
      *
-     * @param array<int, int> $foregroundColor
-     * @param array<int, int> $backgroundColor
+     * @param  array<int, int>  $foregroundColor
+     * @param  array<int, int>  $backgroundColor
      */
     private static function buildQrCode(
         string $text,
@@ -505,7 +509,7 @@ class QrCodeHelper
     /**
      * 将 [r, g, b] 数组转换为 Color 实例
      *
-     * @param array<int, int> $rgb
+     * @param  array<int, int>  $rgb
      */
     private static function colorFromArray(array $rgb): Color
     {

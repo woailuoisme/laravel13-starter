@@ -25,10 +25,12 @@ Thumbs.db
 
 _ide_helper.php
 _ide_helper_models.php
+_ide_helper_models_phpstan.php
 .phpstorm.meta.php
 rr
 frankenphp
 .rr.yaml
+
 
 /.codex
 /.claude

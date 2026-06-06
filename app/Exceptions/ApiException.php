@@ -80,7 +80,7 @@ class ApiException extends Exception
 
     public function getCustomCode(): int
     {
-        return $this->customCode ?? ResponseAlias::HTTP_BAD_REQUEST;
+        return $this->customCode;
     }
 
     public function getHttpCode(): int
@@ -90,6 +90,6 @@ class ApiException extends Exception
 
     public function getErrors(): array
     {
-        return $this->data ?? [];
+        return $this->data;
     }
 }

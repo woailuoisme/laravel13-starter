@@ -68,5 +68,4 @@ class AdminUserPolicy
     {
         return $authUser->can('Reorder:AdminUser');
     }
-
 }

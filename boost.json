@@ -1,8 +1,8 @@
 {
     "agents": [
         "codex",
-        "gemini",
-        "kiro"
+        "kiro",
+        "antigravity"
     ],
     "cloud": false,
     "guidelines": true,

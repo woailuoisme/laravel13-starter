@@ -22,7 +22,8 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class () {
+        ->andReturn(new class()
+        {
             public function selectOne(string $query): object
             {
                 return (object) ['ok' => 1];
@@ -32,7 +33,8 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class () {
+        ->andReturn(new class()
+        {
             public function ping(): string
             {
                 return 'PONG';
@@ -42,7 +44,8 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class () {
+        ->andReturn(new class()
+        {
             public function size(string $queue): int
             {
                 return 0;
@@ -67,7 +70,8 @@ it('fails when scout is not configured for meilisearch', function (): void {
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class () {
+        ->andReturn(new class()
+        {
             public function selectOne(string $query): object
             {
                 return (object) ['ok' => 1];
@@ -77,7 +81,8 @@ it('fails when scout is not configured for meilisearch', function (): void {
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class () {
+        ->andReturn(new class()
+        {
             public function ping(): string
             {
                 return 'PONG';
@@ -87,7 +92,8 @@ it('fails when scout is not configured for meilisearch', function (): void {
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class () {
+        ->andReturn(new class()
+        {
             public function size(string $queue): int
             {
                 return 0;

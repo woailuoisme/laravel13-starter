@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services\Pay;
 
 use App\Models\User;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Laravel\Cashier\Checkout;
 use Laravel\Cashier\Exceptions\IncompletePayment;
@@ -14,6 +13,7 @@ use Laravel\Cashier\Payment;
 use Laravel\Cashier\Subscription;
 use Stripe\Refund;
 use Stripe\StripeClient;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Stripe 支付服务类 (增强版)
@@ -122,12 +122,14 @@ class StripeService
     public function reportUsage(User $user, string $subscriptionName, int $quantity, ?string $priceId = null): void
     {
         $subscription = $user->subscription($subscriptionName);
-        if ($priceId) {
-            $subscription->recordUsage($quantity, $priceId);
+        if ($subscription) {
+            if ($priceId) {
+                $subscription->reportUsageFor($priceId, $quantity);
 
-            return;
+                return;
+            }
+            $subscription->reportUsage($quantity);
         }
-        $subscription->recordUsage($quantity);
     }
 
     // --- 发票与账单 (Invoices & Billing) ---

@@ -18,7 +18,9 @@ use UnitEnum;
 class ManageSystemSettings extends SettingsPage
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
+
     protected static string|UnitEnum|null $navigationGroup = FilamentNavigationGroup::SystemSettings;
+
     protected static ?int $navigationSort = -10;
 
     protected static string $settings = SystemSettings::class;

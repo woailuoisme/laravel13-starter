@@ -1,6 +1,43 @@
 {
-    "git.ignoreLimitWarning": true,
-    "files.associations": {
-        "bun.lock": "plaintext"
-    }
+  "i18n-ally.localesPaths": [
+    "lang"
+  ],
+  "i18n-ally.keystyle": "nested",
+  "makefile.configureOnOpen": false,
+  "kiroAgent.configureMCP": "Enabled",
+  "git.ignoreLimitWarning": true,
+  "intelephense.files.exclude": [
+    "**/node_modules/**",
+    "**/storage/**",
+    "**/.git/**",
+    "**/_ide_helper_phpstan.php",
+    "**/_ide_helper_models_phpstan.php",
+    "**/bootstrap/cache/**",
+    "**/.phpunit.cache/**",
+    "**/.idea/**",
+    "app/Exports/**",
+    "app/Imports/**",
+    "**/.phpstorm.meta.php",
+    "**/deploy.php"
+  ],
+  "intelephense.diagnostics.duplicateSymbols": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/storage/framework": true,
+    "**/storage/logs": true,
+    "**/bootstrap/cache": true,
+    "**/.phpunit.cache": true,
+    "**/.idea": true,
+    "**/.phpstorm.meta.php": true
+  },
+  "files.exclude": {
+    "**/.phpunit.cache": true,
+    "**/.idea": true,
+    "**/.DS_Store": true,
+    "**/.phpstorm.meta.php": true
+  },
+  "markdownlint.exclude": [
+    "**/.gemini/**",
+    "~/.gemini/**"
+  ]
 }

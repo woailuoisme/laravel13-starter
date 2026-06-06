@@ -11,12 +11,12 @@ class DemoTrafficChartWidget extends ChartWidget
 {
     protected ?string $pollingInterval = null;
 
-    public function getHeading(): string | Htmlable | null
+    public function getHeading(): string|Htmlable|null
     {
         return __('dashboard.widgets.chart.heading');
     }
 
-    public function getDescription(): string | Htmlable | null
+    public function getDescription(): string|Htmlable|null
     {
         return __('dashboard.widgets.chart.description');
     }

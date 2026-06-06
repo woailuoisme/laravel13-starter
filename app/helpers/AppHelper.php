@@ -72,6 +72,8 @@ class AppHelper
 
     /**
      * 带舍入模式的浮点数取整
+     *
+     * @param  1|2|3|4  $mode
      */
     public static function round(float $num, int $precision = 2, int $mode = PHP_ROUND_HALF_DOWN): float
     {
@@ -151,7 +153,7 @@ class AppHelper
     /**
      * 获取客户端真实 IP 地址
      *
-     * @param bool $allowPrivate 是否允许私有/保留 IP（通常用于本地开发）
+     * @param  bool  $allowPrivate  是否允许私有/保留 IP（通常用于本地开发）
      */
     public static function getIp(bool $allowPrivate = false): ?string
     {
@@ -324,7 +326,7 @@ class AppHelper
     /**
      * 计算多个数组的笛卡尔积
      *
-     * @param array<string, array<mixed>> $input
+     * @param  array<string, array<mixed>>  $input
      * @return array<int, array<string, mixed>>
      *
      * @throws Exception 当输入元素不是数组时抛出
@@ -436,7 +438,7 @@ class AppHelper
     /**
      * 验证用户生日数据
      *
-     * @param array{day: int|string, month: int|string, year: int|string} $data
+     * @param  array{day: int|string, month: int|string, year: int|string}  $data
      */
     public function validator(array $data): \Illuminate\Contracts\Validation\Validator
     {

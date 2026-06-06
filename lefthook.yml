@@ -7,6 +7,10 @@ pre-commit:
       run: vendor/bin/pint --parallel --repair  --silent --format agent {staged_files}
       stage_fixed: true
 
+    - name: phpstan
+      run: if git diff --name-only --cached | grep -q 'app/.*\.php'; then php -d xdebug.mode=off -d opcache.enable_cli=1 -d opcache.jit_buffer_size=100M vendor/bin/phpstan analyse --memory-limit=1G; fi
+
+
     - name: hadolint
       glob: "**/Dockerfile"
       run: hadolint {staged_files}
@@ -15,7 +19,38 @@ pre-commit:
       glob: ".github/workflows/**/*.yml"
       run: actionlint {staged_files}
 
+    - name: shfmt
+      glob: "**/*.sh"
+      run: shfmt -w {staged_files}
+      stage_fixed: true
+
+    - name: shellcheck
+      glob: "**/*.sh"
+      run: shellcheck {staged_files}
+
+    - name: gitleaks
+      tags:
+        - security
+        - secret-scan
+      run: gitleaks protect --staged --verbose
+
 pre-push:
   jobs:
     - name: pest
       run: php artisan test --compact
+
+commit-msg:
+  jobs:
+    - name: commit-msg-lint
+      run: |
+        commit_msg=$(cat {1})
+        pattern="^(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\([a-zA-Z0-9_-]+\))?: .+"
+        if [[ ! "$commit_msg" =~ $pattern ]]; then
+          echo "Git commit message 格式不符合规范！"
+          echo "当前输入为: \"$commit_msg\""
+          echo "正确格式应例如："
+          echo "  feat: 增加用户登录接口"
+          echo "  fix(auth): 修复越权访问漏洞"
+          echo "合法前缀: feat, fix, docs, style, refactor, perf, test, chore, ci, revert"
+          exit 1
+        fi

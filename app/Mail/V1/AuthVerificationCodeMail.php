@@ -19,8 +19,7 @@ class AuthVerificationCodeMail extends Mailable
     public function __construct(
         public string $code,
         public string $action,
-    ) {
-    }
+    ) {}
 
     public function envelope(): Envelope
     {

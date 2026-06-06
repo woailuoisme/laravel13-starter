@@ -31,9 +31,9 @@ class AppBaseController extends Controller
     /**
      * 发送成功响应
      *
-     * @param mixed $data 响应数据
-     * @param string $message 响应消息
-     * @param int $code HTTP状态码
+     * @param  mixed  $data  响应数据
+     * @param  string  $message  响应消息
+     * @param  int  $code  HTTP状态码
      */
     public function sendResponse(mixed $data, string $message, int $code = Response::HTTP_OK): JsonResponse
     {
@@ -45,9 +45,8 @@ class AppBaseController extends Controller
      *
      * @template T of Model
      *
-     * @param class-string<T> $modelClass 模型类名
-     * @param string $connection 数据库连接名称
-     * @return Model
+     * @param  class-string<T>  $modelClass  模型类名
+     * @param  string  $connection  数据库连接名称
      */
     public function getModel(string $modelClass, string $connection = 'mysql'): Model
     {
@@ -61,10 +60,10 @@ class AppBaseController extends Controller
     /**
      * 发送错误响应
      *
-     * @param string $message 错误消息
-     * @param int $code HTTP状态码
-     * @param mixed|null $data 额外错误数据
-     * @param int|null $customCode 自定义错误码
+     * @param  string  $message  错误消息
+     * @param  int  $code  HTTP状态码
+     * @param  mixed|null  $data  额外错误数据
+     * @param  int|null  $customCode  自定义错误码
      */
     public function sendError(
         string $message = 'failure',
@@ -78,8 +77,8 @@ class AppBaseController extends Controller
     /**
      * 发送基于枚举的错误响应
      *
-     * @param \BackedEnum $enum 错误码枚举
-     * @param int|null $httpCode HTTP状态码，如果枚举定义了httpStatus()则优先使用
+     * @param  \BackedEnum  $enum  错误码枚举
+     * @param  int|null  $httpCode  HTTP状态码，如果枚举定义了httpStatus()则优先使用
      */
     public function sendEnumError(\BackedEnum $enum, ?int $httpCode = null): JsonResponse
     {
@@ -89,10 +88,10 @@ class AppBaseController extends Controller
     /**
      * 发送成功响应
      *
-     * @param string $message 成功消息
-     * @param mixed|null $data 响应数据
-     * @param int $code HTTP状态码
-     * @param int|null $customCode 自定义状态码
+     * @param  string  $message  成功消息
+     * @param  mixed|null  $data  响应数据
+     * @param  int  $code  HTTP状态码
+     * @param  int|null  $customCode  自定义状态码
      */
     public function sendSuccess(
         string $message = 'success',
@@ -106,8 +105,8 @@ class AppBaseController extends Controller
     /**
      * 资源获取成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public function sendRetrieved(string $modelName, mixed $data): JsonResponse
     {
@@ -117,8 +116,8 @@ class AppBaseController extends Controller
     /**
      * 资源创建成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public function sendCreated(string $modelName, mixed $data): JsonResponse
     {
@@ -128,8 +127,8 @@ class AppBaseController extends Controller
     /**
      * 资源更新成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public function sendUpdated(string $modelName, mixed $data): JsonResponse
     {
@@ -139,8 +138,8 @@ class AppBaseController extends Controller
     /**
      * 资源删除成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed|null $data 额外数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed|null  $data  额外数据
      */
     public function sendDeleted(string $modelName, mixed $data = null): JsonResponse
     {
@@ -150,9 +149,9 @@ class AppBaseController extends Controller
     /**
      * 获取分页数据
      *
-     * @param LengthAwarePaginator $paginator 分页器实例
-     * @param string|null $resource 资源类名
-     * @param array $extraData 额外数据
+     * @param  LengthAwarePaginator  $paginator  分页器实例
+     * @param  string|null  $resource  资源类名
+     * @param  array  $extraData  额外数据
      */
     public function paginatorData(
         LengthAwarePaginator $paginator,
@@ -165,9 +164,9 @@ class AppBaseController extends Controller
     /**
      * 发送分页响应
      *
-     * @param LengthAwarePaginator $paginator 分页器实例
-     * @param string|null $resource 资源类名
-     * @param array $extraData 额外数据
+     * @param  LengthAwarePaginator  $paginator  分页器实例
+     * @param  string|null  $resource  资源类名
+     * @param  array  $extraData  额外数据
      */
     public function sendPaginator(
         LengthAwarePaginator $paginator,

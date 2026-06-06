@@ -71,5 +71,4 @@ class RolePolicy
     {
         return $authUser->can('Reorder:Role');
     }
-
 }

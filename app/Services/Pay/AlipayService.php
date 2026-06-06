@@ -153,7 +153,7 @@ class AlipayService extends AbstractAlipayService
             $amount = $this->formatAmount($refundAmount);
             $refundNo = $outRequestNo ?: 'REF'.time().Str::random(6);
 
-            $result = $this->payment->common()->refund($outTradeNo, $amount, $refundNo);
+            $result = $this->payment->common()->optional('out_request_no', $refundNo)->refund($outTradeNo, $amount);
             if ($result->code !== '10000') {
                 throw AlipayException::fromAlipayResponse($result, '退款失败');
             }

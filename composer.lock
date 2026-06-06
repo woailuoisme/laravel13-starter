@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35b5c3a5b7a4eb65625aac14494f221e",
+    "content-hash": "6c57e10bbe95b2557d45105009fb4332",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -351,16 +351,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.384.2",
+            "version": "3.384.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a6c85b3a1f5f8327076291040329214b3a2caf2b"
+                "reference": "9d3538b3f113cd66b3220f7e37e3d0ff1e0713e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a6c85b3a1f5f8327076291040329214b3a2caf2b",
-                "reference": "a6c85b3a1f5f8327076291040329214b3a2caf2b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/9d3538b3f113cd66b3220f7e37e3d0ff1e0713e7",
+                "reference": "9d3538b3f113cd66b3220f7e37e3d0ff1e0713e7",
                 "shasum": ""
             },
             "require": {
@@ -442,9 +442,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.384.2"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.384.3"
             },
-            "time": "2026-06-03T18:07:33+00:00"
+            "time": "2026-06-04T18:11:21+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -4248,16 +4248,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v13.13.0",
+            "version": "v13.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "1daa6d3b4defe46976ccfa4fb0a7ab62717712a2"
+                "reference": "e60b1c817a9ef7da319e4007de6cfda5301a58c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/1daa6d3b4defe46976ccfa4fb0a7ab62717712a2",
-                "reference": "1daa6d3b4defe46976ccfa4fb0a7ab62717712a2",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/e60b1c817a9ef7da319e4007de6cfda5301a58c0",
+                "reference": "e60b1c817a9ef7da319e4007de6cfda5301a58c0",
                 "shasum": ""
             },
             "require": {
@@ -4468,7 +4468,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2026-06-02T14:28:17+00:00"
+            "time": "2026-06-04T18:46:35+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -9216,75 +9216,6 @@
             "time": "2026-02-21T21:26:43+00:00"
         },
         {
-            "name": "spatie/geocoder",
-            "version": "4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/geocoder.git",
-                "reference": "24f694a6ee024ad735f349e5e9969ac0536c6f61"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/geocoder/zipball/24f694a6ee024ad735f349e5e9969ac0536c6f61",
-                "reference": "24f694a6ee024ad735f349e5e9969ac0536c6f61",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^6.5|^7.0",
-                "illuminate/support": "^11.0|^12.0|^13.0",
-                "php": "^8.3"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^9.0|^10.0|^11.0",
-                "phpunit/phpunit": "^11.5.3|^12.5.12"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "Geocoder": "Spatie\\Geocoder\\Facades\\Geocoder"
-                    },
-                    "providers": [
-                        "Spatie\\Geocoder\\GeocoderServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\Geocoder\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be"
-                }
-            ],
-            "description": "Geocoding addresses to coordinates",
-            "homepage": "https://github.com/spatie/geocoder",
-            "keywords": [
-                "coordinate",
-                "geocode",
-                "laravel",
-                "location",
-                "map"
-            ],
-            "support": {
-                "source": "https://github.com/spatie/geocoder/tree/4.0.0"
-            },
-            "funding": [
-                {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "custom"
-                }
-            ],
-            "time": "2026-02-20T23:03:52+00:00"
-        },
-        {
             "name": "spatie/image",
             "version": "3.9.4",
             "source": {
@@ -9737,81 +9668,6 @@
                 }
             ],
             "time": "2026-04-01T15:21:34+00:00"
-        },
-        {
-            "name": "spatie/laravel-failed-job-monitor",
-            "version": "4.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-failed-job-monitor.git",
-                "reference": "1afb9d6b1c7ddc436341396af47d3dc57ba7d6c2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-failed-job-monitor/zipball/1afb9d6b1c7ddc436341396af47d3dc57ba7d6c2",
-                "reference": "1afb9d6b1c7ddc436341396af47d3dc57ba7d6c2",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": "^7.0|^8.0|^9.0|^10.0|^11.0|^12.0|^13.0",
-                "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.6"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
-                "pestphp/pest": "^1.22|^2.34|^3.7|^4.0"
-            },
-            "suggest": {
-                "guzzlehttp/guzzle": "Allows notifications to be sent to Slack",
-                "laravel/slack-notification-channel": "Required for sending notifications via Slack"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Spatie\\FailedJobMonitor\\FailedJobMonitorServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\FailedJobMonitor\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Get notified when a queued job fails",
-            "homepage": "https://github.com/spatie/laravel-failed-job-monitor",
-            "keywords": [
-                "job",
-                "laravel-failed-job-monitor",
-                "monitor",
-                "notify",
-                "queue",
-                "slack",
-                "spatie"
-            ],
-            "support": {
-                "source": "https://github.com/spatie/laravel-failed-job-monitor/tree/4.5.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-04-28T06:09:13+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -16896,6 +16752,47 @@
             "time": "2025-04-30T06:54:44+00:00"
         },
         {
+            "name": "iamcal/sql-parser",
+            "version": "v0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/iamcal/SQLParser.git",
+                "reference": "610392f38de49a44dab08dc1659960a29874c4b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/iamcal/SQLParser/zipball/610392f38de49a44dab08dc1659960a29874c4b8",
+                "reference": "610392f38de49a44dab08dc1659960a29874c4b8",
+                "shasum": ""
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^1.0",
+                "phpunit/phpunit": "^5|^6|^7|^8|^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "iamcal\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cal Henderson",
+                    "email": "cal@iamcal.com"
+                }
+            ],
+            "description": "MySQL schema parser",
+            "support": {
+                "issues": "https://github.com/iamcal/SQLParser/issues",
+                "source": "https://github.com/iamcal/SQLParser/tree/v0.7"
+            },
+            "time": "2026-01-28T22:20:33+00:00"
+        },
+        {
             "name": "jean85/pretty-package-versions",
             "version": "2.1.1",
             "source": {
@@ -17025,6 +16922,96 @@
                 "source": "https://github.com/mlanin/laravel-api-debugger/tree/4.0.1"
             },
             "time": "2025-02-27T12:32:07+00:00"
+        },
+        {
+            "name": "larastan/larastan",
+            "version": "v3.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/larastan/larastan.git",
+                "reference": "2970f83398154178a739609c244577267c7ee8eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/larastan/larastan/zipball/2970f83398154178a739609c244577267c7ee8eb",
+                "reference": "2970f83398154178a739609c244577267c7ee8eb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "iamcal/sql-parser": "^0.7.0",
+                "illuminate/console": "^11.44.2 || ^12.4.1 || ^13",
+                "illuminate/container": "^11.44.2 || ^12.4.1 || ^13",
+                "illuminate/contracts": "^11.44.2 || ^12.4.1 || ^13",
+                "illuminate/database": "^11.44.2 || ^12.4.1 || ^13",
+                "illuminate/http": "^11.44.2 || ^12.4.1 || ^13",
+                "illuminate/pipeline": "^11.44.2 || ^12.4.1 || ^13",
+                "illuminate/support": "^11.44.2 || ^12.4.1 || ^13",
+                "php": "^8.2",
+                "phpstan/phpstan": "^2.2.0"
+            },
+            "require-dev": {
+                "doctrine/coding-standard": "^14",
+                "laravel/framework": "^11.44.2 || ^12.7.2 || ^13",
+                "mockery/mockery": "^1.6.12",
+                "nikic/php-parser": "^5.4",
+                "orchestra/canvas": "^v9.2.2 || ^10.0.1 || ^11",
+                "orchestra/testbench-core": "^9.12.0 || ^10.1 || ^11",
+                "phpstan/phpstan-deprecation-rules": "^2.0.1",
+                "phpunit/phpunit": "^10.5.35 || ^11.5.15 || ^12.5.8 || ^13.1.8"
+            },
+            "suggest": {
+                "orchestra/testbench": "Using Larastan for analysing a package needs Testbench",
+                "phpmyadmin/sql-parser": "Install to enable Larastan's optional phpMyAdmin-based SQL parser automatically"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Larastan\\Larastan\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Can Vural",
+                    "email": "can9119@gmail.com"
+                }
+            ],
+            "description": "Larastan - Discover bugs in your code without running it. A phpstan/phpstan extension for Laravel",
+            "keywords": [
+                "PHPStan",
+                "code analyse",
+                "code analysis",
+                "larastan",
+                "laravel",
+                "package",
+                "php",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/larastan/larastan/issues",
+                "source": "https://github.com/larastan/larastan/tree/v3.10.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/canvural",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-05-28T08:00:58+00:00"
         },
         {
             "name": "laravel-lang/config",
@@ -17661,16 +17648,16 @@
         },
         {
             "name": "laravel/boost",
-            "version": "v2.4.8",
+            "version": "v2.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/boost.git",
-                "reference": "d11d720cf9537f8d236a11d973e99563a598ec9c"
+                "reference": "f0359e55f6c3782023a35baf1d3df817053d69e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/boost/zipball/d11d720cf9537f8d236a11d973e99563a598ec9c",
-                "reference": "d11d720cf9537f8d236a11d973e99563a598ec9c",
+                "url": "https://api.github.com/repos/laravel/boost/zipball/f0359e55f6c3782023a35baf1d3df817053d69e8",
+                "reference": "f0359e55f6c3782023a35baf1d3df817053d69e8",
                 "shasum": ""
             },
             "require": {
@@ -17679,7 +17666,7 @@
                 "illuminate/contracts": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/routing": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/support": "^11.45.3|^12.41.1|^13.0",
-                "laravel/mcp": "^0.5.1|^0.6.0|~0.7.0,<0.7.1",
+                "laravel/mcp": "^0.7.1",
                 "laravel/prompts": "^0.3.10",
                 "laravel/roster": "^0.5.0",
                 "php": "^8.2"
@@ -17723,20 +17710,20 @@
                 "issues": "https://github.com/laravel/boost/issues",
                 "source": "https://github.com/laravel/boost"
             },
-            "time": "2026-05-19T20:09:50+00:00"
+            "time": "2026-06-04T10:33:57+00:00"
         },
         {
             "name": "laravel/mcp",
-            "version": "v0.7.0",
+            "version": "v0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/mcp.git",
-                "reference": "3513b4feca5f1678be4d2261dcfa8e456436d02a"
+                "reference": "08962a276357f89164f78b38407c08187ab26cfe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/mcp/zipball/3513b4feca5f1678be4d2261dcfa8e456436d02a",
-                "reference": "3513b4feca5f1678be4d2261dcfa8e456436d02a",
+                "url": "https://api.github.com/repos/laravel/mcp/zipball/08962a276357f89164f78b38407c08187ab26cfe",
+                "reference": "08962a276357f89164f78b38407c08187ab26cfe",
                 "shasum": ""
             },
             "require": {
@@ -17750,7 +17737,8 @@
                 "illuminate/routing": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/support": "^11.45.3|^12.41.1|^13.0",
                 "illuminate/validation": "^11.45.3|^12.41.1|^13.0",
-                "php": "^8.2"
+                "php": "^8.2",
+                "symfony/process": "^7.4.5|^8.0.5"
             },
             "require-dev": {
                 "laravel/pint": "^1.20",
@@ -17796,7 +17784,7 @@
                 "issues": "https://github.com/laravel/mcp/issues",
                 "source": "https://github.com/laravel/mcp"
             },
-            "time": "2026-04-21T10:23:03+00:00"
+            "time": "2026-05-22T11:45:29+00:00"
         },
         {
             "name": "laravel/pail",
@@ -18920,6 +18908,70 @@
                 "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/6.0.3"
             },
             "time": "2026-03-18T20:49:53+00:00"
+        },
+        {
+            "name": "phpstan/phpstan",
+            "version": "2.2.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e5cc34d491a90e79c216d824f60fe21fd4d93bd6",
+                "reference": "e5cc34d491a90e79c216d824f60fe21fd4d93bd6",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Mirtes"
+                },
+                {
+                    "name": "Markus Staab"
+                },
+                {
+                    "name": "Vincent Langlet"
+                }
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2026-06-05T09:00:01+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -20343,134 +20395,6 @@
                 }
             ],
             "time": "2025-02-07T05:00:38+00:00"
-        },
-        {
-            "name": "spatie/file-system-watcher",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/file-system-watcher.git",
-                "reference": "2fe96de88af6660b3ab7658a8f1d41b10ad0aff6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/file-system-watcher/zipball/2fe96de88af6660b3ab7658a8f1d41b10ad0aff6",
-                "reference": "2fe96de88af6660b3ab7658a8f1d41b10ad0aff6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.3",
-                "symfony/process": "^7.0|^8.0"
-            },
-            "require-dev": {
-                "pestphp/pest": "^4.0",
-                "spatie/ray": "^1.22",
-                "spatie/temporary-directory": "^2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\Watcher\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Watch changes in the file system using PHP",
-            "homepage": "https://github.com/spatie/file-system-watcher",
-            "keywords": [
-                "file-system-watcher",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/file-system-watcher/issues",
-                "source": "https://github.com/spatie/file-system-watcher/tree/1.2.1"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2025-11-26T10:41:42+00:00"
-        },
-        {
-            "name": "spatie/laravel-horizon-watcher",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-horizon-watcher.git",
-                "reference": "ddd205838d75f9898a2b039b4397be3518cfac89"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-horizon-watcher/zipball/ddd205838d75f9898a2b039b4397be3518cfac89",
-                "reference": "ddd205838d75f9898a2b039b4397be3518cfac89",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "^9.0|^10.0|^11.0|^12.0|^13.0",
-                "php": "^8.3",
-                "spatie/file-system-watcher": "^1.1.1",
-                "spatie/laravel-package-tools": "^1.13.6"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.2",
-                "nunomaduro/collision": "^6.3.1|^8.0",
-                "orchestra/testbench": "^7.11|^8.0|^9.0|^10.0|^11.0",
-                "pestphp/pest": "^1.22.1|^2.34|^3.7",
-                "pestphp/pest-plugin-laravel": "^1.3|^2.3|^3.1",
-                "phpunit/phpunit": "^9.5.26|^10.5|^11.5.3",
-                "spatie/laravel-ray": "^1.31"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "HorizonWatcher": "Spatie\\HorizonWatcher\\Facades\\HorizonWatcher"
-                    },
-                    "providers": [
-                        "Spatie\\HorizonWatcher\\HorizonWatcherServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\HorizonWatcher\\": "src",
-                    "Spatie\\HorizonWatcher\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Automatically restart Horizon when local PHP files change",
-            "homepage": "https://github.com/spatie/laravel-horizon-watcher",
-            "keywords": [
-                "laravel",
-                "laravel-horizon-watcher",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/laravel-horizon-watcher/issues",
-                "source": "https://github.com/spatie/laravel-horizon-watcher/tree/1.2.0"
-            },
-            "time": "2026-03-12T09:16:49+00:00"
         },
         {
             "name": "staabm/side-effects-detector",

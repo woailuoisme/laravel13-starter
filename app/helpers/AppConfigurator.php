@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use App\Exceptions\ApiException;
+use App\Jobs\TestHorizonJob;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -326,8 +327,17 @@ class AppConfigurator
         // 自定义命令：删除90天前的Pulse历史数据
         //        Schedule::command('pulse:purge')->dailyAt('01:00');
 
-        // Horizon 快照
-        Schedule::command('horizon:snapshot')->everyFiveMinutes();
+        // Horizon 快照（本地开发无需指标图表，仅在非本地环境收集）
+        if (! app()->isLocal()) {
+            Schedule::command('horizon:snapshot')->everyFiveMinutes();
+        }
+
+        // Horizon 和 Scheduler 联调健康度测试任务
+        Schedule::job(new TestHorizonJob())
+            ->everyMinute()
+            ->before(static function (): void {
+                Log::info('Scheduler dispatched TestHorizonJob.');
+            });
     }
 
     public static function configureLogColorStderr(): void
@@ -337,7 +347,8 @@ class AppConfigurator
             $handler = new StreamHandler('php://stderr');
 
             // 自定义格式化器，根据日志级别动态改变颜色
-            $formatter = new class () extends LineFormatter {
+            $formatter = new class() extends LineFormatter
+            {
                 // 定义不同级别的颜色代码
                 private array $levelColors = [
                     'DEBUG' => '34',    // 蓝色

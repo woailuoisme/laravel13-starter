@@ -88,8 +88,6 @@ class FilamentConfigurator
 
     /**
      * 获取已注册的 Filament 插件
-     *
-     * @return array
      */
     public static function getPlugins(): array
     {
@@ -103,6 +101,7 @@ class FilamentConfigurator
     /**
      * 获取标准中间件列表
      * 已针对 Laravel 13 优化，并移除了过时引用。
+     *
      * @return array<class-string>
      */
     public static function getMiddleware(): array
@@ -152,7 +151,6 @@ class FilamentConfigurator
 
     /**
      * 获取用户菜单项
-     *
      */
     public static function getUserMenuItems(): array
     {
@@ -208,6 +206,7 @@ class FilamentConfigurator
             ->searchUsing(fn (string $query, GlobalSearchResults $builder) => self::resolveGlobalSearch($query, $builder))
             ->placeholder('搜索用户');
     }
+
     private static function resolveGlobalSearch(string $query, GlobalSearchResults $builder): GlobalSearchResults
     {
         $users = User::search($query)->take(10)->get()

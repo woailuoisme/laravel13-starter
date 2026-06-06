@@ -28,8 +28,8 @@ abstract class AbstractAlipayService
     protected ?Util $util = null;
 
     /**
-     * @param string $type 支付类型
-     * @param array $config 支付配置（会与默认配置合并）
+     * @param  string  $type  支付类型
+     * @param  array  $config  支付配置（会与默认配置合并）
      */
     public function __construct(
         protected string $type,

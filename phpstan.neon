@@ -1,0 +1,39 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+    paths:
+        - app/
+
+    # 将结果缓存固化在本地测试缓存目录中，防范系统随机清理，大幅提升二次分析速度
+    tmpDir: .phpunit.cache/phpstan
+
+    # 选用等级 5 以平衡强类型校验与 Eloquent 动态魔术特性的开发效率，防范过高等级导致过载报错
+    level: 5
+
+    # 避免因 PHPDoc 类型导致的恒为真/假误报
+    treatPhpDocTypesAsCertain: false
+
+    # 启用 Larastan 特有检测以配合 IDE Helper 并确保 Octane 环境安全
+    checkModelProperties: true
+    checkOctaneCompatibility: true
+
+    # 扫描由 IDE Helper 自动生成的外部定义，提供 Eloquent 模型属性支持而不污染 Model 业务文件
+    scanFiles:
+        - _ide_helper_phpstan.php
+
+    bootstrapFiles:
+        - vendor/alipaysdk/easysdk/php/src/Kernel/Factory.php
+
+    # 允许 baseline 中定义了但实际未发生的错误不报错（防止因重构导致 CI 失败）
+    reportUnmatchedIgnoredErrors: true
+
+    # 排除不需要分析的导入导出目录及 IDE 辅助定义文件，避免分析器误判或 IDE 插件误报
+    excludePaths:
+        - _ide_helper.php (?)
+        - _ide_helper_models.php (?)
+        - .phpstorm.meta.php (?)
+        - deploy.php (?)
+
+

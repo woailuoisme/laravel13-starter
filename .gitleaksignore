@@ -1,0 +1,4 @@
+# Gitleaks 忽略文件
+# 在此文件中可以列出被确认为误报的泄露指纹（Fingerprints），使 Gitleaks 跳过对它们的检查。
+# 每行包含一个由 gitleaks 检测输出的 64 位 SHA256 指纹值。例如：
+# a94a8fe5ccb19ba61c4c0873d391e987982fbbd3

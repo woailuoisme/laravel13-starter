@@ -43,6 +43,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read int|null $permissions_count
  * @property-read Collection<int, Role> $roles
  * @property-read int|null $roles_count
+ *
  * @method static \Database\Factories\AdminUserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AdminUser newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AdminUser newQuery()
@@ -68,6 +69,13 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AdminUser withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AdminUser withoutRole($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AdminUser withoutTrashed()
+ *
+ * @property-read Collection<int, Permission> $teams
+ * @property-read int|null $teams_count
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\AdminUser team($teams, bool $without = false)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|\App\Models\AdminUser withoutTeam($teams)
+ *
  * @mixin \Eloquent
  */
 #[Fillable(['username', 'name', 'email', 'phone', 'password', 'is_active', 'last_login_at', 'last_login_ip', 'avatar_url'])]
@@ -76,9 +84,10 @@ class AdminUser extends Authenticatable implements FilamentUser, JWTSubject
 {
     /** @use HasFactory<AdminUserFactory> */
     use HasFactory;
+
     use HasRoles;
-    use SoftDeletes;
     use Notifiable;
+    use SoftDeletes;
 
     protected string $guard_name = 'filament';
 
@@ -106,8 +115,6 @@ class AdminUser extends Authenticatable implements FilamentUser, JWTSubject
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
      */
     public function getJWTIdentifier(): mixed
     {

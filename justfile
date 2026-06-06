@@ -2,9 +2,6 @@
 default:
     @just --list
 
-docker_compose := "docker compose -f docker/roadrunner/docker-compose.yml"
-docker_compose_fpm := "docker compose -f docker/fpm/docker-compose.yml"
-docker_compose_franken := "docker compose -f docker/franken/docker-compose.yml"
 
 # 创建项目根目录的 rr 软链接。
 link-rr:
@@ -22,77 +19,6 @@ dev-rr:
 dev-rr-watch:
     @npx concurrently -c "#93c5fd,#c4b5fd,#fdba74" "php artisan octane:start --server=roadrunner --host=0.0.0.0 --rpc-port=6001 --port=8001 --watch" "php artisan horizon:watch --without-tty" "php artisan schedule:work" --names=server,horizon,schedule --kill-others
 
-# 创建 Docker 外部网络。
-docker-net:
-    @docker network inspect "$${DOCKER_NETWORK:-backend}" >/dev/null 2>&1 || docker network create "$${DOCKER_NETWORK:-backend}"
-
-# 构建 Docker 应用镜像。
-docker-build:
-    @{{docker_compose}} build app
-
-# 启动 Docker 应用、Horizon 和调度器。
-docker-up: docker-net
-    @{{docker_compose}} up -d app horizon schedule --force-recreate --no-deps --remove-orphans
-
-# 停止 Docker 服务。
-docker-down:
-    @{{docker_compose}} down
-
-# 查看 Docker 服务状态。
-docker-ps:
-    @{{docker_compose}} ps
-
-# 跟踪 Docker 服务日志。
-docker-logs service="app":
-    @{{docker_compose}} logs -f {{service}}
-
-# 进入 Docker 应用容器。
-docker-shell:
-    @{{docker_compose}} exec app sh
-
-# 在 Docker 应用容器中执行 Artisan。
-docker-artisan *args:
-    @{{docker_compose}} exec app php artisan {{args}}
-
-# 构建 FPM 应用镜像。
-docker-fpm-build:
-    @{{docker_compose_fpm}} build app
-
-# 启动 FPM 应用容器。
-docker-fpm-up: docker-net
-    @{{docker_compose_fpm}} up -d app
-
-# 停止 FPM 应用容器。
-docker-fpm-down:
-    @{{docker_compose_fpm}} down
-
-# 跟踪 FPM 应用日志。
-docker-fpm-logs:
-    @{{docker_compose_fpm}} logs -f app
-
-# 进入 FPM 应用容器。
-docker-fpm-shell:
-    @{{docker_compose_fpm}} exec app sh
-
-# 构建 FrankenPHP 应用镜像。
-docker-franken-build:
-    @{{docker_compose_franken}} build app
-
-# 启动 FrankenPHP 应用容器。
-docker-franken-up: docker-net
-    @{{docker_compose_franken}} up -d app
-
-# 停止 FrankenPHP 应用容器。
-docker-franken-down:
-    @{{docker_compose_franken}} down
-
-# 跟踪 FrankenPHP 应用日志。
-docker-franken-logs:
-    @{{docker_compose_franken}} logs -f app
-
-# 进入 FrankenPHP 应用容器。
-docker-franken-shell:
-    @{{docker_compose_franken}} exec app sh
 
 # 执行 k6 smoke 测试。
 k6-root-smoke:
@@ -127,3 +53,54 @@ pint-dirty-check:
 # 导出 Postman 接口集合。
 postman:
     php artisan export:postman --bearer="1|XXNKXXqJjfzG8XXSvXX1Q4pxxnkXmp8tT8TXXKXX"
+
+# 格式化 PHP 代码。
+fmt:
+    ./vendor/bin/pint -p
+
+# 运行 Markdown 规范检查。
+markdownlint:
+    bunx markdownlint-cli2
+
+# 运行代码静态检查（Pint 规范、PHPStan 分析与 Markdown 规范检查）。
+lint:
+    ./vendor/bin/pint --test
+    @php -d xdebug.mode=off -d opcache.enable_cli=1 -d opcache.jit_buffer_size=100M vendor/bin/phpstan analyse --memory-limit=2G
+
+# 生成 IDE 辅助文件（Facade, Meta, Models 写回）。
+ide-helper:
+    @php artisan ide-helper:generate
+    @php artisan ide-helper:meta
+    @php artisan ide-helper:models --write --no-interaction
+
+test:
+     php artisan test --compact
+
+
+# 运行 Gitleaks 扫描当前整个工作区的敏感凭证。
+gitleaks:
+    gitleaks detect --verbose
+
+# 运行 Gitleaks 仅扫描当前 Git 暂存区的敏感凭证。
+gitleaks-staged:
+    gitleaks protect --staged --verbose
+
+# 增量更新 CHANGELOG.md（若文件不存在则全量生成）。
+changelog:
+    @if [ ! -f CHANGELOG.md ]; then \
+        git-cliff --config cliff.toml --output CHANGELOG.md; \
+    else \
+        git-cliff --config cliff.toml --prepend CHANGELOG.md --unreleased; \
+    fi
+
+# 全量重新生成完整的 CHANGELOG.md 文件。
+changelog-all:
+    git-cliff --config cliff.toml --output CHANGELOG.md
+
+# 使用 Laravel 内建加密工具加密 .env.production 文件（生成 .env.production.encrypted）。
+env-encrypt:
+    php artisan env:encrypt --env=production
+
+# 使用 Laravel 内建加密工具解密 .env.production.encrypted 文件。
+env-decrypt:
+    php artisan env:decrypt --env=production

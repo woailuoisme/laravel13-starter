@@ -30,9 +30,9 @@ class ResponseService
     /**
      * 发送成功响应
      *
-     * @param mixed $data 响应数据
-     * @param string $message 响应消息
-     * @param int $code HTTP状态码
+     * @param  mixed  $data  响应数据
+     * @param  string  $message  响应消息
+     * @param  int  $code  HTTP状态码
      */
     public function sendResponse(mixed $data, string $message, int $code = ResponseAlias::HTTP_OK): JsonResponse
     {
@@ -42,9 +42,9 @@ class ResponseService
     /**
      * 静态方法：发送成功响应
      *
-     * @param mixed $data 响应数据
-     * @param string $message 响应消息
-     * @param int $code HTTP状态码
+     * @param  mixed  $data  响应数据
+     * @param  string  $message  响应消息
+     * @param  int  $code  HTTP状态码
      */
     public static function response(mixed $data, string $message, int $code = ResponseAlias::HTTP_OK): JsonResponse
     {
@@ -54,10 +54,10 @@ class ResponseService
     /**
      * 发送错误响应
      *
-     * @param string $message 错误消息
-     * @param int $code HTTP状态码
-     * @param mixed|null $data 额外错误数据
-     * @param int|null $customCode 自定义错误码
+     * @param  string  $message  错误消息
+     * @param  int  $code  HTTP状态码
+     * @param  mixed|null  $data  额外错误数据
+     * @param  int|null  $customCode  自定义错误码
      */
     public function sendError(
         string $message = 'Fail',
@@ -85,10 +85,10 @@ class ResponseService
     /**
      * 静态方法：发送错误响应
      *
-     * @param string $message 错误消息
-     * @param int $code HTTP状态码
-     * @param mixed|null $data 额外错误数据
-     * @param int|null $customCode 自定义错误码
+     * @param  string  $message  错误消息
+     * @param  int  $code  HTTP状态码
+     * @param  mixed|null  $data  额外错误数据
+     * @param  int|null  $customCode  自定义错误码
      */
     public static function error(
         string $message = 'Fail',
@@ -102,16 +102,14 @@ class ResponseService
     /**
      * 发送基于枚举的错误响应
      *
-     * @param \BackedEnum $enum 错误码枚举
-     * @param int|null $httpCode HTTP状态码，如果枚举定义了httpStatus()则优先使用
+     * @param  \BackedEnum  $enum  错误码枚举
+     * @param  int|null  $httpCode  HTTP状态码，如果枚举定义了httpStatus()则优先使用
      */
     public function sendEnumError(\BackedEnum $enum, ?int $httpCode = null): JsonResponse
     {
         $code = is_int($enum->value) ? $enum->value : 400;
-        /** @var mixed $mixedEnum */
-        $mixedEnum = $enum;
-        $message = method_exists($enum, 'message') ? $mixedEnum->message() : $enum->name;
-        $status = method_exists($enum, 'httpStatus') ? $mixedEnum->httpStatus() : ($httpCode ?? 400);
+        $message = method_exists($enum, 'message') ? $enum->message() : $enum->name;
+        $status = method_exists($enum, 'httpStatus') ? $enum->httpStatus() : ($httpCode ?? 400);
 
         return $this->sendError($message, $status, null, $code);
     }
@@ -119,8 +117,8 @@ class ResponseService
     /**
      * 静态方法：发送基于枚举的错误响应
      *
-     * @param \BackedEnum $enum 错误码枚举
-     * @param int|null $httpCode HTTP状态码
+     * @param  \BackedEnum  $enum  错误码枚举
+     * @param  int|null  $httpCode  HTTP状态码
      */
     public static function enumError(\BackedEnum $enum, ?int $httpCode = null): JsonResponse
     {
@@ -130,10 +128,10 @@ class ResponseService
     /**
      * 发送成功响应
      *
-     * @param string $message 成功消息
-     * @param mixed|null $data 响应数据
-     * @param int $code HTTP状态码
-     * @param int|null $customCode 自定义状态码
+     * @param  string  $message  成功消息
+     * @param  mixed|null  $data  响应数据
+     * @param  int  $code  HTTP状态码
+     * @param  int|null  $customCode  自定义状态码
      */
     public function sendSuccess(
         string $message = 'success',
@@ -157,10 +155,10 @@ class ResponseService
     /**
      * 静态方法：发送成功响应
      *
-     * @param string $message 成功消息
-     * @param mixed|null $data 响应数据
-     * @param int $code HTTP状态码
-     * @param int|null $customCode 自定义状态码
+     * @param  string  $message  成功消息
+     * @param  mixed|null  $data  响应数据
+     * @param  int  $code  HTTP状态码
+     * @param  int|null  $customCode  自定义状态码
      */
     public static function success(
         string $message = 'success',
@@ -174,8 +172,8 @@ class ResponseService
     /**
      * 资源获取成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public function sendRetrieved(string $modelName, mixed $data): JsonResponse
     {
@@ -185,8 +183,8 @@ class ResponseService
     /**
      * 静态方法：资源获取成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public static function retrieved(string $modelName, mixed $data): JsonResponse
     {
@@ -196,8 +194,8 @@ class ResponseService
     /**
      * 资源创建成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public function sendCreated(string $modelName, mixed $data): JsonResponse
     {
@@ -207,8 +205,8 @@ class ResponseService
     /**
      * 静态方法：资源创建成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public static function created(string $modelName, mixed $data): JsonResponse
     {
@@ -218,8 +216,8 @@ class ResponseService
     /**
      * 资源更新成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public function sendUpdated(string $modelName, mixed $data): JsonResponse
     {
@@ -229,8 +227,8 @@ class ResponseService
     /**
      * 静态方法：资源更新成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed $data 数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed  $data  数据
      */
     public static function updated(string $modelName, mixed $data): JsonResponse
     {
@@ -240,8 +238,8 @@ class ResponseService
     /**
      * 资源删除成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed|null $data 额外数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed|null  $data  额外数据
      */
     public function sendDeleted(string $modelName, mixed $data = null): JsonResponse
     {
@@ -251,8 +249,8 @@ class ResponseService
     /**
      * 静态方法：资源删除成功响应
      *
-     * @param string $modelName 模型名称
-     * @param mixed|null $data 额外数据
+     * @param  string  $modelName  模型名称
+     * @param  mixed|null  $data  额外数据
      */
     public static function deleted(string $modelName, mixed $data = null): JsonResponse
     {
@@ -262,9 +260,9 @@ class ResponseService
     /**
      * 获取分页数据
      *
-     * @param LengthAwarePaginator $paginator 分页器实例
-     * @param string|null $resource 资源类名
-     * @param array $extraData 额外数据
+     * @param  LengthAwarePaginator  $paginator  分页器实例
+     * @param  string|null  $resource  资源类名
+     * @param  array  $extraData  额外数据
      */
     public function paginatorData(
         LengthAwarePaginator $paginator,
@@ -298,9 +296,9 @@ class ResponseService
     /**
      * 发送分页响应
      *
-     * @param LengthAwarePaginator $paginator 分页器实例
-     * @param string|null $resource 资源类名
-     * @param array $extraData 额外数据
+     * @param  LengthAwarePaginator  $paginator  分页器实例
+     * @param  string|null  $resource  资源类名
+     * @param  array  $extraData  额外数据
      */
     public function sendPaginatorData(
         LengthAwarePaginator $paginator,
@@ -313,9 +311,9 @@ class ResponseService
     /**
      * 静态方法：发送分页响应
      *
-     * @param LengthAwarePaginator $paginator 分页器实例
-     * @param string|null $resource 资源类名
-     * @param array $extraData 额外数据
+     * @param  LengthAwarePaginator  $paginator  分页器实例
+     * @param  string|null  $resource  资源类名
+     * @param  array  $extraData  额外数据
      */
     public static function paginated(
         LengthAwarePaginator $paginator,
@@ -328,8 +326,8 @@ class ResponseService
     /**
      * 创建成功响应数组
      *
-     * @param string $message 响应消息
-     * @param mixed $data 响应数据
+     * @param  string  $message  响应消息
+     * @param  mixed  $data  响应数据
      */
     public static function makeResponse(string $message, mixed $data): array
     {
@@ -343,8 +341,8 @@ class ResponseService
     /**
      * 创建错误响应数组
      *
-     * @param string $message 错误消息
-     * @param array $data 额外错误数据
+     * @param  string  $message  错误消息
+     * @param  array  $data  额外错误数据
      */
     public static function makeError(string $message, array $data = []): array
     {

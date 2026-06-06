@@ -1,0 +1,64 @@
+# git-cliff 配置文件
+# 基于 Keep a Changelog 规范定制：https://keepachangelog.com/
+
+[changelog]
+# 设定 Changelog 的头部标题，说明此文件遵循 Keep a Changelog 规范。
+header = """
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+"""
+
+# 定义版本发布的日志模板。支持将变更按 Added, Changed, Fixed, Security 等类别聚合展示。
+body = """
+{% if version %}\
+    ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
+{% else %}\
+    ## [Unreleased]
+{% endif %}\
+{% for group, commits in commits | group_by(attribute="group") %}
+    ### {{ group }}
+    {% for commit in commits %}
+        - {% if commit.scope %}*({{ commit.scope }})* {% endif %}{{ commit.message | upper_first }} ({{ commit.id | truncate(length=7, end="") }})\
+    {% endfor %}
+{% endfor %}
+"""
+
+# 去除多余的空行。
+trim = true
+
+[git]
+# 开启 conventional commits 模式，以便自动解析结构化提交记录。
+conventional_commits = true
+# 忽略掉所有不符合常规提交规范的记录（避免非规范提交污染日志）。
+filter_unconventional = true
+# 排序 commits，优先展示较早的提交。
+sort_commits = "oldest"
+
+# 针对不同的 commit 类别映射到 Keep a Changelog 的官方分类中。
+commit_parsers = [
+    # 优先提取带安全相关的 scope (如 feat(security): 或 fix(security):) 并归为 Security 分类
+    { scope = "security", group = "Security" },
+    
+    # 常规分类映射
+    { message = "^feat", group = "Added" },
+    { message = "^fix", group = "Fixed" },
+    { message = "^revert", group = "Fixed" },
+    { message = "^perf", group = "Changed" },
+    { message = "^refactor", group = "Changed" },
+    { message = "^style", group = "Changed" },
+    { message = "^doc", group = "Documentation" },
+    
+    # 忽略纯开发流程噪音，使得 Changelog 对产品用户和非技术干系人更具可读性
+    { message = "^chore", skip = true },
+    { message = "^ci", skip = true },
+    { message = "^test", skip = true },
+]
+
+# 忽略不匹配任何 tag_pattern 的 Tag
+ignore_tags = ""
+# 匹配类似 v1.0.0 的版本标签
+tag_pattern = "v[0-9]*"

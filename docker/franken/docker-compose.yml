@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: franken-app
     image: ${DOCKER_IMAGE:-laravel-franken:latest}
     build:
       context: ../..

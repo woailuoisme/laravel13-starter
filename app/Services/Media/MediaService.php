@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
@@ -48,9 +47,7 @@ class MediaService
     /**
      * 公共构造函数，支持控制反转 (DI)
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * 获取单例实例
@@ -126,10 +123,10 @@ class MediaService
     /**
      * 上传单个文件到指定集合
      *
-     * @param HasMedia $model 模型实例
-     * @param UploadedFile $file 上传文件
-     * @param string $collection 集合名称
-     * @param array $customProperties 自定义属性
+     * @param  HasMedia  $model  模型实例
+     * @param  UploadedFile  $file  上传文件
+     * @param  string  $collection  集合名称
+     * @param  array  $customProperties  自定义属性
      *
      * @throws FileDoesNotExist|FileIsTooBig
      */
@@ -186,7 +183,7 @@ class MediaService
     /**
      * 查找已存在的相同文件（基于文件名）
      */
-    protected function findExistingMedia(HasMedia $model, string $fileName, string $collection): ?callable
+    protected function findExistingMedia(HasMedia $model, string $fileName, string $collection): ?Media
     {
         return $model->getMedia($collection)->where('file_name', $fileName)->first();
     }
@@ -194,10 +191,10 @@ class MediaService
     /**
      * 上传多个文件到指定集合
      *
-     * @param HasMedia $model 模型实例
-     * @param array<UploadedFile> $files 上传文件数组
-     * @param string $collection 集合名称
-     * @param bool $preserveOrder 是否保持排序
+     * @param  HasMedia  $model  模型实例
+     * @param  array<UploadedFile>  $files  上传文件数组
+     * @param  string  $collection  集合名称
+     * @param  bool  $preserveOrder  是否保持排序
      * @return Collection<Media>
      *
      * @throws FileDoesNotExist|FileIsTooBig
@@ -248,33 +245,11 @@ class MediaService
     }
 
     /**
-     * 验证上传文件
-     */
-    private function validateUpload(UploadedFile $file): void
-    {
-        if (! $file->isValid()) {
-            throw new InvalidArgumentException('上传文件无效: '.$file->getErrorMessage());
-        }
-
-        if (! $this->validateFileType($file)) {
-            throw new InvalidArgumentException('不支持的文件类型: '.$file->getMimeType());
-        }
-    }
-
-    /**
-     * 获取清理后的文件名（去除路径信息）
-     */
-    private function getCleanFileName(UploadedFile $file): string
-    {
-        return pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-    }
-
-    /**
      * 根据 ID 批量删除媒体文件
      *
-     * @param HasMedia $model 模型实例
-     * @param array<int> $mediaIds 媒体 ID 数组
-     * @param string $collection 集合名称
+     * @param  HasMedia  $model  模型实例
+     * @param  array<int>  $mediaIds  媒体 ID 数组
+     * @param  string  $collection  集合名称
      * @return int 删除成功的文件数量
      */
     public function deleteByIds(HasMedia $model, array $mediaIds, string $collection = ''): int
@@ -283,7 +258,7 @@ class MediaService
 
         foreach ($mediaIds as $id) {
             $query = $model->getMedia($collection);
-            $media = $query->find($id);
+            $media = $query->firstWhere('id', $id);
 
             if ($media) {
                 try {
@@ -304,9 +279,9 @@ class MediaService
     /**
      * 更新媒体文件排序
      *
-     * @param HasMedia $model 模型实例
-     * @param array<int, int> $orderMap 媒体 ID => 排序位置的映射
-     * @param string $collection 集合名称
+     * @param  HasMedia  $model  模型实例
+     * @param  array<int, int>  $orderMap  媒体 ID => 排序位置的映射
+     * @param  string  $collection  集合名称
      * @return int 更新成功的文件数量
      */
     public function updateOrder(HasMedia $model, array $orderMap, string $collection = 'images'): int
@@ -314,7 +289,7 @@ class MediaService
         $updatedCount = 0;
 
         foreach ($orderMap as $mediaId => $position) {
-            $media = $model->getMedia($collection)->find($mediaId);
+            $media = $model->getMedia($collection)->firstWhere('id', $mediaId);
 
             if ($media) {
                 try {
@@ -336,9 +311,9 @@ class MediaService
     /**
      * 获取媒体文件信息
      *
-     * @param HasMedia $model 模型实例
-     * @param string $collection 集合名称
-     * @param bool $withUrls 是否包含 URL
+     * @param  HasMedia  $model  模型实例
+     * @param  string  $collection  集合名称
+     * @param  bool  $withUrls  是否包含 URL
      * @return array 媒体文件信息数组
      */
     public function getMediaInfo(HasMedia $model, string $collection = '', bool $withUrls = true): array
@@ -371,23 +346,23 @@ class MediaService
     /**
      * 替换媒体文件（删除旧文件，上传新文件）
      *
-     * @param HasMedia $model 模型实例
-     * @param UploadedFile $newFile 新文件
-     * @param string $collection 集合名称
-     * @param int|null $replaceMediaId 要替换的媒体 ID（为 null 则替换集合中的第一个）
+     * @param  HasMedia  $model  模型实例
+     * @param  UploadedFile  $newFile  新文件
+     * @param  string  $collection  集合名称
+     * @param  int|null  $replaceMediaId  要替换的媒体 ID（为 null 则替换集合中的第一个）
      */
     public function replaceMedia(HasMedia $model, UploadedFile $newFile, string $collection = 'default', ?int $replaceMediaId = null): ?Media
     {
         try {
             // 获取要替换的媒体
             if ($replaceMediaId) {
-                $oldMedia = $model->getMedia($collection)->find($replaceMediaId);
+                $oldMedia = $model->getMedia($collection)->firstWhere('id', $replaceMediaId);
             } else {
                 $oldMedia = $model->getMedia($collection)->first();
             }
 
-            $oldOrder = $oldMedia?->order_column;
-            $oldCustomProperties = $oldMedia?->custom_properties ?? [];
+            $oldOrder = $oldMedia ? $oldMedia->order_column : null;
+            $oldCustomProperties = $oldMedia ? $oldMedia->custom_properties : [];
 
             // 上传新文件
             $newMedia = $this->uploadSingle($model, $newFile, $collection, $oldCustomProperties);
@@ -474,17 +449,16 @@ class MediaService
     /**
      * 通过 URL 添加媒体文件
      *
-     * @param HasMedia $model 模型实例
-     * @param string $url 文件 URL
-     * @param string $collection 集合名称
-     * @param array $customProperties 自定义属性
+     * @param  HasMedia  $model  模型实例
+     * @param  string  $url  文件 URL
+     * @param  string  $collection  集合名称
+     * @param  array  $customProperties  自定义属性
      *
      * @throws UnreachableUrl
      */
     public function addMediaFromUrl(HasMedia $model, string $url, string $collection = 'default', array $customProperties = []): Media
     {
-        /** @var InteractsWithMedia $model */
-        return $model->addMediaFromUrl($url)
+        return $model->addMediaFromUrl($url) // @phpstan-ignore-line
             ->withCustomProperties($customProperties)
             ->toMediaCollection($collection);
     }
@@ -492,11 +466,11 @@ class MediaService
     /**
      * 复制媒体文件到另一个模型
      *
-     * @param HasMedia $sourceModel 源模型
-     * @param HasMedia $targetModel 目标模型
-     * @param string $sourceCollection 源集合
-     * @param string $targetCollection 目标集合
-     * @param array $mediaIds 要复制的媒体ID（为空则复制所有）
+     * @param  HasMedia  $sourceModel  源模型
+     * @param  HasMedia  $targetModel  目标模型
+     * @param  string  $sourceCollection  源集合
+     * @param  string  $targetCollection  目标集合
+     * @param  array  $mediaIds  要复制的媒体ID（为空则复制所有）
      * @return Collection<Media>
      */
     public function copyMediaBetweenModels(HasMedia $sourceModel, HasMedia $targetModel, string $sourceCollection = '', string $targetCollection = 'default', array $mediaIds = []): Collection
@@ -529,8 +503,8 @@ class MediaService
     /**
      * 获取媒体文件统计信息
      *
-     * @param HasMedia $model 模型实例
-     * @param string $collection 集合名称
+     * @param  HasMedia  $model  模型实例
+     * @param  string  $collection  集合名称
      * @return array 统计信息
      */
     public function getMediaStats(HasMedia $model, string $collection = ''): array
@@ -573,12 +547,12 @@ class MediaService
     /**
      * 检查文件是否重复（基于文件内容哈希）
      *
-     * @param HasMedia $model 模型实例
-     * @param UploadedFile $file 上传文件
-     * @param string $collection 集合名称
-     * @return \Closure 如果存在重复文件则返回已存在的媒体实例
+     * @param  HasMedia  $model  模型实例
+     * @param  UploadedFile  $file  上传文件
+     * @param  string  $collection  集合名称
+     * @return Media|null 如果存在重复文件则返回已存在的媒体实例
      */
-    public function findDuplicateFile(HasMedia $model, UploadedFile $file, string $collection = ''): \Closure
+    public function findDuplicateFile(HasMedia $model, UploadedFile $file, string $collection = ''): ?Media
     {
         //        $fileHash = md5_file($file->getRealPath());
         $fileName = $this->generateFileName($file);
@@ -591,11 +565,11 @@ class MediaService
     /**
      * 批量处理文件上传，支持去重
      *
-     * @param HasMedia $model 模型实例
-     * @param array<UploadedFile> $files 上传文件数组
-     * @param string $collection 集合名称
-     * @param bool $skipDuplicates 是否跳过重复文件
-     * @param bool $preserveOrder 是否保持排序
+     * @param  HasMedia  $model  模型实例
+     * @param  array<UploadedFile>  $files  上传文件数组
+     * @param  string  $collection  集合名称
+     * @param  bool  $skipDuplicates  是否跳过重复文件
+     * @param  bool  $preserveOrder  是否保持排序
      * @return array 处理结果
      */
     public function batchUpload(HasMedia $model, array $files, string $collection = 'images', bool $skipDuplicates = true, bool $preserveOrder = true): array
@@ -663,8 +637,8 @@ class MediaService
     /**
      * 清理无效的媒体文件（文件不存在但数据库记录存在）
      *
-     * @param HasMedia $model 模型实例
-     * @param string $collection 集合名称
+     * @param  HasMedia  $model  模型实例
+     * @param  string  $collection  集合名称
      * @return int 清理的文件数量
      */
     public function cleanupInvalidMedia(HasMedia $model, string $collection = ''): int

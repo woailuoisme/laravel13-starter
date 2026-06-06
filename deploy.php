@@ -105,7 +105,7 @@ task('quick', function (): void {
     $branch = (string) get('branch');
     $branch
         |> escapeshellarg(...)
-        |> (fn ($x) => sprintf('git pull origin %s && php artisan optimize && php artisan octane:reload', $x, ))
+        |> (fn ($x) => sprintf('git pull origin %s && php artisan optimize && php artisan octane:reload', $x))
         |> dockerCommand(...)
         |> run(...);
 });

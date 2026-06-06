@@ -30,14 +30,14 @@ class ClearBucketCommand extends Command
         $path = $this->option('path') ? (string) $this->option('path') : '';
 
         if (empty($disk) || ! config("filesystems.disks.$disk")) {
-            $this->error("磁盘 [" . ($disk ?: 'NULL') . "] 未在 config/filesystems.php 中配置！");
+            $this->error('磁盘 ['.($disk ?: 'NULL').'] 未在 config/filesystems.php 中配置！');
 
             return self::FAILURE;
         }
 
         $storage = Storage::disk($disk);
 
-        $this->info("正在扫描磁盘 [" . $disk . "] 路径 [/" . $path . "] 下的文件...");
+        $this->info('正在扫描磁盘 ['.$disk.'] 路径 [/'.$path.'] 下的文件...');
         $files = $storage->allFiles($path);
 
         if (empty($files)) {
@@ -57,7 +57,7 @@ class ClearBucketCommand extends Command
             return self::SUCCESS;
         }
 
-        if (! $this->option('force') && ! $this->confirm("确定要彻底删除磁盘 [" . $disk . "] 下的这 " . count($files) . " 个文件吗？", false)) {
+        if (! $this->option('force') && ! $this->confirm('确定要彻底删除磁盘 ['.$disk.'] 下的这 '.count($files).' 个文件吗？', false)) {
             $this->warn('操作已中止。');
 
             return self::SUCCESS;
@@ -102,7 +102,7 @@ class ClearBucketCommand extends Command
             } catch (Throwable $e) {
                 // 遇到错误时建议先暂停进度条，打印后继续
                 $this->newLine();
-                $this->error("处理文件 [" . $file . "] 时遇到异常: " . $e->getMessage());
+                $this->error('处理文件 ['.$file.'] 时遇到异常: '.$e->getMessage());
             }
 
             $bar->advance();

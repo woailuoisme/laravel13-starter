@@ -44,8 +44,9 @@ class WechatPayService
     protected OpenSSLAsymmetricKey $privateKey;
 
     /**
-     * @param string $type 默认支付类型 (native / js / app / h5)
-     * @param array $config 覆盖配置 (默认读取 config('pay.wechat'))
+     * @param  string  $type  默认支付类型 (native / js / app / h5)
+     * @param  array  $config  覆盖配置 (默认读取 config('pay.wechat'))
+     *
      * @throws WePayException
      */
     public function __construct(
@@ -84,10 +85,10 @@ class WechatPayService
     /**
      * 统一支付下单
      *
-     * @param string $outTradeNo 商户系统内部订单号
-     * @param int $total 分单位订单金额
-     * @param string $description 商品描述
-     * @param array $extra 扩展参数 (openid / client_ip 等)
+     * @param  string  $outTradeNo  商户系统内部订单号
+     * @param  int  $total  分单位订单金额
+     * @param  string  $description  商品描述
+     * @param  array  $extra  扩展参数 (openid / client_ip 等)
      */
     public function pay(string $outTradeNo, int $total, string $description, array $extra = []): array
     {
@@ -113,6 +114,7 @@ class WechatPayService
 
     /**
      * 查询订单状态
+     *
      * @throws WePayException
      */
     public function query(string $outTradeNo): array
@@ -312,7 +314,7 @@ class WechatPayService
             ])]),
             'native' => array_merge($base, [
                 'code_url' => $data['code_url'] ?? '',
-                'qr_code' => isset($data['code_url']) ? "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=".urlencode($data['code_url']) : '',
+                'qr_code' => isset($data['code_url']) ? 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($data['code_url']) : '',
             ]),
             'h5' => array_merge($base, ['h5_url' => $data['h5_url'] ?? '']),
             default => $base,

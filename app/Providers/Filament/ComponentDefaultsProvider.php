@@ -61,7 +61,7 @@ class ComponentDefaultsProvider extends ServiceProvider
         $this->configureMediaActions();
 
         LanguageSwitch::configureUsing(static function (LanguageSwitch $switch): void {
-            $switch->locales(['zh_CN','en'])->visible(); // also accepts a closure
+            $switch->locales(['zh_CN', 'en'])->visible(); // also accepts a closure
         });
 
         SelectTree::configureUsing(static function (SelectTree $selectTree): void {
@@ -188,9 +188,9 @@ class ComponentDefaultsProvider extends ServiceProvider
             $component->extraInputAttributes([
                 'style' => 'min-height: 300px; max-height: 800px; overflow-y: scroll;',
             ])
-            ->fileAttachmentsDisk(config('filesystems.default'))
-            ->fileAttachmentsDirectory('attachments')
-            ->fileAttachmentsVisibility('public');
+                ->fileAttachmentsDisk(config('filesystems.default'))
+                ->fileAttachmentsDirectory('attachments')
+                ->fileAttachmentsVisibility('public');
         });
 
         // Markdown 编辑器
@@ -199,8 +199,8 @@ class ComponentDefaultsProvider extends ServiceProvider
                 'bold', 'italic', 'strike', 'link', 'heading', 'blockquote',
                 'codeBlock', 'bulletList', 'orderedList', 'table', 'attachFiles', 'undo', 'redo',
             ])
-            ->fileAttachmentsDisk('oss')
-            ->fileAttachmentsDirectory('attachments');
+                ->fileAttachmentsDisk('oss')
+                ->fileAttachmentsDirectory('attachments');
         });
 
         // 时间选择器

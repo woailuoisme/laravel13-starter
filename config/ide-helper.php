@@ -52,14 +52,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Write model query methods
+    | Factory builders
     |--------------------------------------------------------------------------
     |
-    | Set to false to disable generated docs for the 'query()', 'newQuery()' and 'newModelQuery()' methods.
+    | Set to true to generate factory generators for better factory()
+    | method auto-completion.
+    |
+    | Deprecated for Laravel 8 or latest.
     |
     */
 
-    'write_query_methods' => true,
+    'include_factory_builders' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -96,19 +99,8 @@ return [
     'write_model_relation_count_properties' => true,
     'write_model_relation_exists_properties' => false,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Write Eloquent model mixins
-    |--------------------------------------------------------------------------
-    |
-    | This will add the necessary DocBlock mixins to the model class
-    | contained in the Laravel framework. This helps the IDE with
-    | auto-completion.
-    |
-    | Please be aware that this setting changes a file within the /vendor directory.
-    |
-    */
-
+    // 必须为 false。若为 true 会直接修改 vendor 目录下的框架核心文件，这不仅破坏包的完整性，
+    // 且在执行 composer install 重新拉取 vendor 后会自动失效。
     'write_eloquent_model_mixins' => false,
 
     /*
@@ -124,8 +116,8 @@ return [
     'include_helpers' => false,
 
     'helper_files' => [
-        base_path() . '/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
-        base_path() . '/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php',
+        base_path().'/vendor/laravel/framework/src/Illuminate/Support/helpers.php',
+        base_path().'/vendor/laravel/framework/src/Illuminate/Foundation/helpers.php',
     ],
 
     /*
@@ -142,7 +134,7 @@ return [
     */
 
     'model_locations' => [
-        'app',
+        'app/Models',
     ],
 
     /*
@@ -204,29 +196,29 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Support for camel cased models
-    |--------------------------------------------------------------------------
-    |
-    | There are some Laravel packages (such as Eloquence) that allow for accessing
-    | Eloquent model properties via camel case, instead of snake case.
-    |
-    | Enabling this option will support these packages by saving all model
-    | properties as camel case, instead of snake case.
-    |
-    | For example, normally you would see this:
-    |
-    |  * @property \Illuminate\Support\Carbon $created_at
-    |  * @property \Illuminate\Support\Carbon $updated_at
-    |
-    | With this enabled, the properties will be this:
-    |
-    |  * @property \Illuminate\Support\Carbon $createdAt
-    |  * @property \Illuminate\Support\Carbon $updatedAt
-    |
-    | Note, it is currently an all-or-nothing option.
-    |
-    */
+     |--------------------------------------------------------------------------
+     | Support for camel cased models
+     |--------------------------------------------------------------------------
+     |
+     | There are some Laravel packages (such as Eloquence) that allow for accessing
+     | Eloquent model properties via camel case, instead of snake case.
+     |
+     | Enabling this option will support these packages by saving all model
+     | properties as camel case, instead of snake case.
+     |
+     | For example, normally you would see this:
+     |
+     |  * @property \Illuminate\Support\Carbon $created_at
+     |  * @property \Illuminate\Support\Carbon $updated_at
+     |
+     | With this enabled, the properties will be this:
+     |
+     |  * @property \Illuminate\Support\Carbon $createdAt
+     |  * @property \Illuminate\Support\Carbon $updatedAt
+     |
+     | Note, it is currently an all-or-nothing option.
+     |
+     */
     'model_camel_case_properties' => false,
 
     /*
@@ -263,17 +255,10 @@ return [
     | or there is an import (use className) of the class.
     |
     */
-    'force_fqn' => false,
+    'force_fqn' => true,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Use generics syntax
-    |--------------------------------------------------------------------------
-    |
-    | Use generics syntax within DocBlocks,
-    | e.g. `Collection<User>` instead of `Collection|User[]`.
-    |
-    */
+    // 必须为 true。启用泛型声明（如 Collection<User>），能让 PHPStan (Larastan)
+    // 以及 IDE 强类型解析器准确推断集合内对象类型，有效消除遍历过程中的虚假类型报错。
     'use_generics_annotations' => true,
 
     /*
@@ -339,37 +324,8 @@ return [
 
     'enforce_nullable_relationships' => true,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Make soft deletable relations nullable
-    |--------------------------------------------------------------------------
-    |
-    | When set to true (default), relationships to models using SoftDeletes trait
-    | will be marked as nullable. This is because soft-deleted records are excluded
-    | from queries by default, meaning even non-nullable foreign keys can return
-    | null when the related model is soft-deleted.
-    |
-    | Default: true
-    | A relationship to a soft-deletable model will include |null in the type:
-    |  * @property-read Team|null $team
-    |
-    | Option: false
-    | A relationship to a soft-deletable model will NOT include |null (unless
-    | nullable for other reasons such as nullable foreign key column):
-    |  * @property-read Team $team
-    |
-    */
-
-    'soft_deletes_force_nullable' => true,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Run artisan commands after migrations to generate model helpers
-    |--------------------------------------------------------------------------
-    |
-    | The specified commands should run after migrations are finished running.
-    |
-    */
+    // 保持空置。请勿解开注释！否则每次 migrate 之后会自动复写 _ide_helper_models.php，
+    // 进而破坏并覆盖我们为 IDE 特别配置的“双轨制”正则清洗后处理逻辑，导致 IDE 重新报未实现接口的红线。
     'post_migrate' => [
         // 'ide-helper:models --nowrite',
     ],

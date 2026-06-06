@@ -63,6 +63,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read int|null $otp_records_count
  * @property-read Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
+ *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User hasExpiredGenericTrial()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
@@ -99,18 +100,21 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed(bool $withTrashed = true)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 #[Fillable(['name', 'nickname', 'username', 'email', 'telephone', 'avatar', 'birthday', 'gender', 'bio', 'email_verified_at', 'password', 'last_login_at', 'last_login_ip', 'open_id', 'github_id', 'google_id'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements JWTSubject, HasMedia
+class User extends Authenticatable implements HasMedia, JWTSubject
 {
+    use Billable;
+
     /** @use HasFactory<UserFactory> */
     use HasFactory;
+
+    use InteractsWithMedia;
     use Notifiable;
     use SoftDeletes;
-    use InteractsWithMedia;
-    use Billable;
 
     protected function casts(): array
     {

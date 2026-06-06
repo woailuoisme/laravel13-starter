@@ -10,25 +10,25 @@ use Illuminate\Support\Facades\Log;
  *
  * 用于处理支付宝支付过程中的各种异常情况
  */
-class AlipayException extends Exception
+final class AlipayException extends Exception
 {
     /**
      * 支付失败异常
      *
-     * @param string $message 错误信息
-     * @param array $context 上下文信息
+     * @param  string  $message  错误信息
+     * @param  array  $context  上下文信息
      */
     public static function paymentFailed(string $message, array $context = []): static
     {
         Log::error('支付宝支付失败', array_merge(['message' => $message], $context));
 
-        return new static("支付失败: {$message}", 4001);
+        return new self("支付失败: {$message}", 4001);
     }
 
     /**
      * 配置错误异常
      *
-     * @param string $message 错误信息
+     * @param  string  $message  错误信息
      */
     public static function configError(string $message): static
     {
@@ -40,7 +40,7 @@ class AlipayException extends Exception
     /**
      * 网络错误异常
      *
-     * @param string $message 错误信息
+     * @param  string  $message  错误信息
      */
     public static function networkError(string $message): static
     {
@@ -52,7 +52,7 @@ class AlipayException extends Exception
     /**
      * 签名验证失败异常
      *
-     * @param string $message 错误信息
+     * @param  string  $message  错误信息
      */
     public static function signatureError(string $message): static
     {
@@ -64,7 +64,7 @@ class AlipayException extends Exception
     /**
      * 订单状态异常
      *
-     * @param string $message 错误信息
+     * @param  string  $message  错误信息
      */
     public static function orderStatusError(string $message): static
     {
@@ -76,7 +76,7 @@ class AlipayException extends Exception
     /**
      * 参数验证异常
      *
-     * @param string $message 错误信息
+     * @param  string  $message  错误信息
      */
     public static function validationError(string $message): static
     {
@@ -88,8 +88,8 @@ class AlipayException extends Exception
     /**
      * 根据支付宝响应创建友好的异常
      *
-     * @param object $response 支付宝响应对象
-     * @param string $originalMessage 原始错误信息
+     * @param  object  $response  支付宝响应对象
+     * @param  string  $originalMessage  原始错误信息
      */
     public static function fromAlipayResponse($response, string $originalMessage = ''): static
     {
@@ -104,11 +104,11 @@ class AlipayException extends Exception
     /**
      * 创建支付宝友好错误异常
      *
-     * @param string $code 主错误码
-     * @param string $subCode 子错误码
-     * @param string $msg 主错误信息
-     * @param string $subMsg 子错误信息
-     * @param string $originalMessage 原始错误信息
+     * @param  string  $code  主错误码
+     * @param  string  $subCode  子错误码
+     * @param  string  $msg  主错误信息
+     * @param  string  $subMsg  子错误信息
+     * @param  string  $originalMessage  原始错误信息
      */
     public static function alipayError(string $code, string $subCode = '', string $msg = '', string $subMsg = '', string $originalMessage = ''): static
     {
@@ -156,8 +156,8 @@ class AlipayException extends Exception
     /**
      * 获取友好的错误信息
      *
-     * @param string $code 主错误码
-     * @param string $subCode 子错误码
+     * @param  string  $code  主错误码
+     * @param  string  $subCode  子错误码
      */
     protected static function getFriendlyMessage(string $code, string $subCode = ''): ?string
     {

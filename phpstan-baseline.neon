@@ -1,0 +1,91 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Offset ''database''\|''garage''\|''queue''\|''redis''\|''scout'' on array\{database\: ''Database'', redis\: ''Redis'', scout\: ''Scout'', garage\: ''disk'', queue\: ''Queue''\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: app/Console/Commands/VerifyServicesCommand.php
+
+		-
+			message: '#^Method App\\Enums\\FilamentNavigationGroup\:\:getIcon\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Enums/FilamentNavigationGroup.php
+
+		-
+			message: '#^Method App\\Enums\\FilamentNavigationGroup\:\:getLabel\(\) never returns Illuminate\\Contracts\\Support\\Htmlable so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Enums/FilamentNavigationGroup.php
+
+		-
+			message: '#^Method App\\Enums\\FilamentNavigationGroup\:\:getLabel\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: app/Enums/FilamentNavigationGroup.php
+
+		-
+			message: '#^Call to function method_exists\(\) with Illuminate\\Http\\Exceptions\\ThrottleRequestsException and ''getHeaders'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: app/Helpers/AppConfigurator.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: app/Helpers/AppConfigurator.php
+
+		-
+			message: '#^Static method App\\Helpers\\AppConfigurator\:\:configureSentryIntegration\(\) is unused\.$#'
+			identifier: method.unused
+			count: 1
+			path: app/Helpers/AppConfigurator.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:search\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Helpers/FilamentConfigurator.php
+
+		-
+			message: '#^Parameter \$details of class CharrafiMed\\GlobalSearchModal\\GlobalSearchResult constructor expects array\<string, string\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Helpers/FilamentConfigurator.php
+
+		-
+			message: '#^Parameter \#1 \$attributes of method Illuminate\\Database\\Eloquent\\Model\:\:update\(\) expects array\<model property of App\\Models\\User, mixed\>, array\<string, Illuminate\\Support\\Carbon\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/V1/AuthController.php
+
+		-
+			message: '#^Parameter \#1 \$attributes of static method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:create\(\) expects array\<model property of App\\Models\\User, mixed\>, array\<string, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/V1/AuthController.php
+
+		-
+			message: '#^Parameter \#1 \$column of method Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\:\:where\(\) expects array\<int\|model property of App\\Models\\User, mixed\>\|\(Closure\(Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\)\: Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\)\|\(Closure\(Illuminate\\Database\\Eloquent\\Builder\<App\\Models\\User\>\)\: void\)\|Illuminate\\Contracts\\Database\\Query\\Expression\|model property of App\\Models\\User, non\-falsy\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/V1/AuthController.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\NotificationResource\:\:\$created_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/V1/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\NotificationResource\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/V1/NotificationResource.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\NotificationResource\:\:\$read_at\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/V1/NotificationResource.php

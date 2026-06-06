@@ -44,7 +44,7 @@ class TestStorageDisk extends Command
             set_time_limit($oldTimeLimit);
 
             if (time() - $startTime >= $timeout) {
-                throw new RuntimeException('操作超时: ' . $e->getMessage());
+                throw new RuntimeException('操作超时: '.$e->getMessage());
             }
 
             throw $e instanceof RuntimeException ? $e : new RuntimeException($e->getMessage(), (int) $e->getCode(), $e);
@@ -93,7 +93,7 @@ class TestStorageDisk extends Command
                 $this->info("{$disk} 存储服务测试通过");
             } catch (Throwable $e) {
                 $results[$disk] = false;
-                $this->error("{$disk} 存储服务测试失败: " . $e->getMessage());
+                $this->error("{$disk} 存储服务测试失败: ".$e->getMessage());
             }
         }
 
@@ -113,6 +113,7 @@ class TestStorageDisk extends Command
         foreach ($disks as $disk) {
             if (! in_array($disk, $availableDisks, true)) {
                 $this->error("磁盘 '{$disk}' 不存在或配置不完整");
+
                 continue;
             }
 
@@ -125,7 +126,7 @@ class TestStorageDisk extends Command
                 $this->info("{$disk} 存储服务测试通过");
             } catch (Throwable $e) {
                 $results[$disk] = false;
-                $this->error("{$disk} 存储服务测试失败: " . $e->getMessage());
+                $this->error("{$disk} 存储服务测试失败: ".$e->getMessage());
             }
         }
 
@@ -173,8 +174,8 @@ class TestStorageDisk extends Command
 
     private function testFileUpload(Filesystem $storage, string $disk): string
     {
-        $testContent = "{$disk} 存储测试文件内容 - " . now()->toDateTimeString();
-        $testFileName = "test/{$disk}-test-" . time() . '.txt';
+        $testContent = "{$disk} 存储测试文件内容 - ".now()->toDateTimeString();
+        $testFileName = "test/{$disk}-test-".time().'.txt';
 
         $this->executeWithTimeout(fn () => $storage->put($testFileName, $testContent), 30);
 
@@ -237,6 +238,7 @@ class TestStorageDisk extends Command
 
         if (empty($availableDisks)) {
             $this->error('没有找到可用的存储磁盘配置');
+
             return [];
         }
 

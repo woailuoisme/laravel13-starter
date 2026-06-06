@@ -54,8 +54,8 @@ it('keeps the full deploy story order stable', function () {
         ->toContain('restart-queues')
         ->toContain('scribe-docs');
 
-    expect($output)->toContain("├── pre-check");
-    expect($output)->toContain("└── scribe-docs");
+    expect($output)->toContain('├── pre-check');
+    expect($output)->toContain('└── scribe-docs');
 });
 
 it('keeps the quick deploy story minimal', function () {

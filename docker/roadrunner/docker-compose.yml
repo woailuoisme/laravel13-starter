@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: rr-app
     image: ${DOCKER_IMAGE:-laravel-roadrunner:latest}
     build:
       context: ../..
@@ -15,7 +16,7 @@ services:
       WATCH: "false"
     command: ["/usr/local/bin/startup-octane.sh"]
     ports:
-      - "${APP_PUBLISHED_PORT:-8101}:${APP_PORT:-8001}"
+      - "${APP_PUBLISHED_PORT:-8001}:${APP_PORT:-8001}"
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck.sh", "octane"]
       interval: 60s
@@ -36,6 +37,7 @@ services:
       - backend
 
   horizon:
+    container_name: rr-horizon
     image: ${DOCKER_IMAGE:-laravel-roadrunner:latest}
     depends_on:
       app:
@@ -58,6 +60,7 @@ services:
       - backend
 
   schedule:
+    container_name: rr-schedule
     image: ${DOCKER_IMAGE:-laravel-roadrunner:latest}
     depends_on:
       app:

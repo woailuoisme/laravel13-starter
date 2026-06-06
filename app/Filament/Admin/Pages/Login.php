@@ -43,7 +43,7 @@ class Login extends BaseLogin
         /** @var SessionGuard $authGuard */
         $authGuard = Filament::auth();
 
-        $authProvider = $authGuard->getProvider(); /** @phpstan-ignore-line */
+        $authProvider = $authGuard->getProvider();
         $loginIdentifier = mb_trim((string) ($data['email'] ?? ''));
         $user = $this->resolveLoginUser($loginIdentifier);
 

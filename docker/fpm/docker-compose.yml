@@ -1,5 +1,6 @@
 services:
   app:
+    container_name: fpm-app
     image: ${DOCKER_IMAGE:-laravel-fpm:latest}
     build:
       context: ../..

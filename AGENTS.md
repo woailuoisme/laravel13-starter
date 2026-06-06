@@ -20,6 +20,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/scout (SCOUT) - v11
 - laravel/socialite (SOCIALITE) - v5
 - livewire/livewire (LIVEWIRE) - v4
+- larastan/larastan (LARASTAN) - v3
 - laravel/boost (BOOST) - v2
 - laravel/mcp (MCP) - v0
 - laravel/pail (PAIL) - v1

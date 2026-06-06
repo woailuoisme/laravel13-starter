@@ -25,7 +25,9 @@ class AdminUserResource extends Resource
     protected static ?string $model = AdminUser::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
     protected static string|UnitEnum|null $navigationGroup = FilamentNavigationGroup::BackendManagement;
+
     protected static ?int $navigationSort = -30;
 
     public static function getModelLabel(): string

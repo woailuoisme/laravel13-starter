@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class AuthChallengeResource extends JsonResource
 {
     /**
-     * @param array<string, mixed> $resource
+     * @param  array<string, mixed>  $resource
      */
     public function __construct(array $resource)
     {

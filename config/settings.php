@@ -87,7 +87,7 @@ return [
     'global_casts' => [
         DateTimeInterface::class => DateTimeInterfaceCast::class,
         DateTimeZone::class => DateTimeZoneCast::class,
-//        Spatie\DataTransferObject\DataTransferObject::class => Spatie\LaravelSettings\SettingsCasts\DtoCast::class,
+        //        Spatie\DataTransferObject\DataTransferObject::class => Spatie\LaravelSettings\SettingsCasts\DtoCast::class,
         Data::class => DataCast::class,
     ],
 

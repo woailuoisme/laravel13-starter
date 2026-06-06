@@ -134,7 +134,7 @@ class UserImport
     }
 
     /**
-     * @param array<string, mixed> $row
+     * @param  array<string, mixed>  $row
      */
     public function isEmptyRow(array $row): bool
     {
@@ -153,7 +153,7 @@ class UserImport
     }
 
     /**
-     * @param array<string, mixed> $row
+     * @param  array<string, mixed>  $row
      * @return array<string, mixed>
      */
     private function normalizeRow(array $row): array
@@ -166,7 +166,7 @@ class UserImport
     }
 
     /**
-     * @param array<string, mixed> $row
+     * @param  array<string, mixed>  $row
      * @return array<string, mixed>
      */
     private function recordFromRow(array $row): array

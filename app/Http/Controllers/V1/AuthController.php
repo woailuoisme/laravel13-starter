@@ -47,6 +47,7 @@ class AuthController extends AppBaseController
      * 兼容登录入口 (昵称/邮箱/手机号 + 密码)
      *
      * @unauthenticated
+     *
      * @bodyParam nickname string required 用户昵称、手机号或邮箱。Example: user@example.com
      * @bodyParam password string required 登录密码，最少 6 位。Example: password123
      *
@@ -71,7 +72,7 @@ class AuthController extends AppBaseController
             ->orWhere('email', $nickname)
             ->first();
 
-        if (!$user) {
+        if (! $user) {
             return $this->sendError(__('auth.invalid_credentials'), 401);
         }
 
@@ -99,6 +100,7 @@ class AuthController extends AppBaseController
      * 发起登录
      *
      * @unauthenticated
+     *
      * @bodyParam email string required 登录邮箱。Example: signin@example.com
      * @bodyParam password string required 登录密码。Example: password123
      *
@@ -139,6 +141,7 @@ class AuthController extends AppBaseController
      * 提交登录验证码挑战
      *
      * @unauthenticated
+     *
      * @bodyParam challenge_token string required 登录挑战令牌。Example: challenge-token
      * @bodyParam code string required 6 位邮箱验证码。Example: 123456
      *
@@ -165,6 +168,7 @@ class AuthController extends AppBaseController
      * 兼容注册入口
      *
      * @unauthenticated
+     *
      * @bodyParam email string required 注册邮箱。Example: signup@example.com
      * @bodyParam password string required 登录密码，最少 6 位。Example: password123
      * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: password123
@@ -186,6 +190,7 @@ class AuthController extends AppBaseController
      * 发起注册并发送邮箱验证码
      *
      * @unauthenticated
+     *
      * @bodyParam email string required 注册邮箱。Example: signup@example.com
      * @bodyParam password string required 登录密码，最少 6 位。Example: password123
      * @bodyParam password_confirmation string required 确认密码，必须与 password 一致。Example: password123
@@ -216,6 +221,7 @@ class AuthController extends AppBaseController
      * 验证注册邮箱验证码并创建账号
      *
      * @unauthenticated
+     *
      * @bodyParam email string required 注册邮箱。Example: signup@example.com
      * @bodyParam code string required 6 位邮箱验证码。Example: 123456
      *
@@ -242,6 +248,7 @@ class AuthController extends AppBaseController
      * 重发验证码
      *
      * @unauthenticated
+     *
      * @bodyParam email string required 需要重发验证码的邮箱。Example: user@example.com
      * @bodyParam action string required 验证码业务类型，可选 register、login、reset_password。Example: login
      * @bodyParam challenge_token string 登录挑战令牌，action 为 login 时传入。Example: challenge-token
@@ -273,6 +280,7 @@ class AuthController extends AppBaseController
      * 发起忘记密码
      *
      * @unauthenticated
+     *
      * @bodyParam email string required 需要找回密码的邮箱。Example: user@example.com
      *
      * 返回找回密码验证码挑战信息。
@@ -298,6 +306,7 @@ class AuthController extends AppBaseController
      * 使用验证码重置密码
      *
      * @unauthenticated
+     *
      * @bodyParam email string required 需要重置密码的邮箱。Example: user@example.com
      * @bodyParam code string required 6 位邮箱验证码。Example: 123456
      * @bodyParam password string required 新密码，最少 6 位。Example: new-password123
@@ -350,6 +359,7 @@ class AuthController extends AppBaseController
      * 更新用户个人资料
      *
      * @authenticated
+     *
      * @throws Throwable
      *
      * 返回更新后的用户资料，字段与 `me()` 一致。
@@ -450,7 +460,7 @@ class AuthController extends AppBaseController
         /** @var AbstractProvider $driver */
         $driver = Socialite::driver($provider);
         $socialUser = $driver->stateless()->user();
-        $idColumn = $provider . '_id';
+        $idColumn = $provider.'_id';
 
         $user = User::query()
             ->where($idColumn, $socialUser->getId())

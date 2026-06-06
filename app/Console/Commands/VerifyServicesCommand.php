@@ -100,7 +100,7 @@ class VerifyServicesCommand extends Command
 
             return [
                 'ok' => true,
-                'message' => "connection [{$connection}] ping response: " . $this->stringifyValue($pong),
+                'message' => "connection [{$connection}] ping response: ".$this->stringifyValue($pong),
             ];
         } catch (Throwable $exception) {
             return [

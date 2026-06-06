@@ -18,9 +18,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class AuthFlowService
 {
     private const OTP_TTL_SECONDS = 600;
+
     private const RESEND_COOLDOWN_SECONDS = 60;
+
     private const SIGNUP_CACHE_PREFIX = 'auth:signup:';
+
     private const SIGNIN_CACHE_PREFIX = 'auth:signin:challenge:';
+
     private const RESET_CACHE_PREFIX = 'auth:password-reset:';
 
     public function requestSignup(string $email, string $password, ?string $ip): array
@@ -48,7 +52,7 @@ class AuthFlowService
     {
         $pendingSignup = Cache::get($this->signupCacheKey($email));
 
-        if (!is_array($pendingSignup)) {
+        if (! is_array($pendingSignup)) {
             throw new HttpException(410, __('auth.signup_context_expired'));
         }
 
@@ -85,11 +89,11 @@ class AuthFlowService
     {
         $user = User::query()->where('email', $email)->first();
 
-        if (!$user || !Hash::check($password, $user->password)) {
+        if (! $user || ! Hash::check($password, $user->password)) {
             throw new HttpException(401, __('auth.invalid_credentials'));
         }
 
-        if (!$this->shouldRequireChallenge($user, $ip, $forceChallenge)) {
+        if (! $this->shouldRequireChallenge($user, $ip, $forceChallenge)) {
             $user->forceFill([
                 'last_login_at' => now(),
                 'last_login_ip' => $ip,
@@ -126,7 +130,7 @@ class AuthFlowService
     {
         $challenge = Cache::get($this->signinCacheKey($challengeToken));
 
-        if (!is_array($challenge)) {
+        if (! is_array($challenge)) {
             throw new HttpException(410, __('auth.challenge_expired'));
         }
 
@@ -152,7 +156,7 @@ class AuthFlowService
     {
         $user = User::query()->where('email', $email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return [
                 'status' => 'code_sent',
                 'action' => 'reset_password',
@@ -182,7 +186,7 @@ class AuthFlowService
     {
         $session = Cache::get($this->resetCacheKey($email));
 
-        if (!is_array($session)) {
+        if (! is_array($session)) {
             throw new HttpException(410, __('auth.password_reset_expired'));
         }
 
@@ -215,7 +219,7 @@ class AuthFlowService
 
     private function requestSignupResend(string $email): array
     {
-        if (!is_array(Cache::get($this->signupCacheKey($email)))) {
+        if (! is_array(Cache::get($this->signupCacheKey($email)))) {
             throw new HttpException(410, __('auth.signup_context_expired'));
         }
 
@@ -232,7 +236,7 @@ class AuthFlowService
 
     private function requestSigninResend(string $email, ?string $challengeToken): array
     {
-        if (!$challengeToken || !is_array(Cache::get($this->signinCacheKey($challengeToken)))) {
+        if (! $challengeToken || ! is_array(Cache::get($this->signinCacheKey($challengeToken)))) {
             throw new HttpException(410, __('auth.challenge_expired'));
         }
 
@@ -259,7 +263,7 @@ class AuthFlowService
             ->latest('id')
             ->first();
 
-        if (!$otp || $otp->code !== $code) {
+        if (! $otp instanceof OtpRecord || $otp->code !== $code) {
             throw new HttpException(422, __('auth.verification_code_invalid'));
         }
 

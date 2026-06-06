@@ -12,7 +12,7 @@ k6 = "latest"
 hadolint = "latest"
 shellcheck = "latest"
 actionlint = "latest"
-markdownlint-cli2  = "latest"
+markdownlint-cli2 = "latest"
 shfmt = "latest"
 
 # --- CLI Utilities ---
@@ -20,11 +20,23 @@ rg = "latest"
 fd = "latest"
 sd = "latest"
 
+# --- Security Scan & Audit ---
+trivy = "latest"         # 代码库/镜像漏洞扫描与静态安全审计
+gitleaks = "latest"      # 敏感信息及凭证泄漏静态分析拦截
+
+# --- Secrets Management ---
+sops = "latest"          # 多环境配置与敏感环境变量行级加密管理
+age = "latest"           # 现代非对称加密工具（配合 SOPS 生成密钥对）
+
+# --- Changelog & Release ---
+git-cliff = "latest"     # 配合 Conventional Commits 自动生成变更日志
+
+
 [env]
 # 将 macOS Homebrew 的 PHP@8.5 目录和 Composer 全局 binaries 注入到 PATH 最前方
 # 确保在该项目目录下，所有的 php/composer 命令都始终绑定到项目要求的 PHP 8.5 环境
 _.path = [
-  "/opt/homebrew/opt/php@8.5/bin",
-  "/opt/homebrew/opt/php@8.5/sbin",
-  "{{env.HOME}}/.composer/vendor/bin"
+    "/opt/homebrew/opt/php@8.5/bin",
+    "/opt/homebrew/opt/php@8.5/sbin",
+    "{{env.HOME}}/.composer/vendor/bin",
 ]

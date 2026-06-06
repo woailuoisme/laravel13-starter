@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\OtpRecordFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read User|null $user
+ *
  * @method static \Database\Factories\OtpRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord newQuery()
@@ -36,12 +38,13 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord whereUsedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 #[Fillable(['user_id', 'identifier', 'type', 'action', 'code', 'used_at', 'expires_at'])]
 class OtpRecord extends Model
 {
-    /** @use HasFactory<\Database\Factories\OtpRecordFactory> */
+    /** @use HasFactory<OtpRecordFactory> */
     use HasFactory;
 
     protected function casts(): array
