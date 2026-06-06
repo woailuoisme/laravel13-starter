@@ -11,53 +11,21 @@ use Exception;
  */
 final class WePayException extends Exception
 {
-    /**
-     * 构造函数
-     *
-     * @param  string  $message  异常消息
-     * @param  int  $code  异常代码
-     * @param  Exception|null  $previous  上一个异常
-     */
-    public function __construct(string $message = '', int $code = 0, ?Exception $previous = null)
-    {
-        parent::__construct($message, $code, $previous);
-    }
-
-    /**
-     * 创建支付失败异常
-     *
-     * @param  string  $message  错误消息
-     */
     public static function paymentFailed(string $message): static
     {
         return new self("支付失败: {$message}", 1001);
     }
 
-    /**
-     * 创建配置错误异常
-     *
-     * @param  string  $message  错误消息
-     */
     public static function configError(string $message): static
     {
         return new static("配置错误: {$message}", 1002);
     }
 
-    /**
-     * 创建网络错误异常
-     *
-     * @param  string  $message  错误消息
-     */
     public static function networkError(string $message): static
     {
         return new static("网络错误: {$message}", 1003);
     }
 
-    /**
-     * 创建签名验证失败异常
-     *
-     * @param  string  $message  错误消息
-     */
     public static function signatureError(string $message = '签名验证失败'): static
     {
         return new static($message, 1004);
@@ -65,9 +33,6 @@ final class WePayException extends Exception
 
     /**
      * 根据微信支付错误码创建友好的异常信息
-     *
-     * @param  string  $wechatErrorCode  微信错误码
-     * @param  string  $originalMessage  原始错误消息
      */
     public static function wechatPayError(string $wechatErrorCode, string $originalMessage = ''): static
     {
@@ -111,9 +76,6 @@ final class WePayException extends Exception
 
     /**
      * 解析微信支付错误响应并创建友好异常
-     *
-     * @param  string  $responseBody  响应体
-     * @param  int  $statusCode  HTTP状态码
      */
     public static function fromWechatResponse(string $responseBody, int $statusCode = 400): static
     {

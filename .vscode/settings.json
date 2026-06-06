@@ -21,6 +21,11 @@
     "**/deploy.php"
   ],
   "intelephense.diagnostics.duplicateSymbols": false,
+  "intelephense.diagnostics.typeErrors": false,
+  "LaravelExtraIntellisense.disableDiagnostics": [
+    "config",
+    "appBinding"
+  ],
   "search.exclude": {
     "**/node_modules": true,
     "**/storage/framework": true,

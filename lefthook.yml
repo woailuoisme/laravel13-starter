@@ -4,12 +4,11 @@ pre-commit:
   jobs:
     - name: pint
       glob: "**/*.php"
-      run: vendor/bin/pint --parallel --repair  --silent --format agent {staged_files}
+      run: vendor/bin/pint --parallel --silent --format agent {staged_files}
       stage_fixed: true
 
     - name: phpstan
       run: if git diff --name-only --cached | grep -q 'app/.*\.php'; then php -d xdebug.mode=off -d opcache.enable_cli=1 -d opcache.jit_buffer_size=100M vendor/bin/phpstan analyse --memory-limit=1G; fi
-
 
     - name: hadolint
       glob: "**/Dockerfile"

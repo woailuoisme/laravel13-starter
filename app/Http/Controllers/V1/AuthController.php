@@ -21,6 +21,7 @@ use App\Http\Resources\V1\NotificationResource;
 use App\Models\User;
 use App\Services\Auth\AuthFlowService;
 use App\Services\Media\MediaService;
+use App\Services\ResponseService;
 use App\Services\WechatService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,8 +40,9 @@ class AuthController extends AppBaseController
         protected WechatService $wechatService,
         protected MediaService $mediaService,
         protected AuthFlowService $authFlowService,
+        ResponseService $responseService,
     ) {
-        parent::__construct();
+        parent::__construct($responseService);
     }
 
     /**

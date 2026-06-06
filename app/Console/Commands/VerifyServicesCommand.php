@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use denis660\Centrifugo\Centrifugo;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -12,11 +13,12 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use JsonException;
 use Meilisearch\Client as MeilisearchClient;
 use Throwable;
 
 #[Signature('app:verify-services {--database=default : 数据库连接名} {--redis=default : Redis 连接名} {--disk=garage : 存储磁盘}')]
-#[Description('验证 Redis、数据库、Scout(Meilisearch)、Garage 和队列是否可用')]
+#[Description('验证 Redis、数据库、Scout(Meilisearch)、Garage、Centrifugo 和队列是否可用')]
 class VerifyServicesCommand extends Command
 {
     public function handle(): int
@@ -27,14 +29,19 @@ class VerifyServicesCommand extends Command
             'scout' => $this->checkScoutMeilisearch(),
             'garage' => $this->checkGarage((string) $this->option('disk')),
             'queue' => $this->checkQueue(),
+            'horizon' => $this->checkHorizon(),
+            'centrifugo' => $this->checkCentrifugo(),
         ];
 
+        /** @var array<string, string> $labels */
         $labels = [
             'database' => 'Database',
             'redis' => 'Redis',
             'scout' => 'Scout',
             'garage' => 'disk',
             'queue' => 'Queue',
+            'horizon' => 'Horizon',
+            'centrifugo' => 'Centrifugo',
         ];
 
         $hasFailure = false;
@@ -69,7 +76,7 @@ class VerifyServicesCommand extends Command
 
             return [
                 'ok' => true,
-                'message' => "connection [{$connection}] reachable",
+                'message' => "connection [$connection] reachable",
             ];
         } catch (Throwable $exception) {
             return [
@@ -100,7 +107,7 @@ class VerifyServicesCommand extends Command
 
             return [
                 'ok' => true,
-                'message' => "connection [{$connection}] ping response: ".$this->stringifyValue($pong),
+                'message' => "connection [$connection] ping response: ".$this->stringifyValue($pong),
             ];
         } catch (Throwable $exception) {
             return [
@@ -215,7 +222,83 @@ class VerifyServicesCommand extends Command
     }
 
     /**
-     * @throws \JsonException
+     * 通过 Redis 中的 master-supervisors set 判断 Horizon 进程是否存活。
+     * 仅当 queue.default driver 为 redis 时才有意义；非 redis driver 时跳过。
+     *
+     * @return array{ok: bool, message: string}
+     */
+    private function checkHorizon(): array
+    {
+        $connectionName = (string) config('queue.default', 'sync');
+        $connectionConfig = (array) config("queue.connections.{$connectionName}", []);
+        $driver = (string) ($connectionConfig['driver'] ?? $connectionName);
+
+        // Horizon 仅适用于 redis driver
+        if ($driver !== 'redis') {
+            return [
+                'ok' => true,
+                'message' => "skipped (queue driver is [{$driver}], not redis)",
+            ];
+        }
+
+        try {
+            $redisConnection = (string) config('horizon.use', 'default');
+            $prefix = rtrim((string) config('horizon.prefix', 'laravel_horizon:'), ':');
+
+            /** @var string[] $supervisors */
+            $supervisors = Redis::connection($redisConnection)->smembers("{$prefix}:master-supervisors");
+
+            if (empty($supervisors)) {
+                return [
+                    'ok' => true,
+                    'message' => 'not running (no master supervisor found)',
+                ];
+            }
+
+            return [
+                'ok' => true,
+                'message' => 'running, supervisors: ['.implode(', ', $supervisors).']',
+            ];
+        } catch (Throwable $exception) {
+            return [
+                'ok' => false,
+                'message' => $exception->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * @return array{ok: bool, message: string}
+     */
+    private function checkCentrifugo(): array
+    {
+        try {
+            /** @var Centrifugo $centrifugo */
+            $centrifugo = app('centrifugo');
+            /** @var array<string, mixed> $info */
+            $info = $centrifugo->info();
+
+            if (isset($info['error'])) {
+                return [
+                    'ok' => false,
+                    'message' => 'Centrifugo error: '.$info['error'],
+                ];
+            }
+
+            return [
+                'ok' => true,
+                'message' => 'Centrifugo reachable',
+            ];
+        } catch (Throwable $exception) {
+            return [
+                'ok' => false,
+                'message' => $exception->getMessage(),
+            ];
+        }
+    }
+
+    /**
+     * @throws JsonException
      */
     private function stringifyValue(mixed $value): string
     {

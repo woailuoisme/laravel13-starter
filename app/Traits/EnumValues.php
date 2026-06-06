@@ -13,7 +13,12 @@ trait EnumValues
      */
     public static function values(): array
     {
-        return array_column(self::cases(), 'value');
+        // 使用反射判断是否为 BackedEnum，避免 PHPStan 在具体枚举上下文报 alreadyNarrowedType 错误
+        $reflection = new \ReflectionEnum(self::class);
+
+        return $reflection->isBacked()
+            ? array_column(self::cases(), 'value')
+            : array_column(self::cases(), 'name');
     }
 
     /**

@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Offset ''database''\|''garage''\|''queue''\|''redis''\|''scout'' on array\{database\: ''Database'', redis\: ''Redis'', scout\: ''Scout'', garage\: ''disk'', queue\: ''Queue''\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: app/Console/Commands/VerifyServicesCommand.php
-
-		-
 			message: '#^Method App\\Enums\\FilamentNavigationGroup\:\:getIcon\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1

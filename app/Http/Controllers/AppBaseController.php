@@ -15,18 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AppBaseController extends Controller
 {
-    /**
-     * 响应服务实例
-     */
-    protected ResponseService $responseService;
-
-    /**
-     * 构造函数
-     */
-    public function __construct()
-    {
-        $this->responseService = ResponseService::getInstance();
-    }
+    public function __construct(
+        protected ResponseService $responseService,
+    ) {}
 
     /**
      * 发送成功响应
