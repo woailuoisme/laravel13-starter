@@ -15,10 +15,10 @@ return [
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
     //    'description' => 'Restful Api 接口服务，为系统提供全面的接口端点',
-    'description' => file_get_contents(base_path('api_intro.md')),
+    'description' => file_get_contents(base_path('docs/api_intro.md')),
 
     // Text to place in the "Introduction" section, right after the `description`. Markdown and HTML are supported.
-    //    'intro_text' => file_get_contents(base_path('api_intro.md')),
+    //    'intro_text' => file_get_contents(base_path('docs/api_intro.md')),
 
     // The base URL displayed in the docs.
     // If you're using `laravel` type, you can set this to a dynamic string, like '{{ config("app.tenant_url") }}' to get a dynamic base URL.
