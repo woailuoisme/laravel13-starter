@@ -11,8 +11,10 @@
     ".phpstorm.meta.php"
   ],
   "rules": {
-    "declare_strict_types": false,
-    "new_with_parentheses": true,
+    "new_with_parentheses": {
+      "anonymous_class": true,
+      "named_class": true
+    },
     "strict_comparison": true,
     "no_useless_else": true,
     "no_superfluous_elseif": true,
@@ -30,10 +32,11 @@
     },
     "trailing_comma_in_multiline": {
       "elements": [
-        "arrays",
         "arguments",
-        "parameters",
-        "match"
+        "array_destructuring",
+        "arrays",
+        "match",
+        "parameters"
       ]
     }
   }

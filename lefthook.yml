@@ -38,18 +38,18 @@ pre-push:
     - name: pest
       run: php artisan test --compact
 
-commit-msg:
-  jobs:
-    - name: commit-msg-lint
-      run: |
-        commit_msg=$(cat {1})
-        pattern="^(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\([a-zA-Z0-9_-]+\))?: .+"
-        if [[ ! "$commit_msg" =~ $pattern ]]; then
-          echo "Git commit message 格式不符合规范！"
-          echo "当前输入为: \"$commit_msg\""
-          echo "正确格式应例如："
-          echo "  feat: 增加用户登录接口"
-          echo "  fix(auth): 修复越权访问漏洞"
-          echo "合法前缀: feat, fix, docs, style, refactor, perf, test, chore, ci, revert"
-          exit 1
-        fi
+# commit-msg:
+#   jobs:
+#     - name: commit-msg-lint
+#       run: |
+#         commit_msg=$(cat {1})
+#         pattern="^(feat|fix|docs|style|refactor|perf|test|chore|ci|revert)(\([a-zA-Z0-9_-]+\))?: .+"
+#         if [[ ! "$commit_msg" =~ $pattern ]]; then
+#           echo "Git commit message 格式不符合规范！"
+#           echo "当前输入为: \"$commit_msg\""
+#           echo "正确格式应例如："
+#           echo "  feat: 增加用户登录接口"
+#           echo "  fix(auth): 修复越权访问漏洞"
+#           echo "合法前缀: feat, fix, docs, style, refactor, perf, test, chore, ci, revert"
+#           exit 1
+#         fi

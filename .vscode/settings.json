@@ -22,10 +22,24 @@
   ],
   "intelephense.diagnostics.duplicateSymbols": false,
   "intelephense.diagnostics.typeErrors": false,
+  "intelephense.environment.phpVersion": "8.5",
+  "intelephense.format.enable": false,
   "LaravelExtraIntellisense.disableDiagnostics": [
     "config",
     "appBinding"
   ],
+  "Laravel.env.diagnostics": false,
+  "[php]": {
+    "editor.defaultFormatter": "open-southeners.laravel-pint",
+    "editor.formatOnSave": true
+  },
+  "[blade]": {
+    "editor.defaultFormatter": "shufo.vscode-blade-formatter",
+    "editor.formatOnSave": true
+  },
+  "tailwindCSS.includeLanguages": {
+    "blade": "html"
+  },
   "search.exclude": {
     "**/node_modules": true,
     "**/storage/framework": true,
@@ -33,13 +47,19 @@
     "**/bootstrap/cache": true,
     "**/.phpunit.cache": true,
     "**/.idea": true,
-    "**/.phpstorm.meta.php": true
+    "**/.phpstorm.meta.php": true,
+    "**/_ide_helper.php": true,
+    "**/_ide_helper_models.php": true,
+    "**/_ide_helper_models_phpstan.php": true
   },
   "files.exclude": {
     "**/.phpunit.cache": true,
     "**/.idea": true,
     "**/.DS_Store": true,
-    "**/.phpstorm.meta.php": true
+    "**/.phpstorm.meta.php": true,
+    "**/_ide_helper.php": true,
+    "**/_ide_helper_models.php": true,
+    "**/_ide_helper_models_phpstan.php": true
   },
   "markdownlint.exclude": [
     "**/.gemini/**",

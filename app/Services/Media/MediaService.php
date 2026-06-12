@@ -3,6 +3,7 @@
 namespace App\Services\Media;
 
 use App\Helpers\AppHelper;
+use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -145,7 +146,7 @@ class MediaService
         // 检查是否已存在相同文件（去重复）
         $existingMedia = $this->findExistingMedia($model, $fileName, $collection);
         if ($existingMedia) {
-            \Log::info('文件已存在，返回现有媒体记录', [
+            Log::info('文件已存在，返回现有媒体记录', [
                 'model' => get_class($model),
                 'model_id' => $model->id ?? 'new',
                 'collection' => $collection,
@@ -168,7 +169,7 @@ class MediaService
                 ], $customProperties))
                 ->toMediaCollection($collection);
         } catch (\Exception $e) {
-            \Log::error('文件上传失败', [
+            Log::error('文件上传失败', [
                 'model' => get_class($model),
                 'model_id' => $model->id ?? 'new',
                 'collection' => $collection,
@@ -458,7 +459,8 @@ class MediaService
      */
     public function addMediaFromUrl(HasMedia $model, string $url, string $collection = 'default', array $customProperties = []): Media
     {
-        return $model->addMediaFromUrl($url) // @phpstan-ignore-line
+        /** @var User $model */
+        return $model->addMediaFromUrl($url)
             ->withCustomProperties($customProperties)
             ->toMediaCollection($collection);
     }

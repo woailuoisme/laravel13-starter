@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+/**
+ * @mixin \UnitEnum
+ */
 trait EnumValues
 {
     /**
@@ -15,10 +18,11 @@ trait EnumValues
     {
         // 使用反射判断是否为 BackedEnum，避免 PHPStan 在具体枚举上下文报 alreadyNarrowedType 错误
         $reflection = new \ReflectionEnum(self::class);
+        $cases = call_user_func([self::class, 'cases']);
 
         return $reflection->isBacked()
-            ? array_column(self::cases(), 'value')
-            : array_column(self::cases(), 'name');
+            ? array_column($cases, 'value')
+            : array_column($cases, 'name');
     }
 
     /**
@@ -28,7 +32,9 @@ trait EnumValues
      */
     public static function names(): array
     {
-        return array_column(self::cases(), 'name');
+        $cases = call_user_func([self::class, 'cases']);
+
+        return array_column($cases, 'name');
     }
 
     /**
