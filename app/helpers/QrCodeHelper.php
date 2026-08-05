@@ -501,8 +501,8 @@ class QrCodeHelper
     private static function makeWriter(string $format): WriterInterface
     {
         return match (mb_strtolower($format)) {
-            'svg' => new SvgWriter(),
-            default => new PngWriter(),
+            'svg' => new SvgWriter,
+            default => new PngWriter,
         };
     }
 

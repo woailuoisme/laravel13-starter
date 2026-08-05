@@ -4,7 +4,6 @@ use Clickbar\Magellan\IO\Generator\Geojson\GeojsonGenerator;
 use Clickbar\Magellan\IO\Generator\WKT\WKTGenerator;
 
 return [
-
     /**
      * The database schema that should be used for prefixing / accessing PostGIS functions.
      * E.g. the ST_X() function will be prefixed with the schema name and become public.ST_X().

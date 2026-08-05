@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use JsonException;
 
 /**
  * 支付网关异常类
@@ -86,7 +87,7 @@ final class WePayException extends Exception
             $errorMessage = $data['message'] ?? '未知错误';
 
             return self::wechatPayError($errorCode, $errorMessage);
-        } catch (\JsonException $e) {
+        } catch (JsonException $e) {
             // 如果不是JSON格式，返回通用错误
             return new static('支付服务异常，请稍后重试', 1006);
         }

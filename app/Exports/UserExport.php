@@ -33,7 +33,7 @@ class UserExport
      */
     public function query(): Builder
     {
-        return User::query()->orderBy('created_at');
+        return User::query()->oldest('created_at');
     }
 
     /**
@@ -82,7 +82,7 @@ class UserExport
 
     private function headerStyle(): Style
     {
-        return (new Style())
+        return (new Style)
             ->setFontBold()
             ->setFontSize(12);
     }

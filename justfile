@@ -60,12 +60,15 @@ fmt:
 
 # 运行 Markdown 规范检查。
 markdownlint:
-    bunx markdownlint-cli2
+    rumdl check
 
-# 运行代码静态检查（Pint 规范、PHPStan 分析与 Markdown 规范检查）。
+# `markdownlint` 的别名。
+rumdl: markdownlint
+
+# 运行代码静态检查（Pint 规范与 Markdown 规范检查）。
 lint:
     ./vendor/bin/pint --test
-    @php -d xdebug.mode=off -d opcache.enable_cli=1 -d opcache.jit_buffer_size=100M vendor/bin/phpstan analyse --memory-limit=2G
+    rumdl check
 
 # 生成 IDE 辅助文件（Facade, Meta, Models 写回）。
 ide-helper:

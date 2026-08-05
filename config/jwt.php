@@ -14,7 +14,6 @@ use Tymon\JWTAuth\Providers\JWT\Provider;
  */
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | JWT Authentication Secret

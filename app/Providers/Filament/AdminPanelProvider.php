@@ -6,6 +6,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Admin\Pages\Login;
 use App\Helpers\FilamentConfigurator;
+use Exception;
 use Filament\Enums\ThemeMode;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -14,7 +15,7 @@ use Filament\Support\Colors\Color;
 class AdminPanelProvider extends PanelProvider
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function panel(Panel $panel): Panel
     {

@@ -1,46 +1,61 @@
+# Logs & Environment
 *.log
-.DS_Store
 .env
-.env.backup
-.env.production
-.env.test
-.phpactor.json
-.phpunit.result.cache
-/.fleet
-/.idea
-/.nova
-/.phpunit.cache
-/.zed
-/auth.json
+.env.*
+!.env.example
+!.env.production.encrypted
+secrets.ini
+secrets*.ini
+!secrets.ini.example
+
+# Package & Dependencies
 /node_modules
+/vendor
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
 /storage/pail
-/vendor
 Homestead.json
 Homestead.yaml
-Thumbs.db
-.scribe
 
+# IDE & OS
+.DS_Store
+Thumbs.db
+/.idea
+/.fleet
+/.nova
+/.zed
+.phpactor.json
 _ide_helper.php
 _ide_helper_models.php
-_ide_helper_models_phpstan.php
 .phpstorm.meta.php
+.scribe
+
+# Testing & Cache
+.phpunit.result.cache
+/.phpunit.cache
+.rumdl_cache
+
+# Servers & Binary Assets
 rr
 frankenphp
 .rr.yaml
 
-
-/.codex
-/.claude
-/.gemini
-/.codebuddy
+# Local AI Agents & Dev Tools Cache
 /.ai
-/.cursor
 /.agent
 /.agents
+/.claude
+/.codebuddy
+/.codex
+/.codegraph
+/.code-review-graph
+/.cursor
+/.gemini
+/.kiro
+/.rtk
+/.scribe
+/.serena
 /.specify
 /specs
-/.kiro

@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 return [
+    'notifications_fetched' => '获取通知列表成功',
+    'notification_marked_as_read' => '通知已标记为已读',
+    'all_notifications_marked_as_read' => '所有通知已标记为已读',
+    'notification_deleted' => '通知已删除',
     'notifications' => [
         'enabled' => '开启成功',
         'disabled' => '关闭成功',

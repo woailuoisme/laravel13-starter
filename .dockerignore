@@ -1,11 +1,28 @@
+# Git & CI/CD
 /.git
 /.github
+
+# IDE & OS
 /.vscode
 /.idea
-/node_modules
-/vendor
+.DS_Store
+Thumbs.db
+_ide_helper.php
+_ide_helper_models.php
+.phpstorm.meta.php
+
+# Environment & Dependencies
 /.env
 /.env.*
+!.env.example
+!.env.production.encrypted
+/secrets.ini
+/secrets*.ini
+!secrets.ini.example
+/node_modules
+/vendor
+
+# Storage & Cache
 /public/build
 /public/hot
 /storage/*.key
@@ -14,19 +31,17 @@
 /storage/framework/views/*
 /storage/logs/*
 !/storage/logs/.gitignore
+/bootstrap/cache/*.php
+/.phpunit.cache
+.rumdl_cache
+
+# Tests & Binaries
 /tests
 /phpunit.xml
 /npm-debug.log
 /yarn-error.log
 /rr
-/bootstrap/cache/*.php
-
-# IDE & OS files
-.DS_Store
-Thumbs.db
-_ide_helper.php
-_ide_helper_models.php
-.phpstorm.meta.php
+/frankenphp
 
 # Developer & AI tools
 /justfile
@@ -35,25 +50,20 @@ _ide_helper_models.php
 /.shellcheckrc
 /.mcp.json
 /.mise.toml
+/.rumdl.toml
+/pint.json
+/boost.json
+/deploy.php
+/skills-lock.json
 /.agents
 /.ai
 /.claude
-/.gemini
 /.codex
+/.codegraph
+/.code-review-graph
+/.gemini
 /.kiro
-/.serena
-/.specify
 /.rtk
 /.scribe
-/.code-review-graph
-/.phpunit.cache
-/.gitleaks.toml
-/.gitleaksignore
-/.markdownlint-cli2.jsonc
-/phpstan*.neon
-/pint.json
-/boost.json
-/cliff.toml
-/deploy.php
-/skills-lock.json
-_ide_helper*.php
+/.serena
+/.specify

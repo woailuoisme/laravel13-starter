@@ -29,7 +29,7 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function selectOne(string $query): object
             {
@@ -40,7 +40,7 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function ping(): string
             {
@@ -51,7 +51,7 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function size(string $queue): int
             {
@@ -78,7 +78,7 @@ it('fails when scout is not configured for meilisearch', function (): void {
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function selectOne(string $query): object
             {
@@ -89,7 +89,7 @@ it('fails when scout is not configured for meilisearch', function (): void {
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function ping(): string
             {
@@ -100,7 +100,7 @@ it('fails when scout is not configured for meilisearch', function (): void {
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function size(string $queue): int
             {
@@ -140,7 +140,7 @@ it('fails when centrifugo connection fails', function (): void {
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function selectOne(string $query): object
             {
@@ -151,7 +151,7 @@ it('fails when centrifugo connection fails', function (): void {
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function ping(): string
             {
@@ -162,7 +162,7 @@ it('fails when centrifugo connection fails', function (): void {
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class()
+        ->andReturn(new class
         {
             public function size(string $queue): int
             {

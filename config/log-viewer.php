@@ -7,7 +7,6 @@ use Opcodes\LogViewer\Http\Middleware\AuthorizeLogViewer;
 use Opcodes\LogViewer\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Log Viewer

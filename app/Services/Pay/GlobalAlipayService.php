@@ -94,7 +94,7 @@ class GlobalAlipayService extends AbstractAlipayService
     protected function initConfig(): void
     {
         try {
-            $options = new Config();
+            $options = new Config;
             $options->protocol = 'https';
             $options->gatewayHost = $this->isSandbox() ? 'openapi.alipaydev.com' : 'openapi.alipay.com';
             $options->signType = 'RSA2';
@@ -131,6 +131,7 @@ class GlobalAlipayService extends AbstractAlipayService
             };
         } catch (Throwable $e) {
             Log::error("全球支付宝支付失败: {$outTradeNo}", ['error' => $e->getMessage()]);
+
             throw ($e instanceof AlipayException) ? $e : AlipayException::paymentFailed($e->getMessage());
         }
     }

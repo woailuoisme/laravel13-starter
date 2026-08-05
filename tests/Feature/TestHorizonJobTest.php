@@ -10,7 +10,7 @@ test('test horizon job writes correct log', function () {
         ->once()
         ->with('Horizon test job executed successfully.');
 
-    (new TestHorizonJob())->handle();
+    (new TestHorizonJob)->handle();
 });
 
 test('test horizon job is registered in scheduler', function () {

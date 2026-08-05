@@ -12,7 +12,7 @@ k6 = "latest"
 hadolint = "latest"
 shellcheck = "latest"
 actionlint = "latest"
-markdownlint-cli2 = "latest"
+rumdl = "latest"
 shfmt = "latest"
 
 # --- CLI Utilities ---
@@ -22,14 +22,10 @@ sd = "latest"
 
 # --- Security Scan & Audit ---
 trivy = "latest"         # 代码库/镜像漏洞扫描与静态安全审计
-gitleaks = "latest"      # 敏感信息及凭证泄漏静态分析拦截
 
 # --- Secrets Management ---
 sops = "latest"          # 多环境配置与敏感环境变量行级加密管理
 age = "latest"           # 现代非对称加密工具（配合 SOPS 生成密钥对）
-
-# --- Changelog & Release ---
-git-cliff = "latest"     # 配合 Conventional Commits 自动生成变更日志
 
 
 [env]

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ResponseService;
+use BackedEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -42,7 +43,7 @@ class AppBaseController extends Controller
     public function getModel(string $modelClass, string $connection = 'mysql'): Model
     {
         /** @var Model $model */
-        $model = new $modelClass();
+        $model = new $modelClass;
         $model->setConnection($connection);
 
         return $model;
@@ -68,10 +69,10 @@ class AppBaseController extends Controller
     /**
      * 发送基于枚举的错误响应
      *
-     * @param  \BackedEnum  $enum  错误码枚举
+     * @param  BackedEnum  $enum  错误码枚举
      * @param  int|null  $httpCode  HTTP状态码，如果枚举定义了httpStatus()则优先使用
      */
-    public function sendEnumError(\BackedEnum $enum, ?int $httpCode = null): JsonResponse
+    public function sendEnumError(BackedEnum $enum, ?int $httpCode = null): JsonResponse
     {
         return $this->responseService->sendEnumError($enum, $httpCode);
     }

@@ -4,7 +4,6 @@ use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\PendingRequest;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Filename

@@ -4,6 +4,7 @@ namespace App\Services\Media;
 
 use App\Helpers\AppHelper;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -56,7 +57,7 @@ class MediaService
     public static function getInstance(): self
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;
@@ -168,7 +169,7 @@ class MediaService
                     'upload_time' => now()->toISOString(),
                 ], $customProperties))
                 ->toMediaCollection($collection);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('文件上传失败', [
                 'model' => get_class($model),
                 'model_id' => $model->id ?? 'new',
@@ -177,6 +178,7 @@ class MediaService
                 'original_name' => $file->getClientOriginalName(),
                 'error' => $e->getMessage(),
             ]);
+
             throw $e;
         }
     }
@@ -219,7 +221,6 @@ class MediaService
             }
 
             $uploadedMedia->push($media);
-
         }
 
         return $uploadedMedia;
@@ -265,7 +266,7 @@ class MediaService
                 try {
                     $media->delete();
                     $deletedCount++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Log::error('删除媒体文件失败', [
                         'media_id' => $id,
                         'error' => $e->getMessage(),
@@ -296,7 +297,7 @@ class MediaService
                 try {
                     $media->update(['order_column' => $position]);
                     $updatedCount++;
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     Log::error('更新媒体文件排序失败', [
                         'media_id' => $mediaId,
                         'position' => $position,
@@ -377,7 +378,7 @@ class MediaService
             $oldMedia?->delete();
 
             return $newMedia;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('替换媒体文件失败', [
                 'collection' => $collection,
                 'replace_media_id' => $replaceMediaId,
@@ -397,7 +398,7 @@ class MediaService
             $model->clearMediaCollection($collection);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('清除媒体集合失败', [
                 'collection' => $collection,
                 'error' => $e->getMessage(),
@@ -416,7 +417,7 @@ class MediaService
             $model->getMedia()->each->delete();
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('删除所有媒体文件失败', [
                 'model' => get_class($model),
                 'model_id' => $model->id ?? 'unknown',
@@ -489,7 +490,7 @@ class MediaService
             try {
                 $newMedia = $media->copy($targetModel, $targetCollection);
                 $copiedMedia->push($newMedia);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Log::error('复制媒体文件失败', [
                     'source_media_id' => $media->id,
                     'target_model' => get_class($targetModel),
@@ -617,8 +618,7 @@ class MediaService
                 }
 
                 $results['uploaded']->push($media);
-
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $results['errors']->push([
                     'file' => $file->getClientOriginalName(),
                     'error' => $e->getMessage(),
@@ -652,13 +652,13 @@ class MediaService
             try {
                 // 尝试访问文件路径，如果文件不存在会抛出异常
                 $item->getPath();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // 文件不存在，删除数据库记录
                 try {
                     $item->delete();
                     $cleanedCount++;
                     Log::info('清理无效媒体文件', ['media_id' => $item->id, 'file_name' => $item->file_name]);
-                } catch (\Exception $deleteException) {
+                } catch (Exception $deleteException) {
                     Log::error('删除无效媒体记录失败', [
                         'media_id' => $item->id,
                         'error' => $deleteException->getMessage(),

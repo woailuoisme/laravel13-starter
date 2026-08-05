@@ -3,6 +3,10 @@
 declare(strict_types=1);
 
 return [
+    'notifications_fetched' => 'Notifications fetched successfully',
+    'notification_marked_as_read' => 'Notification marked as read',
+    'all_notifications_marked_as_read' => 'All notifications marked as read',
+    'notification_deleted' => 'Notification deleted',
     'notifications' => [
         'enabled' => 'Enabled successfully',
         'disabled' => 'Disabled successfully',

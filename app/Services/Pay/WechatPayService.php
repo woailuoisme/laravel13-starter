@@ -11,6 +11,7 @@ use GuzzleHttp\Exception\ServerException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use JsonException;
 use OpenSSLAsymmetricKey;
 use Throwable;
 use WeChatPay\Builder;
@@ -108,6 +109,7 @@ class WechatPayService
             return $this->formatPaymentResult($responseData);
         } catch (Throwable $e) {
             Log::error("微信支付下单失败: {$outTradeNo}", ['error' => $e->getMessage()]);
+
             throw ($e instanceof WePayException) ? $e : WePayException::paymentFailed($e->getMessage());
         }
     }
@@ -131,6 +133,7 @@ class WechatPayService
             ];
         } catch (Throwable $e) {
             Log::error("查询订单失败: {$outTradeNo}", ['error' => $e->getMessage()]);
+
             throw WePayException::paymentFailed("查询失败: {$e->getMessage()}");
         }
     }
@@ -161,6 +164,7 @@ class WechatPayService
             return ['success' => true, 'id' => $result['refund_id'] ?? '', 'status' => $result['status'] ?? ''];
         } catch (Throwable $e) {
             Log::error("微信退款失败: {$outTradeNo}", ['error' => $e->getMessage()]);
+
             throw WePayException::paymentFailed("退款失败: {$e->getMessage()}");
         }
     }
@@ -206,6 +210,7 @@ class WechatPayService
             ];
         } catch (Throwable $e) {
             Log::error('微信回调验证失败', ['error' => $e->getMessage()]);
+
             throw WePayException::signatureError($e->getMessage());
         }
     }
@@ -236,7 +241,7 @@ class WechatPayService
     }
 
     /**
-     * @throws WePayException|\JsonException
+     * @throws WePayException|JsonException
      */
     protected function callApi(string $endpoint, string $method, array $json = [], array $query = []): array
     {
@@ -260,6 +265,7 @@ class WechatPayService
             return json_decode($body, true, 512, JSON_THROW_ON_ERROR) ?: [];
         } catch (ClientException|ServerException $e) {
             $body = $e->getResponse()->getBody()->getContents();
+
             throw WePayException::fromWechatResponse($body, $e->getResponse()->getStatusCode());
         } catch (RequestException $e) {
             throw WePayException::networkError($e->getMessage());
@@ -364,7 +370,7 @@ class WechatPayService
     }
 
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
     protected function decryptResource(array $resource): array
     {

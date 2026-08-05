@@ -375,10 +375,12 @@ class AuthController extends AppBaseController
      */
     public function profileUpdate(ProfileUpdateRequest $request): JsonResponse
     {
+        /** @var User $user */
         $user = auth('api')->user();
         $data = $request->validated();
 
         DB::transaction(function () use ($user, $data): void {
+            /** @var User $user */
             $user->update($data);
 
             if (isset($data['avatar'])) {
@@ -464,12 +466,14 @@ class AuthController extends AppBaseController
         $socialUser = $driver->stateless()->user();
         $idColumn = $provider.'_id';
 
+        /** @var User|null $user */
         $user = User::query()
             ->where($idColumn, $socialUser->getId())
             ->orWhere('email', $socialUser->getEmail())
             ->first();
 
         if ($user) {
+            /** @var User $user */
             $user->update([
                 $idColumn => $socialUser->getId(),
                 'last_login_at' => now(),
@@ -507,6 +511,7 @@ class AuthController extends AppBaseController
      */
     public function notifications(Request $request): JsonResponse
     {
+        /** @var User $user */
         $user = auth('api')->user();
         $notifications = $user->notifications()
             ->paginate($request->integer('per_page', 15));
@@ -524,6 +529,7 @@ class AuthController extends AppBaseController
      */
     public function markNotificationAsRead(string $id): JsonResponse
     {
+        /** @var User $user */
         $user = auth('api')->user();
         $notification = $user->notifications()->findOrFail($id);
         $notification->markAsRead();
@@ -538,6 +544,7 @@ class AuthController extends AppBaseController
      */
     public function markAllNotificationsAsRead(): JsonResponse
     {
+        /** @var User $user */
         $user = auth('api')->user();
         $user->unreadNotifications->markAsRead();
 
@@ -551,6 +558,7 @@ class AuthController extends AppBaseController
      */
     public function deleteNotification(string $id): JsonResponse
     {
+        /** @var User $user */
         $user = auth('api')->user();
         $user->notifications()->findOrFail($id)->delete();
 

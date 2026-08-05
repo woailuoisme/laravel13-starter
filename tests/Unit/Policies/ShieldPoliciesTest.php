@@ -32,21 +32,21 @@ dataset('shield policies', [
 ]);
 
 it('authorizes viewAny through shield permissions', function (string $policyClass, string $ability): void {
-    $policy = new $policyClass();
+    $policy = new $policyClass;
     $user = shieldAdminUser($ability);
 
     expect($policy->viewAny($user))->toBeTrue();
 })->with('shield policies');
 
 it('allows super admins regardless of direct permission assignment', function (string $policyClass, string $ability): void {
-    $policy = new $policyClass();
+    $policy = new $policyClass;
     $user = shieldAdminUser($ability, allowed: false, superAdmin: true);
 
     expect($policy->viewAny($user))->toBeTrue();
 })->with('shield policies');
 
 it('denies access when the matching permission is missing', function (string $policyClass, string $ability): void {
-    $policy = new $policyClass();
+    $policy = new $policyClass;
     $user = shieldAdminUser($ability, allowed: false);
 
     expect($policy->viewAny($user))->toBeFalse();

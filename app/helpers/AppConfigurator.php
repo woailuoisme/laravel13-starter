@@ -333,7 +333,7 @@ class AppConfigurator
         }
 
         // Horizon 和 Scheduler 联调健康度测试任务
-        Schedule::job(new TestHorizonJob())
+        Schedule::job(new TestHorizonJob)
             ->everyMinute()
             ->before(static function (): void {
                 Log::info('Scheduler dispatched TestHorizonJob.');
@@ -342,12 +342,11 @@ class AppConfigurator
 
     public static function configureLogColorStderr(): void
     {
-
         Log::extend('color_stderr', function () {
             $handler = new StreamHandler('php://stderr');
 
             // 自定义格式化器，根据日志级别动态改变颜色
-            $formatter = new class() extends LineFormatter
+            $formatter = new class extends LineFormatter
             {
                 // 定义不同级别的颜色代码
                 private array $levelColors = [
@@ -402,7 +401,6 @@ class AppConfigurator
 
         // 配置监控集成
         //        self::configureSentryIntegration($exceptions);
-
     }
 
     /**

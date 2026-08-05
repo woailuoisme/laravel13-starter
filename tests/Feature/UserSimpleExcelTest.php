@@ -27,7 +27,7 @@ it('exports users with simple excel', function (): void {
 
     $path = storage_path('framework/testing/users-export.xlsx');
 
-    (new UserExport())->writeTo($path);
+    (new UserExport)->writeTo($path);
 
     $rows = SimpleExcelReader::create($path)->getRows()->all();
 
@@ -41,7 +41,7 @@ it('exports users with simple excel', function (): void {
 it('exports a user import template with simple excel', function (): void {
     $path = storage_path('framework/testing/user-import-template.xlsx');
 
-    (new UserImportTemplate())->writeTo($path);
+    (new UserImportTemplate)->writeTo($path);
 
     $rows = SimpleExcelReader::create($path)->getRows()->all();
 
@@ -70,7 +70,7 @@ it('imports users with simple excel and upserts by email', function (): void {
         ])
         ->close();
 
-    $result = (new UserImport())->import($path);
+    $result = (new UserImport)->import($path);
 
     expect($result)->toBe(['imported' => 2, 'skipped' => 1])
         ->and(User::query()->where('email', 'existing@example.com')->value('id'))->toBe($existingUser->id)
@@ -86,5 +86,5 @@ it('throws a laravel validation exception for invalid imported rows', function (
         ->addRow(['nickname' => '', 'email' => 'not-an-email', 'openid' => 'openid'])
         ->close();
 
-    (new UserImport())->import($path);
+    (new UserImport)->import($path);
 })->throws(ValidationException::class);

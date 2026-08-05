@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use BackedEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
@@ -41,7 +42,7 @@ class ResponseService
         return Response::json($response, $code);
     }
 
-    public function sendEnumError(\BackedEnum $enum, ?int $httpCode = null): JsonResponse
+    public function sendEnumError(BackedEnum $enum, ?int $httpCode = null): JsonResponse
     {
         $code = is_int($enum->value) ? $enum->value : 400;
         $message = method_exists($enum, 'message') ? $enum->message() : $enum->name;

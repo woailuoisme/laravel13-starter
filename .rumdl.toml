@@ -1,0 +1,29 @@
+[global]
+disable = ["MD041", "MD060", "MD036", "MD013", "MD033", "MD057"]
+exclude = [
+  "node_modules/**",
+  "vendor/**",
+  "bootstrap/**",
+  "storage/**",
+  "public/**",
+  "dist/**",
+  "CHANGELOG.md",
+  "AGENTS.md",
+  ".agents/**"
+]
+
+[MD003]
+style = "atx"
+
+[MD007]
+indent = 2
+style = "fixed"
+
+[MD024]
+siblings-only = true
+
+[MD049]
+style = "asterisk"
+
+[MD050]
+style = "asterisk"

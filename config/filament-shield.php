@@ -7,7 +7,6 @@ use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Shield Resource

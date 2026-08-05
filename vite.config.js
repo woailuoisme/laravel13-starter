@@ -1,7 +1,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import laravel from "laravel-vite-plugin";
 import { defineConfig } from "vite";
-import { compression, defineAlgorithm } from "vite-plugin-compression2";
+import { compression } from "vite-plugin-compression2";
 
 export default defineConfig({
 	plugins: [
@@ -15,12 +15,8 @@ export default defineConfig({
 		}),
 		tailwindcss(),
 		compression({
-			algorithms: [
-				"gzip",
-				"zstd",
-				"brotliCompress",
-				defineAlgorithm("deflate", { level: 9 }),
-			],
+			algorithms: ["gzip", "brotliCompress"],
+			threshold: 1024,
 		}),
 	],
 	server: {

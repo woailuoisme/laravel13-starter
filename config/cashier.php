@@ -6,7 +6,6 @@ use Laravel\Cashier\Invoices\DompdfInvoiceRenderer;
 // use Laravel\Cashier\Invoices\LaravelPdfInvoiceRenderer;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Stripe Keys

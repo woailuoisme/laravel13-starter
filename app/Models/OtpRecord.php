@@ -39,6 +39,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord whereUsedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|OtpRecord whereUserId($value)
  *
+ * @mixin Model
  * @mixin \Eloquent
  */
 #[Fillable(['user_id', 'identifier', 'type', 'action', 'code', 'used_at', 'expires_at'])]

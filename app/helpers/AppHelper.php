@@ -66,6 +66,7 @@ class AppHelper
             );
         } catch (JsonException $e) {
             Log::error('JSON pretty encode failed', ['data' => $arr, 'error' => $e->getMessage()]);
+
             throw $e;
         }
     }
@@ -95,6 +96,7 @@ class AppHelper
             return json_decode($str, true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
             Log::error('JSON decode failed', ['json' => $str, 'error' => $e->getMessage()]);
+
             throw $e;
         }
     }
@@ -135,6 +137,7 @@ class AppHelper
                     'error_output' => $process->getErrorOutput(),
                 ]);
                 report($exception);
+
                 throw $exception;
             }
 
@@ -146,6 +149,7 @@ class AppHelper
             return $processOutput;
         } catch (Exception $e) {
             Log::error('Shell command execution error', ['command' => $cmd, 'error' => $e->getMessage()]);
+
             throw $e;
         }
     }
@@ -290,6 +294,7 @@ class AppHelper
             return ['ip' => $ip, 'type' => 'unknown', 'error' => 'Unable to retrieve location information'];
         } catch (Exception $e) {
             Log::error('Unexpected error while getting IP info', ['ip' => $ip, 'error' => $e->getMessage()]);
+
             throw $e;
         }
     }
@@ -431,6 +436,7 @@ class AppHelper
             return $now->timestamp.$milliseconds.$randomNumber;
         } catch (Exception $e) {
             Log::error('Failed to generate order code', ['error' => $e->getMessage()]);
+
             throw new RuntimeException('Unable to generate order code: '.$e->getMessage());
         }
     }

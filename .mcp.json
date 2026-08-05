@@ -6,6 +6,19 @@
                 "artisan",
                 "boost:mcp"
             ]
+        },
+        "codegraph": {
+            "command": "codegraph",
+            "args": [
+                "serve",
+                "--mcp"
+            ]
+        },
+        "code-review-graph": {
+            "command": "code-review-graph",
+            "args": [
+                "serve"
+            ]
         }
     }
 }

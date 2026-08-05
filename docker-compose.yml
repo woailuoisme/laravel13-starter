@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel13-starter
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8100}:${APP_PORT:-8100}"
+    networks:
+      - backend
+
+networks:
+  backend:
+    external: true

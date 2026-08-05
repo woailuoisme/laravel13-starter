@@ -3,6 +3,9 @@
     "lang"
   ],
   "i18n-ally.keystyle": "nested",
+  "mago.executablePath": "/Users/seaside/.cargo/bin/mago",
+  "mago.path": "/Users/seaside/.cargo/bin/mago",
+  "mago.suppressExperimentalWarning": true,
   "makefile.configureOnOpen": false,
   "kiroAgent.configureMCP": "Enabled",
   "git.ignoreLimitWarning": true,
@@ -10,8 +13,6 @@
     "**/node_modules/**",
     "**/storage/**",
     "**/.git/**",
-    "**/_ide_helper_phpstan.php",
-    "**/_ide_helper_models_phpstan.php",
     "**/bootstrap/cache/**",
     "**/.phpunit.cache/**",
     "**/.idea/**",
@@ -30,7 +31,6 @@
   ],
   "Laravel.env.diagnostics": false,
   "[php]": {
-    "editor.defaultFormatter": "open-southeners.laravel-pint",
     "editor.formatOnSave": true
   },
   "[blade]": {
@@ -49,8 +49,7 @@
     "**/.idea": true,
     "**/.phpstorm.meta.php": true,
     "**/_ide_helper.php": true,
-    "**/_ide_helper_models.php": true,
-    "**/_ide_helper_models_phpstan.php": true
+    "**/_ide_helper_models.php": true
   },
   "files.exclude": {
     "**/.phpunit.cache": true,
@@ -58,11 +57,6 @@
     "**/.DS_Store": true,
     "**/.phpstorm.meta.php": true,
     "**/_ide_helper.php": true,
-    "**/_ide_helper_models.php": true,
-    "**/_ide_helper_models_phpstan.php": true
-  },
-  "markdownlint.exclude": [
-    "**/.gemini/**",
-    "~/.gemini/**"
-  ]
+    "**/_ide_helper_models.php": true
+  }
 }

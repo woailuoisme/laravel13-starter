@@ -8,7 +8,6 @@ use Spatie\LaravelSettings\SettingsRepositories\DatabaseSettingsRepository;
 use Spatie\LaravelSettings\SettingsRepositories\RedisSettingsRepository;
 
 return [
-
     /*
      * Each settings class used in your application must be registered, you can
      * put them (manually) here.
