@@ -12,7 +12,6 @@
         "spatie/laravel-medialibrary",
         "spatie/laravel-responsecache",
         "filament/filament",
-        "spatie/laravel-query-builder",
         "sandermuller/laravel-fluent-validation",
         "spatie/laravel-pdf",
         "spatie/laravel-activitylog",
@@ -37,8 +36,6 @@
         "laravel-backup",
         "medialibrary-development",
         "laravel-pdf",
-        "laravel-query-builder",
-        "responsecache-development",
-        "laravel-tdd"
+        "responsecache-development"
     ]
 }
