@@ -79,27 +79,6 @@ ide-helper:
 test:
      php artisan test --compact
 
-
-# 运行 Gitleaks 扫描当前整个工作区的敏感凭证。
-gitleaks:
-    gitleaks detect --verbose
-
-# 运行 Gitleaks 仅扫描当前 Git 暂存区的敏感凭证。
-gitleaks-staged:
-    gitleaks protect --staged --verbose
-
-# 增量更新 CHANGELOG.md（若文件不存在则全量生成）。
-changelog:
-    @if [ ! -f CHANGELOG.md ]; then \
-        git-cliff --config cliff.toml --output CHANGELOG.md; \
-    else \
-        git-cliff --config cliff.toml --prepend CHANGELOG.md --unreleased; \
-    fi
-
-# 全量重新生成完整的 CHANGELOG.md 文件。
-changelog-all:
-    git-cliff --config cliff.toml --output CHANGELOG.md
-
 # 使用 Laravel 内建加密工具加密 .env.production 文件（生成 .env.production.encrypted）。
 env-encrypt:
     php artisan env:encrypt --env=production
