@@ -22,8 +22,8 @@ $:
             docker buildx build \
               --tag "${REGISTRY}:latest" \
               --file ./Dockerfile \
-              --cache-from "type=registry,ref=${REGISTRY}:latest" \
-              --cache-to type=inline,mode=max \
+              --cache-from "type=registry,ref=${REGISTRY}:latest-cache" \
+              --cache-to "type=registry,ref=${REGISTRY}:latest-cache,mode=max" \
               --push \
               .
 
@@ -42,7 +42,7 @@ $:
               --tag "${REGISTRY}:${VERSION}" \
               --tag "${REGISTRY}:latest" \
               --file ./Dockerfile \
-              --cache-from "type=registry,ref=${REGISTRY}:latest" \
-              --cache-to type=inline,mode=max \
+              --cache-from "type=registry,ref=${REGISTRY}:${VERSION}-cache" \
+              --cache-to "type=registry,ref=${REGISTRY}:${VERSION}-cache,mode=max" \
               --push \
               .
