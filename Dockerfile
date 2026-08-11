@@ -7,13 +7,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY composer.json composer.lock ./
 
-RUN --mount=type=cache,target=/root/.composer/cache \
-    composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction
+RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-interaction
 
 COPY . .
 
-RUN --mount=type=cache,target=/root/.composer/cache \
-    composer dump-autoload --optimize --no-dev
+RUN rm -f bootstrap/cache/packages.php \
+    && composer dump-autoload --optimize --no-dev
 
 # Stage 2: Production runtime
 FROM jiaoio/php8.5:roadrunner-alpine

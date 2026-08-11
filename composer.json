@@ -53,7 +53,6 @@
 		"wechatpay/wechatpay": "^1.4"
 	},
 	"require-dev": {
-		"andreaselia/laravel-api-to-postman": "^2.3",
 		"barryvdh/laravel-ide-helper": "^3.7",
 		"deployer/deployer": "^8.0",
 		"fakerphp/faker": "^1.23",
