@@ -1,54 +1,127 @@
 # CNB 流水线 — Laravel 13 Starter Docker 镜像构建与推送
 # 文档: https://docs.cnb.cool/build/quick-start.html
+#        https://docs.cnb.cool/zh/build/build-node.html
 #
 # 内置变量 (CNB 自动注入):
 #   CNB_DOCKER_REGISTRY      — 镜像仓库地址，如 docker.cnb.cool
 #   CNB_REPO_SLUG_LOWERCASE  — 仓库路径小写，如 my-org/my-repo
 #   CNB_COMMIT_SHORT         — 短 commit SHA
 #
-# 镜像: PHP 8.5 + RoadRunner (Octane)，多阶段构建，linux/amd64 + linux/arm64
+# 多架构策略: amd64 和 arm64 并行构建，推送到同一 tag 合并为 manifest list
 
-# ── 手动触发：构建并推送 latest 镜像 ──────────────────────────────────────
+# ── 手动触发 ──────────────────────────────────────────────────────────────
 $:
   web_trigger:
+    # amd64 构建
     - services:
         - docker
       runner:
-        tags: cnb:arch:amd64:containerd-snapshotter
+        tags: cnb:arch:amd64
       stages:
-        - name: Build and push (latest)
+        - name: Build and push (amd64)
           script: |
             set -euo pipefail
             REGISTRY="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}"
 
             docker buildx build \
-              --platform linux/amd64,linux/arm64 \
-              --tag "${REGISTRY}:latest" \
+              --platform linux/amd64 \
+              --tag "${REGISTRY}:latest-amd64" \
               --file ./Dockerfile \
-              --cache-from "type=registry,ref=${REGISTRY}:latest" \
+              --cache-from "type=registry,ref=${REGISTRY}:latest-amd64" \
               --cache-to type=inline,mode=max \
               --push \
               .
 
-  # ── v* tag push：构建并推送版本化 tag ──────────────────────────────────
-  tag_push:
+    # arm64 构建
     - services:
         - docker
       runner:
-        tags: cnb:arch:amd64:containerd-snapshotter
+        tags: cnb:arch:arm64:v8
       stages:
-        - name: Build and push release
+        - name: Build and push (arm64)
+          script: |
+            set -euo pipefail
+            REGISTRY="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}"
+
+            docker buildx build \
+              --platform linux/arm64 \
+              --tag "${REGISTRY}:latest-arm64" \
+              --file ./Dockerfile \
+              --cache-from "type=registry,ref=${REGISTRY}:latest-arm64" \
+              --cache-to type=inline,mode=max \
+              --push \
+              .
+
+    # 合并多架构 manifest
+    - services:
+        - docker
+      stages:
+        - name: Merge manifest (latest)
+          script: |
+            set -euo pipefail
+            REGISTRY="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}"
+
+            docker buildx imagetools create \
+              --tag "${REGISTRY}:latest" \
+              "${REGISTRY}:latest-amd64" \
+              "${REGISTRY}:latest-arm64"
+
+  # ── v* tag push ─────────────────────────────────────────────────────────
+  tag_push:
+    # amd64 构建
+    - services:
+        - docker
+      runner:
+        tags: cnb:arch:amd64
+      stages:
+        - name: Build and push (amd64)
           script: |
             set -euo pipefail
             REGISTRY="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}"
             VERSION="${CNB_BRANCH##*/}"
 
             docker buildx build \
-              --platform linux/amd64,linux/arm64 \
-              --tag "${REGISTRY}:${VERSION}" \
-              --tag "${REGISTRY}:latest" \
+              --platform linux/amd64 \
+              --tag "${REGISTRY}:${VERSION}-amd64" \
               --file ./Dockerfile \
-              --cache-from "type=registry,ref=${REGISTRY}:latest" \
+              --cache-from "type=registry,ref=${REGISTRY}:latest-amd64" \
               --cache-to type=inline,mode=max \
               --push \
               .
+
+    # arm64 构建
+    - services:
+        - docker
+      runner:
+        tags: cnb:arch:arm64:v8
+      stages:
+        - name: Build and push (arm64)
+          script: |
+            set -euo pipefail
+            REGISTRY="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}"
+            VERSION="${CNB_BRANCH##*/}"
+
+            docker buildx build \
+              --platform linux/arm64 \
+              --tag "${REGISTRY}:${VERSION}-arm64" \
+              --file ./Dockerfile \
+              --cache-from "type=registry,ref=${REGISTRY}:latest-arm64" \
+              --cache-to type=inline,mode=max \
+              --push \
+              .
+
+    # 合并多架构 manifest
+    - services:
+        - docker
+      stages:
+        - name: Merge manifest
+          script: |
+            set -euo pipefail
+            REGISTRY="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}"
+            VERSION="${CNB_BRANCH##*/}"
+
+            docker buildx imagetools create \
+              --tag "${REGISTRY}:${VERSION}" \
+              --tag "${REGISTRY}:latest" \
+              "${REGISTRY}:${VERSION}-amd64" \
+              "${REGISTRY}:${VERSION}-arm64"
