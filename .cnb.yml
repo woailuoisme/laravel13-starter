@@ -6,16 +6,16 @@
 #   CNB_REPO_SLUG_LOWERCASE  — 仓库路径小写，如 my-org/my-repo
 #   CNB_COMMIT_SHORT         — 短 commit SHA
 #
-# 镜像: PHP 8.5 + RoadRunner (Octane)，多阶段构建
+# 镜像: PHP 8.5 + RoadRunner (Octane)，多阶段构建，linux/amd64 + linux/arm64
 
 # ── 手动触发：构建并推送 latest 镜像 ──────────────────────────────────────
 $:
   web_trigger:
     - services:
         - docker
+      runner:
+        tags: cnb:arch:amd64:containerd-snapshotter
       stages:
-        - name: Setup QEMU
-          script: docker run --privileged --rm tonistiigi/binfmt --install all
         - name: Build and push (latest)
           script: |
             set -euo pipefail
@@ -34,9 +34,9 @@ $:
   tag_push:
     - services:
         - docker
+      runner:
+        tags: cnb:arch:amd64:containerd-snapshotter
       stages:
-        - name: Setup QEMU
-          script: docker run --privileged --rm tonistiigi/binfmt --install all
         - name: Build and push release
           script: |
             set -euo pipefail
