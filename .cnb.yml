@@ -14,14 +14,16 @@ $:
     - services:
         - docker
       stages:
+        - name: Setup QEMU
+          script: docker run --privileged --rm tonistiigi/binfmt --install all
         - name: Build and push (latest)
           script: |
             set -euo pipefail
             REGISTRY="${CNB_DOCKER_REGISTRY}/${CNB_REPO_SLUG_LOWERCASE}"
 
             docker buildx build \
+              --platform linux/amd64,linux/arm64 \
               --tag "${REGISTRY}:latest" \
-              --tag "${REGISTRY}:${CNB_COMMIT_SHORT}" \
               --file ./Dockerfile \
               --cache-from "type=registry,ref=${REGISTRY}:latest" \
               --cache-to type=inline,mode=max \
@@ -33,6 +35,8 @@ $:
     - services:
         - docker
       stages:
+        - name: Setup QEMU
+          script: docker run --privileged --rm tonistiigi/binfmt --install all
         - name: Build and push release
           script: |
             set -euo pipefail
@@ -40,6 +44,7 @@ $:
             VERSION="${CNB_BRANCH##*/}"
 
             docker buildx build \
+              --platform linux/amd64,linux/arm64 \
               --tag "${REGISTRY}:${VERSION}" \
               --tag "${REGISTRY}:latest" \
               --file ./Dockerfile \
