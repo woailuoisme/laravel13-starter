@@ -11,8 +11,7 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-in
 
 COPY . .
 
-RUN rm -f bootstrap/cache/packages.php \
-    && composer dump-autoload --optimize --no-dev
+RUN rm -f bootstrap/cache/packages.php && composer dump-autoload --optimize --no-dev
 
 # Stage 2: Production runtime
 FROM jiaoio/php8.5:roadrunner-alpine
