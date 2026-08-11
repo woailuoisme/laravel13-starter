@@ -3,6 +3,6 @@
     "shufo.vscode-blade-formatter",
     "bmewburn.vscode-intelephense-client",
     "bradlc.vscode-tailwindcss",
-    "recca0120.vscode-phpunit"
+    "laravel.vscode-laravel"
   ]
 }
