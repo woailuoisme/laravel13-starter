@@ -1,31 +1,23 @@
 {
-  "i18n-ally.localesPaths": [
-    "lang"
-  ],
-  "i18n-ally.keystyle": "nested",
-  "mago.executablePath": "/Users/seaside/.cargo/bin/mago",
+  "mago.executablePath": "${userHome}/.cargo/bin/mago",
   "mago.suppressExperimentalWarning": true,
   "git.ignoreLimitWarning": true,
-  "intelephense.files.exclude": [
-    "**/bootstrap/cache/**",
-    "**/.phpunit.cache/**",
-    "app/Exports/**",
-    "app/Imports/**",
-    "**/.phpstorm.meta.php",
-    "**/deploy.php"
-  ],
-  "intelephense.diagnostics.duplicateSymbols": false,
-  "intelephense.environment.phpVersion": "8.5",
-  "intelephense.format.enable": false,
-  "LaravelExtraIntellisense.disableDiagnostics": true,
   "laravel.diagnostics.env": false,
   "laravel.diagnostics.enabled": false,
-  "laravel.env.diagnostics": false,
+  "customLocalFormatters.formatters": [
+    {
+      "command": "mago format --stdin-input",
+      "languages": [
+        "php"
+      ]
+    }
+  ],
   "[php]": {
-    "editor.defaultFormatter": "open-southeners.laravel-pint",
+    "editor.defaultFormatter": "jkillian.custom-local-formatters",
     "editor.formatOnSave": true
   },
-  "[blade]": {
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml",
     "editor.formatOnSave": true
   },
   "tailwindCSS.includeLanguages": {
@@ -33,9 +25,13 @@
   },
   "search.exclude": {
     "**/node_modules": true,
+    "**/vendor": true,
+    "**/public/build": true,
     "**/storage/framework": true,
     "**/storage/logs": true,
+    "**/storage/app": true,
     "**/bootstrap/cache": true,
+    "**/.codebuddy": true,
     "**/.phpunit.cache": true,
     "**/.phpstorm.meta.php": true,
     "**/_ide_helper.php": true,

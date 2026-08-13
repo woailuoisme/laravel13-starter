@@ -1,8 +1,12 @@
 {
   "recommendations": [
-    "shufo.vscode-blade-formatter",
-    "bradlc.vscode-tailwindcss",
     "laravel.vscode-laravel",
-    "open-southeners.laravel-pint"
+    "phpantom.phpantom",
+    "jkillian.custom-local-formatters",
+    "bradlc.vscode-tailwindcss",
+    "nefrob.vscode-just-syntax",
+    "hverlin.mise-vscode",
+    "tamasfe.even-better-toml",
+    "rvben.rumdl",
   ]
 }
