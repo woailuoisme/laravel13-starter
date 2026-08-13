@@ -77,7 +77,7 @@ ide-helper:
     @php artisan ide-helper:models --write --no-interaction
 
 test:
-     php artisan test --compact
+     php artisan test
 
 # 使用 Laravel 内建加密工具加密 .env.production 文件（生成 .env.production.encrypted）。
 env-encrypt:

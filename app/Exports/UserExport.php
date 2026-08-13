@@ -82,8 +82,7 @@ class UserExport
 
     private function headerStyle(): Style
     {
-        return (new Style)
-            ->setFontBold()
+        return new Style()->setFontBold()
             ->setFontSize(12);
     }
 }

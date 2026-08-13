@@ -68,8 +68,11 @@ class QrCodeHelper
      * @param  int  $size  尺寸（像素）
      * @param  bool  $useBase64  true 使用 base64 编码，false 使用 URL 编码（体积更小）
      */
-    public static function generateSvgDataUrl(string $text, int $size = self::DEFAULT_SIZE, bool $useBase64 = false): string
-    {
+    public static function generateSvgDataUrl(
+        string $text,
+        int $size = self::DEFAULT_SIZE,
+        bool $useBase64 = false,
+    ): string {
         $svg = self::generateSvg($text, $size);
 
         if ($svg === '') {
@@ -312,7 +315,7 @@ class QrCodeHelper
             }
 
             $directory = dirname($filePath);
-            if (! is_dir($directory) && ! mkdir($directory, 0755, true) && ! is_dir($directory)) {
+            if (! is_dir($directory) && ! mkdir($directory, 0o755, true) && ! is_dir($directory)) {
                 throw new RuntimeException(sprintf('Directory "%s" was not created', $directory));
             }
 

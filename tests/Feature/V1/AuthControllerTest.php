@@ -47,7 +47,7 @@ it('keeps the legacy register entrypoint mapped to the signup request flow', fun
         ->assertJsonPath('data.email', 'legacy-register@example.com');
 });
 
-it('fails to login with incorrect credentials', function (string $nickname, string $password) {
+it('fails to login with incorrect credentials', function (string $nickname, #[SensitiveParameter] string $password) {
     $this->postJson('/api/v1/auth/login', [
         'nickname' => $nickname,
         'password' => $password,
@@ -57,7 +57,7 @@ it('fails to login with incorrect credentials', function (string $nickname, stri
     'non-existent email' => ['wrong@example.com', 'password123'],
 ]);
 
-it('fails to login with missing credentials', function (string $nickname, string $password) {
+it('fails to login with missing credentials', function (string $nickname, #[SensitiveParameter] string $password) {
     $this->postJson('/api/v1/auth/login', [
         'nickname' => $nickname,
         'password' => $password,

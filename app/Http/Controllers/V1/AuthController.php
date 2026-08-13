@@ -34,7 +34,7 @@ use Tymon\JWTAuth\JWTGuard;
 /**
  * @group 用户认证
  */
-class AuthController extends AppBaseController
+final class AuthController extends AppBaseController
 {
     public function __construct(
         protected WechatService $wechatService,

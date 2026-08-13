@@ -74,8 +74,13 @@ class StripeService
      *
      * @throws IncompletePayment
      */
-    public function subscribe(User $user, string $name, string $planId, string $paymentMethodId, array $options = []): Subscription
-    {
+    public function subscribe(
+        User $user,
+        string $name,
+        string $planId,
+        string $paymentMethodId,
+        array $options = [],
+    ): Subscription {
         $builder = $user->newSubscription($name, $planId);
 
         // 优惠券

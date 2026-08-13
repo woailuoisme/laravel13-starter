@@ -6,9 +6,7 @@ use App\Console\Commands\ClearBucketCommand;
 use Illuminate\Console\Attributes\Signature;
 
 it('defaults the clear bucket command to garage', function (): void {
-    $signature = (new ReflectionClass(ClearBucketCommand::class))
-        ->getAttributes(Signature::class)[0]
-        ->getArguments()[0];
+    $signature = new ReflectionClass(ClearBucketCommand::class)->getAttributes(Signature::class)[0]->getArguments()[0];
 
     expect($signature)->toContain('{--disk=garage');
 });

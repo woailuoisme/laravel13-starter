@@ -29,7 +29,7 @@ class ClearBucketCommand extends Command
         $disk = (string) $this->option('disk');
         $path = $this->option('path') ? (string) $this->option('path') : '';
 
-        if (empty($disk) || ! config("filesystems.disks.$disk")) {
+        if (empty($disk) || ! config("filesystems.disks.{$disk}")) {
             $this->error('磁盘 ['.($disk ?: 'NULL').'] 未在 config/filesystems.php 中配置！');
 
             return self::FAILURE;
@@ -57,7 +57,10 @@ class ClearBucketCommand extends Command
             return self::SUCCESS;
         }
 
-        if (! $this->option('force') && ! $this->confirm('确定要彻底删除磁盘 ['.$disk.'] 下的这 '.count($files).' 个文件吗？', false)) {
+        if (
+            ! $this->option('force')
+            && ! $this->confirm('确定要彻底删除磁盘 ['.$disk.'] 下的这 '.count($files).' 个文件吗？', false)
+        ) {
             $this->warn('操作已中止。');
 
             return self::SUCCESS;
@@ -81,8 +84,7 @@ class ClearBucketCommand extends Command
             try {
                 // 1. 同步清理 Spatie MediaLibrary 记录
                 if (! $this->option('files-only') && class_exists(Media::class)) {
-                    $mediaQuery = Media::where('disk', $disk)
-                        ->where('file_name', basename($file));
+                    $mediaQuery = Media::query()->where('disk', $disk)->where('file_name', basename($file));
 
                     // 如果路径包含 ID，尝试更精准匹配
                     $pathParts = explode('/', $file);

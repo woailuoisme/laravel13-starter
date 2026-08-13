@@ -19,8 +19,7 @@ class AdminPanelProvider extends PanelProvider
      */
     public function panel(Panel $panel): Panel
     {
-        return $panel
-            ->default()
+        return $panel->default()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->defaultThemeMode(ThemeMode::Dark)
             ->spa(hasPrefetching: true)
@@ -29,17 +28,17 @@ class AdminPanelProvider extends PanelProvider
             ->login(Login::class)
             ->brandName(config('app.name'))
             ->unsavedChangesAlerts()
-//            ->topbar(false)
+            //            ->topbar(false)
             ->passwordReset()
-//            ->registration()
-//            ->emailVerification()
-//            ->emailChangeVerification()
-//            ->profile(isSimple: false)
-//            ->multiFactorAuthentication([
-//                AppAuthentication::make(),
-//            ])
-//            ->broadcasting(false)
-//            ->errorNotifications(false)
+            //            ->registration()
+            //            ->emailVerification()
+            //            ->emailChangeVerification()
+            //            ->profile(isSimple: false)
+            //            ->multiFactorAuthentication([
+            //                AppAuthentication::make(),
+            //            ])
+            //            ->broadcasting(false)
+            //            ->errorNotifications(false)
             // ->registerErrorNotification(
             //     title: __('filament.notifications.error_title'),
             //     body: __('filament.notifications.error_body'),

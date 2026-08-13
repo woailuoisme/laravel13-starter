@@ -98,7 +98,6 @@ class AppConfigurator
             'v2_admin' => [
                 base_path('routes/api/v2/admin.php'),
             ],
-
         ];
     }
 
@@ -252,7 +251,7 @@ class AppConfigurator
             ->at('02:00')
             ->sendOutputTo(storage_path('logs/backup.log'))
             ->timezone('Asia/Shanghai')
-            ->onFailure(function (): void {
+            ->onFailure(static function (): void {
                 // 备份失败通知逻辑
             });
         //        Schedule::command(ScheduleCheckHeartbeatCommand::class)->everyFiveMinutes();
@@ -342,7 +341,7 @@ class AppConfigurator
 
     public static function configureLogColorStderr(): void
     {
-        Log::extend('color_stderr', function () {
+        Log::extend('color_stderr', static function () {
             $handler = new StreamHandler('php://stderr');
 
             // 自定义格式化器，根据日志级别动态改变颜色
@@ -350,12 +349,12 @@ class AppConfigurator
             {
                 // 定义不同级别的颜色代码
                 private array $levelColors = [
-                    'DEBUG' => '34',    // 蓝色
-                    'INFO' => '32',     // 绿色
-                    'WARNING' => '33',  // 黄色
-                    'ERROR' => '31',    // 红色
+                    'DEBUG' => '34', // 蓝色
+                    'INFO' => '32', // 绿色
+                    'WARNING' => '33', // 黄色
+                    'ERROR' => '31', // 红色
                     'CRITICAL' => '35', // 紫红色
-                    'ALERT' => '36',    // 青色
+                    'ALERT' => '36', // 青色
                     'EMERGENCY' => '1;31', // 加粗红色
                 ];
 
@@ -408,7 +407,7 @@ class AppConfigurator
      */
     private static function configureApiExceptions(Exceptions $exceptions): void
     {
-        $exceptions->renderable(function (Throwable $e, Request $request) {
+        $exceptions->renderable(static function (Throwable $e, Request $request) {
             if ($request->is(self::API_PREFIX.'/*')) {
                 return self::renderApiException($e);
             }
@@ -512,7 +511,7 @@ class AppConfigurator
         }
 
         // 返回异常消息或Laravel标准状态文本
-        return $e->getMessage() ?: (Response::$statusTexts[$statusCode] ?? 'Unknown Error');
+        return $e->getMessage() ?: Response::$statusTexts[$statusCode] ?? 'Unknown Error';
     }
 
     /**
@@ -525,11 +524,12 @@ class AppConfigurator
             'line' => $e->getLine(),
             'file' => $e->getFile(),
             'trace' => self::formatTraceAsJson($e->getTrace()),
-            'previous' => $e->getPrevious() ? [
-                'message' => $e->getPrevious()->getMessage(),
-                'file' => $e->getPrevious()->getFile(),
-                'line' => $e->getPrevious()->getLine(),
-            ] : null,
+            'previous' => $e->getPrevious()
+                ? [
+                    'message' => $e->getPrevious()->getMessage(),
+                    'file' => $e->getPrevious()->getFile(),
+                    'line' => $e->getPrevious()->getLine(),
+                ] : null,
         ];
     }
 
@@ -698,8 +698,7 @@ class AppConfigurator
      */
     private static function isJwtException(Throwable $e): bool
     {
-        return $e instanceof TokenInvalidException
-            || $e instanceof TokenExpiredException;
+        return $e instanceof TokenInvalidException || $e instanceof TokenExpiredException;
     }
 
     /**
@@ -735,7 +734,7 @@ class AppConfigurator
     {
         $statusCode = $e->getStatusCode();
         $response['code'] = $statusCode;
-        $response['message'] = $e->getMessage() ?: (Response::$statusTexts[$statusCode] ?? 'Unauthorized');
+        $response['message'] = $e->getMessage() ?: Response::$statusTexts[$statusCode] ?? 'Unauthorized';
 
         return [$statusCode, $response];
     }
@@ -780,7 +779,8 @@ class AppConfigurator
      */
     private static function isNotFoundException(Throwable $e): bool
     {
-        return $e instanceof NotFoundResourceException
+        return
+            $e instanceof NotFoundResourceException
             || $e instanceof ModelNotFoundException
             || $e instanceof NotFoundHttpException;
     }
@@ -799,7 +799,7 @@ class AppConfigurator
         } elseif ($e instanceof NotFoundHttpException) {
             $response['message'] = 'Route or Resource not found';
         } else {
-            $response['message'] = $e->getMessage() ?: (Response::$statusTexts[Response::HTTP_NOT_FOUND] ?? 'Not Found');
+            $response['message'] = $e->getMessage() ?: Response::$statusTexts[Response::HTTP_NOT_FOUND] ?? 'Not Found';
         }
 
         return [Response::HTTP_NOT_FOUND, $response];
@@ -811,7 +811,7 @@ class AppConfigurator
     private static function handleHttpException(HttpExceptionInterface $e, int $statusCode, array $response): array
     {
         $response['code'] = $statusCode;
-        $response['message'] = $e->getMessage() ?: (Response::$statusTexts[$statusCode] ?? $response['message']);
+        $response['message'] = $e->getMessage() ?: Response::$statusTexts[$statusCode] ?? $response['message'];
 
         return [$statusCode, $response];
     }
@@ -830,7 +830,7 @@ class AppConfigurator
      */
     private static function configureThrottleExceptions(Exceptions $exceptions): void
     {
-        $exceptions->renderable(function (ThrottleRequestsException $e) {
+        $exceptions->renderable(static function (ThrottleRequestsException $e) {
             $response = [
                 'success' => false,
                 'code' => Response::HTTP_TOO_MANY_REQUESTS,

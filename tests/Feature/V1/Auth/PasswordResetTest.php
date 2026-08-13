@@ -25,7 +25,8 @@ it('resets the password with a verification code', function (): void {
 
     $this->postJson('/api/v1/auth/password/forgot', [
         'email' => $user->email,
-    ])->assertOk()
+    ])
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('message', __('auth.password_reset_sent'));
 
@@ -42,7 +43,8 @@ it('resets the password with a verification code', function (): void {
         'code' => $otp->code,
         'password' => 'new-password123',
         'password_confirmation' => 'new-password123',
-    ])->assertOk()
+    ])
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('message', __('auth.password_reset_success'));
 

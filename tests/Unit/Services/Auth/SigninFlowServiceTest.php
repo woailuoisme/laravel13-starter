@@ -29,7 +29,8 @@ it('creates and verifies a sign in challenge when forced by risk policy', functi
     $requestResult = $service->requestSignin($user->email, 'password123', '192.168.0.2', false);
 
     expect($requestResult['status'])->toBe('challenge_required')
-        ->and($requestResult['challenge_token'])->not->toBeEmpty();
+        ->and($requestResult['challenge_token'])
+        ->not->toBeEmpty();
 
     Mail::assertQueued(AuthVerificationCodeMail::class);
 
@@ -42,5 +43,6 @@ it('creates and verifies a sign in challenge when forced by risk policy', functi
     $authenticatedUser = $service->verifySignin($requestResult['challenge_token'], $otp->code, '192.168.0.2');
 
     expect($authenticatedUser->is($user))->toBeTrue()
-        ->and($authenticatedUser->fresh()?->last_login_ip)->toBe('192.168.0.2');
+        ->and($authenticatedUser->fresh()?->last_login_ip)
+        ->toBe('192.168.0.2');
 });

@@ -84,7 +84,7 @@ describe('AppHelper::generateOrderNo', function () {
 
 describe('AppHelper::round', function () {
     it('rounds a float to 2 decimal places by default', function () {
-        expect(AppHelper::round(3.14159))->toBe(3.14);
+        expect(AppHelper::round(3.141_59))->toBe(3.14);
     });
 
     it('rounds down with PHP_ROUND_HALF_DOWN mode', function () {

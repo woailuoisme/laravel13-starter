@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  * 应用基础控制器
  * 提供统一的API响应格式和常用工具方法
  */
-class AppBaseController extends Controller
+final class AppBaseController extends Controller
 {
     public function __construct(
         protected ResponseService $responseService,

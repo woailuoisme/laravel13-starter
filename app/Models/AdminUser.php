@@ -78,7 +78,17 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  *
  * @mixin \Eloquent
  */
-#[Fillable(['username', 'name', 'email', 'phone', 'password', 'is_active', 'last_login_at', 'last_login_ip', 'avatar_url'])]
+#[Fillable([
+    'username',
+    'name',
+    'email',
+    'phone',
+    'password',
+    'is_active',
+    'last_login_at',
+    'last_login_ip',
+    'avatar_url',
+])]
 #[Hidden(['password', 'remember_token'])]
 class AdminUser extends Authenticatable implements FilamentUser, JWTSubject
 {

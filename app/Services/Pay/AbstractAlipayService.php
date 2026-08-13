@@ -137,7 +137,7 @@ abstract class AbstractAlipayService
                 'raw' => $params,
             ];
         } catch (Throwable $e) {
-            throw ($e instanceof AlipayException) ? $e : AlipayException::signatureError($e->getMessage());
+            throw $e instanceof AlipayException ? $e : AlipayException::signatureError($e->getMessage());
         }
     }
 

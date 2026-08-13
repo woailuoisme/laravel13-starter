@@ -20,8 +20,7 @@ it('creates a pending signup challenge and finalizes user creation after code ve
 
     $requestResult = $service->requestSignup('unit-signup@example.com', 'password123', '127.0.0.1');
 
-    expect($requestResult['status'])->toBe('code_sent')
-        ->and($requestResult['action'])->toBe('register');
+    expect($requestResult['status'])->toBe('code_sent')->and($requestResult['action'])->toBe('register');
 
     Mail::assertQueued(AuthVerificationCodeMail::class);
 
@@ -34,6 +33,8 @@ it('creates a pending signup challenge and finalizes user creation after code ve
     $user = $service->verifySignup('unit-signup@example.com', $otp->code, '127.0.0.1');
 
     expect($user)->toBeInstanceOf(User::class)
-        ->and($user->email)->toBe('unit-signup@example.com')
-        ->and(Cache::get('auth:signup:unit-signup@example.com'))->toBeNull();
+        ->and($user->email)
+        ->toBe('unit-signup@example.com')
+        ->and(Cache::get('auth:signup:unit-signup@example.com'))
+        ->toBeNull();
 });

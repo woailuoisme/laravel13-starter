@@ -65,6 +65,6 @@ class UserImportTemplate
 
     private function headerStyle(): Style
     {
-        return (new Style)->setFontBold();
+        return new Style()->setFontBold();
     }
 }

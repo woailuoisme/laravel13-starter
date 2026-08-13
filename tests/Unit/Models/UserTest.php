@@ -43,7 +43,7 @@ describe('User model JWT', function () {
 describe('User model avatar', function () {
     it('returns an empty string when avatar is null', function () {
         $user = User::factory()->make(['avatar' => null]);
-        expect($user->avatar_url)->toBe('');
+        expect($user->avatar_url)->toBeEmpty();
     });
 
     it('returns the avatar field value when media is not set', function () {

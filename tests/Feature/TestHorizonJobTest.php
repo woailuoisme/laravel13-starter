@@ -10,7 +10,7 @@ test('test horizon job writes correct log', function () {
         ->once()
         ->with('Horizon test job executed successfully.');
 
-    (new TestHorizonJob)->handle();
+    new TestHorizonJob()->handle();
 });
 
 test('test horizon job is registered in scheduler', function () {
@@ -19,7 +19,8 @@ test('test horizon job is registered in scheduler', function () {
     $schedule = app(Schedule::class);
 
     $hasJob = collect($schedule->events())->contains(function ($event) {
-        return str_contains((string) $event->command, 'queue:work')
+        return
+            str_contains((string) $event->command, 'queue:work')
             || str_contains((string) $event->description, 'TestHorizonJob')
             || str_contains((string) $event->description, TestHorizonJob::class);
     });

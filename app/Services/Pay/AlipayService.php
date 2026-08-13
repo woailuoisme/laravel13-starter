@@ -124,7 +124,7 @@ class AlipayService extends AbstractAlipayService
         } catch (Throwable $e) {
             Log::error("支付宝支付下单失败: {$outTradeNo}", ['error' => $e->getMessage()]);
 
-            throw ($e instanceof AlipayException) ? $e : AlipayException::paymentFailed($e->getMessage());
+            throw $e instanceof AlipayException ? $e : AlipayException::paymentFailed($e->getMessage());
         }
     }
 
@@ -144,12 +144,16 @@ class AlipayService extends AbstractAlipayService
                 'raw' => $result,
             ];
         } catch (Throwable $e) {
-            throw ($e instanceof AlipayException) ? $e : AlipayException::paymentFailed($e->getMessage());
+            throw $e instanceof AlipayException ? $e : AlipayException::paymentFailed($e->getMessage());
         }
     }
 
-    public function refund(string $outTradeNo, float|int $refundAmount, ?string $outRequestNo = null, string $reason = '商户退款'): array
-    {
+    public function refund(
+        string $outTradeNo,
+        float|int $refundAmount,
+        ?string $outRequestNo = null,
+        string $reason = '商户退款',
+    ): array {
         try {
             $amount = $this->formatAmount($refundAmount);
             $refundNo = $outRequestNo ?: 'REF'.time().Str::random(6);
@@ -161,7 +165,7 @@ class AlipayService extends AbstractAlipayService
 
             return ['success' => true, 'trade_no' => $result->tradeNo, 'refund_no' => $refundNo];
         } catch (Throwable $e) {
-            throw ($e instanceof AlipayException) ? $e : AlipayException::paymentFailed($e->getMessage());
+            throw $e instanceof AlipayException ? $e : AlipayException::paymentFailed($e->getMessage());
         }
     }
 
@@ -175,7 +179,10 @@ class AlipayService extends AbstractAlipayService
     protected function handlePagePay(string $subject, string $outTradeNo, string $amount, array $options): array
     {
         $returnUrl = $options['return_url'] ?? $this->config['return_url'] ?? '';
-        $result = $this->payment->page()->batchOptional($options['optional'] ?? [])->pay($subject, $outTradeNo, $amount, $returnUrl);
+        $result = $this->payment
+            ->page()
+            ->batchOptional($options['optional'] ?? [])
+            ->pay($subject, $outTradeNo, $amount, $returnUrl);
 
         return ['success' => true, 'type' => 'page', 'form' => $result->body];
     }
@@ -191,7 +198,13 @@ class AlipayService extends AbstractAlipayService
     {
         $quitUrl = $options['quit_url'] ?? '';
         $returnUrl = $options['return_url'] ?? $this->config['return_url'] ?? '';
-        $result = $this->payment->wap()->batchOptional($options['optional'] ?? [])->pay($subject, $outTradeNo, $amount, $quitUrl, $returnUrl);
+        $result = $this->payment->wap()->batchOptional($options['optional'] ?? [])->pay(
+            $subject,
+            $outTradeNo,
+            $amount,
+            $quitUrl,
+            $returnUrl,
+        );
 
         return ['success' => true, 'type' => 'wap', 'form' => $result->body];
     }
@@ -201,7 +214,10 @@ class AlipayService extends AbstractAlipayService
         if (empty($options['auth_code'])) {
             throw AlipayException::validationError('当面付缺少 auth_code');
         }
-        $result = $this->payment->faceToFace()->batchOptional($options['optional'] ?? [])->pay($subject, $outTradeNo, $amount, $options['auth_code']);
+        $result = $this->payment
+            ->faceToFace()
+            ->batchOptional($options['optional'] ?? [])
+            ->pay($subject, $outTradeNo, $amount, $options['auth_code']);
 
         if ($result->code !== '10000') {
             throw AlipayException::fromAlipayResponse($result, '当面付提交失败');

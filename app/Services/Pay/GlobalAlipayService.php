@@ -32,7 +32,17 @@ class GlobalAlipayService extends AbstractAlipayService
 
     /** 支持的币种 */
     public const array SUPPORTED_CURRENCIES = [
-        'USD', 'EUR', 'GBP', 'JPY', 'KRW', 'HKD', 'SGD', 'AUD', 'CAD', 'CHF', 'CNY',
+        'USD',
+        'EUR',
+        'GBP',
+        'JPY',
+        'KRW',
+        'HKD',
+        'SGD',
+        'AUD',
+        'CAD',
+        'CHF',
+        'CNY',
     ];
 
     // --- 静态工厂方法 ---
@@ -120,7 +130,10 @@ class GlobalAlipayService extends AbstractAlipayService
         $amount = $this->formatAmount($totalAmount);
 
         try {
-            Log::info("全球支付宝支付下单: [{$this->type}] {$outTradeNo}", ['amount' => $amount, 'currency' => $this->config['currency']]);
+            Log::info("全球支付宝支付下单: [{$this->type}] {$outTradeNo}", [
+                'amount' => $amount,
+                'currency' => $this->config['currency'],
+            ]);
 
             return match ($this->type) {
                 'web' => $this->handleWebPay($subject, $outTradeNo, $amount, $options),
@@ -132,7 +145,7 @@ class GlobalAlipayService extends AbstractAlipayService
         } catch (Throwable $e) {
             Log::error("全球支付宝支付失败: {$outTradeNo}", ['error' => $e->getMessage()]);
 
-            throw ($e instanceof AlipayException) ? $e : AlipayException::paymentFailed($e->getMessage());
+            throw $e instanceof AlipayException ? $e : AlipayException::paymentFailed($e->getMessage());
         }
     }
 
@@ -183,7 +196,10 @@ class GlobalAlipayService extends AbstractAlipayService
     protected function handleWebPay(string $subject, string $outTradeNo, string $amount, array $options): array
     {
         $returnUrl = $options['return_url'] ?? $this->config['return_url'] ?? '';
-        $result = $this->payment->page()->batchOptional($options['optional'] ?? [])->pay($subject, $outTradeNo, $amount, $returnUrl);
+        $result = $this->payment
+            ->page()
+            ->batchOptional($options['optional'] ?? [])
+            ->pay($subject, $outTradeNo, $amount, $returnUrl);
 
         return ['success' => true, 'type' => 'web', 'form' => $result->body, 'currency' => $this->config['currency']];
     }
@@ -192,14 +208,25 @@ class GlobalAlipayService extends AbstractAlipayService
     {
         $result = $this->payment->app()->pay($subject, $outTradeNo, $amount);
 
-        return ['success' => true, 'type' => 'app', 'order_string' => $result->body, 'currency' => $this->config['currency']];
+        return [
+            'success' => true,
+            'type' => 'app',
+            'order_string' => $result->body,
+            'currency' => $this->config['currency'],
+        ];
     }
 
     protected function handleWapPay(string $subject, string $outTradeNo, string $amount, array $options): array
     {
         $quitUrl = $options['quit_url'] ?? '';
         $returnUrl = $options['return_url'] ?? $this->config['return_url'] ?? '';
-        $result = $this->payment->wap()->batchOptional($options['optional'] ?? [])->pay($subject, $outTradeNo, $amount, $quitUrl, $returnUrl);
+        $result = $this->payment->wap()->batchOptional($options['optional'] ?? [])->pay(
+            $subject,
+            $outTradeNo,
+            $amount,
+            $quitUrl,
+            $returnUrl,
+        );
 
         return ['success' => true, 'type' => 'wap', 'form' => $result->body, 'currency' => $this->config['currency']];
     }
@@ -211,6 +238,11 @@ class GlobalAlipayService extends AbstractAlipayService
             throw AlipayException::fromAlipayResponse($result, '跨境扫码预下单失败');
         }
 
-        return ['success' => true, 'type' => 'qrcode', 'qr_code' => $result->qrCode, 'currency' => $this->config['currency']];
+        return [
+            'success' => true,
+            'type' => 'qrcode',
+            'qr_code' => $result->qrCode,
+            'currency' => $this->config['currency'],
+        ];
     }
 }

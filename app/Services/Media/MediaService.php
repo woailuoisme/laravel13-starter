@@ -68,7 +68,7 @@ class MediaService
      */
     public function validateFileType(UploadedFile $file, ?array $allowedTypes = null): bool
     {
-        $allowedTypes = $allowedTypes ?? array_merge(self::SUPPORTED_IMAGE_TYPES, self::SUPPORTED_VIDEO_TYPES);
+        $allowedTypes ??= array_merge(self::SUPPORTED_IMAGE_TYPES, self::SUPPORTED_VIDEO_TYPES);
 
         return in_array($file->getMimeType(), $allowedTypes, true);
     }
@@ -132,8 +132,12 @@ class MediaService
      *
      * @throws FileDoesNotExist|FileIsTooBig
      */
-    public function uploadSingle(HasMedia $model, UploadedFile $file, string $collection = 'default', array $customProperties = []): Media
-    {
+    public function uploadSingle(
+        HasMedia $model,
+        UploadedFile $file,
+        string $collection = 'default',
+        array $customProperties = [],
+    ): Media {
         // 验证文件
         if (! $file->isValid()) {
             throw new InvalidArgumentException('上传文件无效: '.$file->getErrorMessage());
@@ -160,7 +164,7 @@ class MediaService
 
         try {
             return $model->addMedia($file)
-                ->usingFileName($fileName)        // 设置实际存储的文件名
+                ->usingFileName($fileName) // 设置实际存储的文件名
                 ->usingName($file->getClientOriginalName()) // 使用原始文件名作为显示名称
                 ->withCustomProperties(array_merge([
                     'original_name' => $file->getClientOriginalName(),
@@ -202,10 +206,14 @@ class MediaService
      *
      * @throws FileDoesNotExist|FileIsTooBig
      */
-    public function uploadMultiple(HasMedia $model, array $files, string $collection = 'images', bool $preserveOrder = true): Collection
-    {
+    public function uploadMultiple(
+        HasMedia $model,
+        array $files,
+        string $collection = 'images',
+        bool $preserveOrder = true,
+    ): Collection {
         $uploadedMedia = collect();
-        $maxOrder = $preserveOrder ? ($model->getMedia($collection)->max('order_column') ?? 0) : 0;
+        $maxOrder = $preserveOrder ? $model->getMedia($collection)->max('order_column') ?? 0 : 0;
 
         foreach ($files as $file) {
             if (! $file instanceof UploadedFile) {
@@ -322,7 +330,7 @@ class MediaService
     {
         $media = $collection ? $model->getMedia($collection) : $model->getMedia();
 
-        return $media->map(function (Media $item) use ($withUrls) {
+        return $media->map(static function (Media $item) use ($withUrls) {
             $info = [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -353,8 +361,12 @@ class MediaService
      * @param  string  $collection  集合名称
      * @param  int|null  $replaceMediaId  要替换的媒体 ID（为 null 则替换集合中的第一个）
      */
-    public function replaceMedia(HasMedia $model, UploadedFile $newFile, string $collection = 'default', ?int $replaceMediaId = null): ?Media
-    {
+    public function replaceMedia(
+        HasMedia $model,
+        UploadedFile $newFile,
+        string $collection = 'default',
+        ?int $replaceMediaId = null,
+    ): ?Media {
         try {
             // 获取要替换的媒体
             if ($replaceMediaId) {
@@ -458,8 +470,12 @@ class MediaService
      *
      * @throws UnreachableUrl
      */
-    public function addMediaFromUrl(HasMedia $model, string $url, string $collection = 'default', array $customProperties = []): Media
-    {
+    public function addMediaFromUrl(
+        HasMedia $model,
+        string $url,
+        string $collection = 'default',
+        array $customProperties = [],
+    ): Media {
         /** @var User $model */
         return $model->addMediaFromUrl($url)
             ->withCustomProperties($customProperties)
@@ -476,8 +492,13 @@ class MediaService
      * @param  array  $mediaIds  要复制的媒体ID（为空则复制所有）
      * @return Collection<Media>
      */
-    public function copyMediaBetweenModels(HasMedia $sourceModel, HasMedia $targetModel, string $sourceCollection = '', string $targetCollection = 'default', array $mediaIds = []): Collection
-    {
+    public function copyMediaBetweenModels(
+        HasMedia $sourceModel,
+        HasMedia $targetModel,
+        string $sourceCollection = '',
+        string $targetCollection = 'default',
+        array $mediaIds = [],
+    ): Collection {
         $sourceMedia = $sourceCollection ? $sourceModel->getMedia($sourceCollection) : $sourceModel->getMedia();
 
         if (! empty($mediaIds)) {
@@ -523,7 +544,7 @@ class MediaService
         ];
 
         // 按文件类型统计
-        $typeStats = $media->groupBy('mime_type')->map(function ($files, $mimeType) {
+        $typeStats = $media->groupBy('mime_type')->map(static function ($files, $mimeType) {
             return [
                 'count' => $files->count(),
                 'total_size' => $files->sum('size'),
@@ -534,7 +555,7 @@ class MediaService
         $stats['file_types'] = $typeStats->all();
 
         // 按集合统计
-        $collectionStats = $media->groupBy('collection_name')->map(function ($files, $collectionName) {
+        $collectionStats = $media->groupBy('collection_name')->map(static function ($files, $collectionName) {
             return [
                 'count' => $files->count(),
                 'total_size' => $files->sum('size'),
@@ -560,9 +581,11 @@ class MediaService
         //        $fileHash = md5_file($file->getRealPath());
         $fileName = $this->generateFileName($file);
 
-        return ($collection ? $model->getMedia($collection) : $model->getMedia())->first(function (Media $item) use ($fileName) {
-            return $item->file_name === $fileName;
-        });
+        return ($collection
+            ? $model->getMedia($collection)
+            : $model->getMedia())->first(static function (Media $item) use ($fileName) {
+                return $item->file_name === $fileName;
+            });
     }
 
     /**
@@ -575,15 +598,20 @@ class MediaService
      * @param  bool  $preserveOrder  是否保持排序
      * @return array 处理结果
      */
-    public function batchUpload(HasMedia $model, array $files, string $collection = 'images', bool $skipDuplicates = true, bool $preserveOrder = true): array
-    {
+    public function batchUpload(
+        HasMedia $model,
+        array $files,
+        string $collection = 'images',
+        bool $skipDuplicates = true,
+        bool $preserveOrder = true,
+    ): array {
         $results = [
             'uploaded' => collect(),
             'duplicates' => collect(),
             'errors' => collect(),
         ];
 
-        $maxOrder = $preserveOrder ? ($model->getMedia($collection)->max('order_column') ?? 0) : 0;
+        $maxOrder = $preserveOrder ? $model->getMedia($collection)->max('order_column') ?? 0 : 0;
 
         foreach ($files as $file) {
             if (! $file instanceof UploadedFile) {

@@ -9,20 +9,14 @@ it('generates png svg and data url output', function () {
     $dataUrl = QrCodeHelper::generateDataUrl('https://example.com', 120);
 
     expect($png)
-        ->not->toBe('')
-        ->toStartWith("\x89PNG\r\n\x1A\n")
-        ->and($svg)
-        ->not->toBe('')
-        ->toContain('<svg')
-        ->and($dataUrl)
-        ->toStartWith('data:image/png;base64,');
+        ->not->toBeEmpty()->toStartWith("\x89PNG\r\n\x1A\n")->and($svg)
+        ->not->toBeEmpty()->toContain('<svg')->and($dataUrl)->toStartWith('data:image/png;base64,');
 });
 
 it('generates base64 png output', function () {
     $decoded = base64_decode(QrCodeHelper::generateBase64('https://example.com', 120), true);
 
-    expect($decoded)
-        ->not->toBeFalse()
+    expect($decoded)->toBeTrue()
         ->toStartWith("\x89PNG\r\n\x1A\n");
 });
 
@@ -33,8 +27,7 @@ it('generates svg data urls with url encoded and base64 encoding', function () {
     $encoded = QrCodeHelper::generateSvgDataUrl('https://example.com', 120);
     $base64 = QrCodeHelper::generateSvgDataUrl('https://example.com', 120, true);
 
-    expect($encoded)
-        ->toStartWith($encodedPrefix)
+    expect($encoded)->toStartWith($encodedPrefix)
         ->and(rawurldecode(mb_substr($encoded, mb_strlen($encodedPrefix))))
         ->toContain('<svg')
         ->and($base64)
@@ -51,8 +44,7 @@ it('falls back from eps to png', function () {
     /** @noinspection PhpDeprecationInspection */
     $eps = QrCodeHelper::generateEps('https://example.com', 120);
 
-    expect($eps)
-        ->toStartWith("\x89PNG\r\n\x1A\n");
+    expect($eps)->toStartWith("\x89PNG\r\n\x1A\n");
 });
 
 it('generates custom qr codes in supported formats', function () {
@@ -71,8 +63,7 @@ it('generates custom qr codes in supported formats', function () {
         errorCorrection: 'Q',
     );
 
-    expect($png)
-        ->toStartWith("\x89PNG\r\n\x1A\n")
+    expect($png)->toStartWith("\x89PNG\r\n\x1A\n")
         ->and($svg)
         ->toContain('<svg');
 });
@@ -85,8 +76,9 @@ it('warns about unsupported custom style parameters and keeps generating output'
             'eyeStyle' => 'circle',
         ]);
 
-    expect(QrCodeHelper::generateCustom('https://example.com', 'png', 120, 'round', 'circle'))
-        ->toStartWith("\x89PNG\r\n\x1A\n");
+    expect(QrCodeHelper::generateCustom('https://example.com', 'png', 120, 'round', 'circle'))->toStartWith(
+        "\x89PNG\r\n\x1A\n",
+    );
 });
 
 it('falls back from gradient to plain svg', function () {
@@ -97,8 +89,7 @@ it('falls back from gradient to plain svg', function () {
             'gradientType' => 'VERTICAL',
         ]);
 
-    expect(QrCodeHelper::generateGradient('https://example.com', 120, gradientType: 'VERTICAL'))
-        ->toContain('<svg');
+    expect(QrCodeHelper::generateGradient('https://example.com', 120, gradientType: 'VERTICAL'))->toContain('<svg');
 });
 
 it('falls back to plain png when logo file is missing', function () {
@@ -108,16 +99,14 @@ it('falls back to plain png when logo file is missing', function () {
         ->once()
         ->with('QR Code: Logo file not found, falling back to plain QR code', ['logoPath' => $missingLogo]);
 
-    expect(QrCodeHelper::generateWithLogo('https://example.com', $missingLogo, 120))
-        ->toStartWith("\x89PNG\r\n\x1A\n");
+    expect(QrCodeHelper::generateWithLogo('https://example.com', $missingLogo, 120))->toStartWith("\x89PNG\r\n\x1A\n");
 });
 
 it('generates qr codes with labels in supported formats', function () {
     $png = QrCodeHelper::generateWithLabel('https://example.com', 'Example', 120, 'png');
     $svg = QrCodeHelper::generateWithLabel('https://example.com', 'Example', 120, 'svg');
 
-    expect($png)
-        ->toStartWith("\x89PNG\r\n\x1A\n")
+    expect($png)->toStartWith("\x89PNG\r\n\x1A\n")
         ->and($svg)
         ->toContain('<svg');
 });
@@ -129,8 +118,9 @@ it('falls back to label only output when logo and label logo file is missing', f
         ->once()
         ->with('QR Code: Logo file not found, generating with label only', ['logoPath' => $missingLogo]);
 
-    expect(QrCodeHelper::generateWithLogoAndLabel('https://example.com', $missingLogo, 'Example', 120))
-        ->toStartWith("\x89PNG\r\n\x1A\n");
+    expect(QrCodeHelper::generateWithLogoAndLabel('https://example.com', $missingLogo, 'Example', 120))->toStartWith(
+        "\x89PNG\r\n\x1A\n",
+    );
 });
 
 it('omits unsupported or empty batch formats', function () {
@@ -138,18 +128,20 @@ it('omits unsupported or empty batch formats', function () {
         ->once()
         ->with('QR Code: EPS format is no longer supported, skipping', ['text' => 'https://example.com']);
 
-    $results = QrCodeHelper::generateMultipleFormats('https://example.com', [
-        'png',
-        'svg',
-        'base64',
-        'data_url',
-        'eps',
-        'unknown',
-    ], 120);
+    $results = QrCodeHelper::generateMultipleFormats(
+        'https://example.com',
+        [
+            'png',
+            'svg',
+            'base64',
+            'data_url',
+            'eps',
+            'unknown',
+        ],
+        120,
+    );
 
-    expect($results)
-        ->toHaveKeys(['png', 'svg', 'base64', 'data_url'])
-        ->not->toHaveKey('eps')
+    expect($results)->toHaveKeys(['png', 'svg', 'base64', 'data_url'])->not->toHaveKey('eps')
         ->not->toHaveKey('unknown');
 });
 
@@ -159,13 +151,16 @@ it('saves generated qr code to a nested file path', function () {
     @unlink($path);
 
     expect(QrCodeHelper::saveToFile('https://example.com', $path, 'svg', 120))->toBeTrue()
-        ->and(file_get_contents($path))->toContain('<svg');
+        ->and(file_get_contents($path))
+        ->toContain('<svg');
 
     @unlink($path);
 });
 
 it('preserves the previous empty text behavior', function () {
-    expect(QrCodeHelper::generatePng(''))->toBe('')
-        ->and(QrCodeHelper::generatePng('0'))->toBe('')
-        ->and(QrCodeHelper::generateMultipleFormats(''))->toBe([]);
+    expect(QrCodeHelper::generatePng(''))->toBeEmpty()
+        ->and(QrCodeHelper::generatePng('0'))
+        ->toBeEmpty()
+        ->and(QrCodeHelper::generateMultipleFormats(''))
+        ->toBeEmpty();
 });

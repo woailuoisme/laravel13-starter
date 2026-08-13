@@ -46,7 +46,7 @@ class ResponseService
     {
         $code = is_int($enum->value) ? $enum->value : 400;
         $message = method_exists($enum, 'message') ? $enum->message() : $enum->name;
-        $status = method_exists($enum, 'httpStatus') ? $enum->httpStatus() : ($httpCode ?? 400);
+        $status = method_exists($enum, 'httpStatus') ? $enum->httpStatus() : $httpCode ?? 400;
 
         return $this->sendError($message, $status, null, $code);
     }

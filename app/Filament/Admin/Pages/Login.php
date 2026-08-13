@@ -48,8 +48,8 @@ class Login extends BaseLogin
         $user = $this->resolveLoginUser($loginIdentifier);
 
         if (
-            (! $user)
-            || (! $authProvider->validateCredentials($user, ['password' => $data['password']]))
+            ! $user
+            || ! $authProvider->validateCredentials($user, ['password' => $data['password']])
         ) {
             $this->fireFailedEvent($authGuard, $user, [
                 'email' => $loginIdentifier,
@@ -59,8 +59,8 @@ class Login extends BaseLogin
         }
 
         if (
-            ($user instanceof FilamentUser)
-            && (! $user->canAccessPanel(Filament::getCurrentOrDefaultPanel()))
+            $user instanceof FilamentUser
+            && ! $user->canAccessPanel(Filament::getCurrentOrDefaultPanel())
         ) {
             $this->fireFailedEvent($authGuard, $user, [
                 'email' => $loginIdentifier,
@@ -90,10 +90,13 @@ class Login extends BaseLogin
                 'seconds' => $exception->secondsUntilAvailable,
                 'minutes' => $exception->minutesUntilAvailable,
             ]))
-            ->body(array_key_exists('body', __('filament-panels::auth/pages/login.notifications.throttled') ?: []) ? __('filament-panels::auth/pages/login.notifications.throttled.body', [
-                'seconds' => $exception->secondsUntilAvailable,
-                'minutes' => $exception->minutesUntilAvailable,
-            ]) : null)
+            ->body(
+                array_key_exists('body', __('filament-panels::auth/pages/login.notifications.throttled') ?: [])
+                    ? __('filament-panels::auth/pages/login.notifications.throttled.body', [
+                        'seconds' => $exception->secondsUntilAvailable,
+                        'minutes' => $exception->minutesUntilAvailable,
+                    ]) : null,
+            )
             ->danger();
     }
 
@@ -108,13 +111,11 @@ class Login extends BaseLogin
         $query = AdminUser::query();
 
         if (filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL)) {
-            return $query
-                ->whereRaw('LOWER(email) = ?', [$normalizedIdentifier])
+            return $query->whereRaw('LOWER(email) = ?', [$normalizedIdentifier])
                 ->first();
         }
 
-        return $query
-            ->whereRaw('LOWER(username) = ?', [$normalizedIdentifier])
+        return $query->whereRaw('LOWER(username) = ?', [$normalizedIdentifier])
             ->first();
     }
 }

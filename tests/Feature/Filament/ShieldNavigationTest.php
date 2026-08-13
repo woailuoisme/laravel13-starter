@@ -15,7 +15,8 @@ it('seeds shield roles and permissions so the role page is reachable', function 
     seed(DatabaseSeeder::class);
 
     expect(Role::query()->where('name', 'super_admin')->exists())->toBeTrue()
-        ->and(Permission::query()->exists())->toBeTrue();
+        ->and(Permission::query()->exists())
+        ->toBeTrue();
 
     $admin = AdminUser::query()->where('email', 'admin@example.com')->firstOrFail();
 

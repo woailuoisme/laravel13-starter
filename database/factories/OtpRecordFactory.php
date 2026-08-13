@@ -23,7 +23,7 @@ class OtpRecordFactory extends Factory
             'identifier' => fake()->unique()->safeEmail(),
             'type' => 'email',
             'action' => fake()->randomElement(['register', 'login', 'reset_password']),
-            'code' => (string) fake()->numberBetween(100000, 999999),
+            'code' => (string) fake()->numberBetween(100_000, 999_999),
             'used_at' => null,
             'expires_at' => now()->addMinutes(10),
         ];
@@ -31,7 +31,7 @@ class OtpRecordFactory extends Factory
 
     public function unused(): static
     {
-        return $this->state(fn (): array => [
+        return $this->state(static fn (): array => [
             'used_at' => null,
             'expires_at' => now()->addMinutes(10),
         ]);
@@ -39,14 +39,14 @@ class OtpRecordFactory extends Factory
 
     public function used(): static
     {
-        return $this->state(fn (): array => [
+        return $this->state(static fn (): array => [
             'used_at' => now(),
         ]);
     }
 
     public function expired(): static
     {
-        return $this->state(fn (): array => [
+        return $this->state(static fn (): array => [
             'expires_at' => now()->subMinute(),
         ]);
     }

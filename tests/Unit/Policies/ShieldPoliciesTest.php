@@ -38,7 +38,10 @@ it('authorizes viewAny through shield permissions', function (string $policyClas
     expect($policy->viewAny($user))->toBeTrue();
 })->with('shield policies');
 
-it('allows super admins regardless of direct permission assignment', function (string $policyClass, string $ability): void {
+it('allows super admins regardless of direct permission assignment', function (
+    string $policyClass,
+    string $ability,
+): void {
     $policy = new $policyClass;
     $user = shieldAdminUser($ability, allowed: false, superAdmin: true);
 

@@ -98,7 +98,8 @@ it('rejects invalid sign in credentials', function (): void {
     $this->postJson('/api/v1/auth/signin/request', [
         'email' => 'signin-invalid@example.com',
         'password' => 'wrong-password',
-    ])->assertStatus(401)
+    ])
+        ->assertUnauthorized()
         ->assertJsonPath('success', false)
         ->assertJsonPath('message', __('auth.invalid_credentials'));
 });

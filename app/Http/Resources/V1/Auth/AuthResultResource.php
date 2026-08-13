@@ -7,6 +7,7 @@ namespace App\Http\Resources\V1\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use SensitiveParameter;
 
 /**
  * @mixin User
@@ -15,6 +16,7 @@ class AuthResultResource extends JsonResource
 {
     public function __construct(
         User $resource,
+        #[SensitiveParameter]
         private readonly string $accessToken,
         private readonly int $expiresIn,
     ) {

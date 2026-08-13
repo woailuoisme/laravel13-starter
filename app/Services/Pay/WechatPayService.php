@@ -110,7 +110,7 @@ class WechatPayService
         } catch (Throwable $e) {
             Log::error("微信支付下单失败: {$outTradeNo}", ['error' => $e->getMessage()]);
 
-            throw ($e instanceof WePayException) ? $e : WePayException::paymentFailed($e->getMessage());
+            throw $e instanceof WePayException ? $e : WePayException::paymentFailed($e->getMessage());
         }
     }
 
@@ -122,9 +122,14 @@ class WechatPayService
     public function query(string $outTradeNo): array
     {
         try {
-            $result = $this->callApi("v3/pay/transactions/out-trade-no/{$outTradeNo}", 'GET', [], [
-                'mchid' => $this->config['mch_id'],
-            ]);
+            $result = $this->callApi(
+                "v3/pay/transactions/out-trade-no/{$outTradeNo}",
+                'GET',
+                [],
+                [
+                    'mchid' => $this->config['mch_id'],
+                ],
+            );
 
             return [
                 'success' => true,
@@ -141,8 +146,13 @@ class WechatPayService
     /**
      * 申请退款
      */
-    public function refund(string $outTradeNo, string $outRefundNo, int $total, int $refund, string $reason = '商户退款'): array
-    {
+    public function refund(
+        string $outTradeNo,
+        string $outRefundNo,
+        int $total,
+        int $refund,
+        string $reason = '商户退款',
+    ): array {
         try {
             $body = [
                 'out_trade_no' => $outTradeNo,
@@ -320,7 +330,9 @@ class WechatPayService
             ])]),
             'native' => array_merge($base, [
                 'code_url' => $data['code_url'] ?? '',
-                'qr_code' => isset($data['code_url']) ? 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($data['code_url']) : '',
+                'qr_code' => isset($data['code_url'])
+                    ? 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($data['code_url'])
+                    : '',
             ]),
             'h5' => array_merge($base, ['h5_url' => $data['h5_url'] ?? '']),
             default => $base,
@@ -336,7 +348,7 @@ class WechatPayService
         };
 
         if ($message) {
-            $key = ($this->type === 'js') ? 'paySign' : 'sign';
+            $key = $this->type === 'js' ? 'paySign' : 'sign';
             $payload[$key] = Rsa::sign($message, $this->privateKey);
         }
 
@@ -394,7 +406,14 @@ class WechatPayService
             $sign = Rsa::sign("GET\n/v3/certificates\n{$timestamp}\n{$nonce}\n\n", $this->privateKey);
 
             $response = Http::withHeaders([
-                'Authorization' => sprintf('WECHATPAY2-SHA256-RSA2048 mchid="%s",nonce_str="%s",timestamp="%d",serial_no="%s",signature="%s"', $this->config['mch_id'], $nonce, $timestamp, $serial, $sign),
+                'Authorization' => sprintf(
+                    'WECHATPAY2-SHA256-RSA2048 mchid="%s",nonce_str="%s",timestamp="%d",serial_no="%s",signature="%s"',
+                    $this->config['mch_id'],
+                    $nonce,
+                    $timestamp,
+                    $serial,
+                    $sign,
+                ),
                 'Accept' => 'application/json',
                 'User-Agent' => 'WeChatPay-SDK/Merged',
             ])->get('https://api.mch.weixin.qq.com/v3/certificates');
@@ -406,7 +425,12 @@ class WechatPayService
 
             $certs = [];
             foreach ($response->json()['data'] ?? [] as $item) {
-                $certs[$item['serial_no']] = AesGcm::decrypt($item['encrypt_certificate']['ciphertext'], $this->config['key'], $item['encrypt_certificate']['nonce'], $item['encrypt_certificate']['associated_data']);
+                $certs[$item['serial_no']] = AesGcm::decrypt(
+                    $item['encrypt_certificate']['ciphertext'],
+                    $this->config['key'],
+                    $item['encrypt_certificate']['nonce'],
+                    $item['encrypt_certificate']['associated_data'],
+                );
             }
 
             return $certs ?: $this->loadLocalCerts();
@@ -417,11 +441,13 @@ class WechatPayService
     {
         $certs = [];
         foreach (glob(storage_path('certs/wechat/platform_*.pem')) ?: [] as $file) {
-            if ($raw = file_get_contents($file)) {
-                $parsed = openssl_x509_parse($raw);
-                if (isset($parsed['serialNumber'])) {
-                    $certs[mb_strtoupper($parsed['serialNumber'])] = $raw;
-                }
+            if (! ($raw = file_get_contents($file))) {
+                continue;
+            }
+
+            $parsed = openssl_x509_parse($raw);
+            if (isset($parsed['serialNumber'])) {
+                $certs[mb_strtoupper($parsed['serialNumber'])] = $raw;
             }
         }
 
@@ -434,7 +460,7 @@ class WechatPayService
             return $this->config['certificate_serial'];
         }
 
-        if (! empty($this->config['cert_path']) && $raw = @file_get_contents($this->config['cert_path'])) {
+        if (! empty($this->config['cert_path']) && ($raw = @file_get_contents($this->config['cert_path']))) {
             $parsed = openssl_x509_parse($raw);
 
             return mb_strtoupper($parsed['serialNumber'] ?? '');

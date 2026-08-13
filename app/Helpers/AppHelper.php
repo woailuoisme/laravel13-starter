@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use JsonException;
 use Random\RandomException;
 use RuntimeException;
+use SensitiveParameter;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -29,7 +30,7 @@ class AppHelper
     /**
      * 构建微信 jscode2session 请求 URL
      */
-    public static function getWxCodeUrl(string $appId, string $appSecret, string $jsCode): string
+    public static function getWxCodeUrl(string $appId, #[SensitiveParameter] string $appSecret, string $jsCode): string
     {
         return "https://api.weixin.qq.com/sns/jscode2session?appid={$appId}&secret={$appSecret}&js_code={$jsCode}&grant_type=authorization_code";
     }
@@ -124,7 +125,7 @@ class AppHelper
             $process = Process::fromShellCommandline($cmd);
             $processOutput = '';
 
-            $process->setTimeout($timeout)->run(function ($type, $line) use (&$processOutput): void {
+            $process->setTimeout($timeout)->run(static function ($type, $line) use (&$processOutput): void {
                 $processOutput .= $line;
             });
 
@@ -199,10 +200,11 @@ class AppHelper
      */
     public static function generateOrderNo(string $prefix = 'ORD'): string
     {
-        return $prefix
+        return
+            $prefix
             .date('YmdHis')
-            .mb_str_pad((string) ((microtime(true) * 10000) % 10000), 4, '0', STR_PAD_LEFT)
-            .random_int(100000, 999999);
+            .mb_str_pad((string) ((microtime(true) * 10_000) % 10_000), 4, '0', STR_PAD_LEFT)
+            .random_int(100_000, 999_999);
     }
 
     /** 生成商城订单编号（前缀 SO）
@@ -622,7 +624,7 @@ class AppHelper
             547 => $foreignKey,
             102 => $syntaxError,
             4060 => $connFailed,
-            18456 => $permission,
+            18_456 => $permission,
             8152 => $dataTooLong,
             241 => $invalidDatetime,
         ];
@@ -636,18 +638,42 @@ class AppHelper
         $message = mb_strtolower($originalMessage);
 
         $patterns = [
-            ['patterns' => ['unique constraint', 'duplicate entry', 'duplicate key'], 'message' => '数据已存在，无法重复添加'],
-            ['patterns' => ['foreign key constraint', 'cannot delete or update a parent row'], 'message' => '该数据与其他信息相关联，无法执行此操作'],
-            ['patterns' => ['not null constraint', 'column cannot be null'], 'message' => '存在必填信息未填写，请检查后重试'],
+            [
+                'patterns' => ['unique constraint', 'duplicate entry', 'duplicate key'],
+                'message' => '数据已存在，无法重复添加',
+            ],
+            [
+                'patterns' => ['foreign key constraint', 'cannot delete or update a parent row'],
+                'message' => '该数据与其他信息相关联，无法执行此操作',
+            ],
+            [
+                'patterns' => ['not null constraint', 'column cannot be null'],
+                'message' => '存在必填信息未填写，请检查后重试',
+            ],
             ['patterns' => ['check constraint'], 'message' => '数据格式不符合要求，请检查输入'],
-            ['patterns' => ['connection refused', 'could not connect', 'connection timed out'], 'message' => '数据库连接失败，请稍后再试'],
-            ['patterns' => ['access denied', 'permission denied', 'authentication failed'], 'message' => '您没有执行该操作的权限'],
+            [
+                'patterns' => ['connection refused', 'could not connect', 'connection timed out'],
+                'message' => '数据库连接失败，请稍后再试',
+            ],
+            [
+                'patterns' => ['access denied', 'permission denied', 'authentication failed'],
+                'message' => '您没有执行该操作的权限',
+            ],
             ['patterns' => ['timeout', 'lock wait timeout'], 'message' => '操作超时，请重试'],
             ['patterns' => ['table', 'doesn\'t exist', 'not found'], 'message' => '系统数据结构异常，请联系管理员'],
             ['patterns' => ['unknown column', 'column not found'], 'message' => '数据格式有误，请联系管理员处理'],
-            ['patterns' => ['data too long', 'string or binary data would be truncated'], 'message' => '数据内容过长，请缩短后重试'],
-            ['patterns' => ['incorrect datetime value', 'invalid datetime format'], 'message' => '日期时间格式不正确，请检查输入'],
-            ['patterns' => ['incorrect string value', 'invalid character'], 'message' => '字符编码不正确，请检查输入内容'],
+            [
+                'patterns' => ['data too long', 'string or binary data would be truncated'],
+                'message' => '数据内容过长，请缩短后重试',
+            ],
+            [
+                'patterns' => ['incorrect datetime value', 'invalid datetime format'],
+                'message' => '日期时间格式不正确，请检查输入',
+            ],
+            [
+                'patterns' => ['incorrect string value', 'invalid character'],
+                'message' => '字符编码不正确，请检查输入内容',
+            ],
         ];
 
         foreach ($patterns as $group) {

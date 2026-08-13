@@ -138,7 +138,8 @@ class UserImport
      */
     public function isEmptyRow(array $row): bool
     {
-        return mb_trim((string) ($row['nickname'] ?? '')) === ''
+        return
+            mb_trim((string) ($row['nickname'] ?? '')) === ''
             && mb_trim((string) ($row['email'] ?? '')) === ''
             && mb_trim((string) ($row['openid'] ?? '')) === '';
     }
@@ -160,7 +161,10 @@ class UserImport
     {
         return [
             'nickname' => mb_trim((string) ($row['nickname'] ?? $row['用户名'] ?? '')),
-            'email' => Str::of((string) ($row['email'] ?? ''))->trim()->lower()->toString(),
+            'email' => Str::of((string) ($row['email'] ?? ''))
+                ->trim()
+                ->lower()
+                ->toString(),
             'openid' => mb_trim((string) ($row['openid'] ?? $row['open_id'] ?? $row['OpenId'] ?? '')),
         ];
     }

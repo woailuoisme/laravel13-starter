@@ -13,8 +13,5 @@ class InitUser extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
-    {
-        //
-    }
+    public function handle(): void {}
 }

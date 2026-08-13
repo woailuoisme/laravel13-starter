@@ -27,8 +27,7 @@ it('increments auth version and updates password after a valid reset code', func
 
     $requestResult = $service->requestPasswordReset($user->email);
 
-    expect($requestResult['status'])->toBe('code_sent')
-        ->and($requestResult['action'])->toBe('reset_password');
+    expect($requestResult['status'])->toBe('code_sent')->and($requestResult['action'])->toBe('reset_password');
 
     Mail::assertQueued(AuthVerificationCodeMail::class);
 

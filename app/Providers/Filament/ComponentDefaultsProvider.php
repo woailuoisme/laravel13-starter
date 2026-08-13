@@ -126,7 +126,7 @@ class ComponentDefaultsProvider extends ServiceProvider
                 ->offColor('danger')
                 ->onIcon('heroicon-m-check-circle')
                 ->offIcon('heroicon-m-x-circle')
-                ->afterStateUpdated(function ($record, $state): void {
+                ->afterStateUpdated(static function ($record, $state): void {
                     Notification::make()
                         ->title($state ? __('admin.notifications.enabled') : __('admin.notifications.disabled'))
                         ->success()
@@ -196,8 +196,19 @@ class ComponentDefaultsProvider extends ServiceProvider
         // Markdown 编辑器
         MarkdownEditor::configureUsing(static function (MarkdownEditor $component): void {
             $component->toolbarButtons([
-                'bold', 'italic', 'strike', 'link', 'heading', 'blockquote',
-                'codeBlock', 'bulletList', 'orderedList', 'table', 'attachFiles', 'undo', 'redo',
+                'bold',
+                'italic',
+                'strike',
+                'link',
+                'heading',
+                'blockquote',
+                'codeBlock',
+                'bulletList',
+                'orderedList',
+                'table',
+                'attachFiles',
+                'undo',
+                'redo',
             ])
                 ->fileAttachmentsDisk('oss')
                 ->fileAttachmentsDirectory('attachments');
@@ -212,8 +223,7 @@ class ComponentDefaultsProvider extends ServiceProvider
         DatePicker::configureUsing(static function (
             DatePicker $component,
         ): void {
-            $component
-                ->native(false)
+            $component->native(false)
                 ->locale('zh_CN')
                 ->displayFormat('Y-m-d');
         });
@@ -221,8 +231,7 @@ class ComponentDefaultsProvider extends ServiceProvider
         DateRangePicker::configureUsing(static function (
             DateRangePicker $component,
         ): void {
-            $component
-                ->timezone('Asia/Shanghai')
+            $component->timezone('Asia/Shanghai')
                 ->displayFormat('YYYY-MM-DD HH:mm:ss')
                 ->format('Y-m-d H:i:s')
                 ->rangeSeparator(' - ')
@@ -236,17 +245,16 @@ class ComponentDefaultsProvider extends ServiceProvider
         DateRangeFilter::configureUsing(static function (
             DateRangeFilter $component,
         ): void {
-            $component
-                ->timezone('Asia/Shanghai')
+            $component->timezone('Asia/Shanghai')
                 ->displayFormat('YYYY-MM-DD HH:mm:ss') // 用于浏览器显示的 JS 格式 (Moment/DayJS)
-                ->format('Y-m-d H:i:s')                // 用于服务端解析的 PHP 格式 (Carbon)
-                ->rangeSeparator(' - ')                 // 范围分割符号
-                ->firstDayOfWeek(1)                    // 设置周一作为一周的第一天
-                ->useRangeLabels()                     // 启用侧边快捷选择标签（今天、昨天、近7天等）
-                ->alwaysShowCalendar()                 // 弹窗时始终直接显示日历界面
-                ->timePicker24()                       // 使用 24 小时制时间选择器
-                ->autoApply()                          // 选好范围后自动应用筛选，无需点击确定按钮
-                ->withIndicator();                     // 在表格顶部显示当前激活的筛选状态
+                ->format('Y-m-d H:i:s') // 用于服务端解析的 PHP 格式 (Carbon)
+                ->rangeSeparator(' - ') // 范围分割符号
+                ->firstDayOfWeek(1) // 设置周一作为一周的第一天
+                ->useRangeLabels() // 启用侧边快捷选择标签（今天、昨天、近7天等）
+                ->alwaysShowCalendar() // 弹窗时始终直接显示日历界面
+                ->timePicker24() // 使用 24 小时制时间选择器
+                ->autoApply() // 选好范围后自动应用筛选，无需点击确定按钮
+                ->withIndicator(); // 在表格顶部显示当前激活的筛选状态
         });
 
         // 基础文件上传

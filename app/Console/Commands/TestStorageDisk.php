@@ -33,7 +33,7 @@ class TestStorageDisk extends Command
         try {
             $result = $callback();
 
-            if (time() - $startTime >= $timeout) {
+            if ((time() - $startTime) >= $timeout) {
                 throw new RuntimeException('操作超时');
             }
 
@@ -43,7 +43,7 @@ class TestStorageDisk extends Command
         } catch (Throwable $e) {
             set_time_limit($oldTimeLimit);
 
-            if (time() - $startTime >= $timeout) {
+            if ((time() - $startTime) >= $timeout) {
                 throw new RuntimeException('操作超时: '.$e->getMessage());
             }
 
@@ -169,7 +169,7 @@ class TestStorageDisk extends Command
 
     private function testConnection(Filesystem $storage): void
     {
-        $this->executeWithTimeout(fn () => $storage->directories(), 10);
+        $this->executeWithTimeout(static fn () => $storage->directories(), 10);
     }
 
     private function testFileUpload(Filesystem $storage, string $disk): string
@@ -177,7 +177,7 @@ class TestStorageDisk extends Command
         $testContent = "{$disk} 存储测试文件内容 - ".now()->toDateTimeString();
         $testFileName = "test/{$disk}-test-".time().'.txt';
 
-        $this->executeWithTimeout(fn () => $storage->put($testFileName, $testContent), 30);
+        $this->executeWithTimeout(static fn () => $storage->put($testFileName, $testContent), 30);
 
         if (! $storage->exists($testFileName)) {
             throw new RuntimeException('文件上传后未检测到存在');
@@ -188,7 +188,7 @@ class TestStorageDisk extends Command
 
     private function testFileRead(Filesystem $storage, string $fileName): void
     {
-        $content = $this->executeWithTimeout(fn () => $storage->get($fileName), 30);
+        $content = $this->executeWithTimeout(static fn () => $storage->get($fileName), 30);
         if (empty($content)) {
             throw new RuntimeException('文件读取内容为空');
         }
@@ -196,12 +196,12 @@ class TestStorageDisk extends Command
 
     private function testFileList(Filesystem $storage): void
     {
-        $this->executeWithTimeout(fn () => $storage->files('test'), 30);
+        $this->executeWithTimeout(static fn () => $storage->files('test'), 30);
     }
 
     private function testFileDelete(Filesystem $storage, string $fileName): void
     {
-        $this->executeWithTimeout(fn () => $storage->delete($fileName), 30);
+        $this->executeWithTimeout(static fn () => $storage->delete($fileName), 30);
         if ($storage->exists($fileName)) {
             throw new RuntimeException('文件删除后仍然存在');
         }

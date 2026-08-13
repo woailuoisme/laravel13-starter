@@ -70,8 +70,13 @@ final class AlipayException extends Exception
     /**
      * 创建支付宝友好错误异常
      */
-    public static function alipayError(string $code, string $subCode = '', string $msg = '', string $subMsg = '', string $originalMessage = ''): static
-    {
+    public static function alipayError(
+        string $code,
+        string $subCode = '',
+        string $msg = '',
+        string $subMsg = '',
+        string $originalMessage = '',
+    ): static {
         // 根据错误码获取友好的错误信息
         $friendlyMessage = self::getFriendlyMessage($code, $subCode);
 

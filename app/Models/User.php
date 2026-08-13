@@ -105,7 +105,24 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @mixin Model
  * @mixin \Eloquent
  */
-#[Fillable(['name', 'nickname', 'username', 'email', 'telephone', 'avatar', 'birthday', 'gender', 'bio', 'email_verified_at', 'password', 'last_login_at', 'last_login_ip', 'open_id', 'github_id', 'google_id'])]
+#[Fillable([
+    'name',
+    'nickname',
+    'username',
+    'email',
+    'telephone',
+    'avatar',
+    'birthday',
+    'gender',
+    'bio',
+    'email_verified_at',
+    'password',
+    'last_login_at',
+    'last_login_ip',
+    'open_id',
+    'github_id',
+    'google_id',
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements HasMedia, JWTSubject
 {

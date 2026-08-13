@@ -1,6 +1,6 @@
-#:schema https://mago.carthage.software/1.46.0/schema.json
+#:schema https://mago.carthage.software/1.45.0/schema.json
 # Welcome to Mago!
-# For full documentation, see https://mago.carthage.software/1.46.0/en/tools/overview/
+# For full documentation, see https://mago.carthage.software/1.45.0/en/tools/overview/
 version = "1"
 php-version = "8.5.0"
 
@@ -14,9 +14,16 @@ excludes = []
 literal-separator = true
 
 [formatter]
-print-width = 120
-tab-width = 4
-use-tabs = false
+preset = "pint"
+preserve-breaking-member-access-chain = true
+preserve-breaking-member-access-chain-first-method-on-same-line = true
+preserve-breaking-argument-list = true
+preserve-breaking-array-like = true
+preserve-breaking-parameter-list = true
+preserve-breaking-attribute-list = true
+preserve-breaking-conditional-expression = true
+preserve-breaking-condition-expression = true
+preserve-redundant-logical-binary-expression-parentheses = true
 
 [linter]
 integrations = ["laravel", "pest"]

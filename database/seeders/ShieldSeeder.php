@@ -21,8 +21,7 @@ class ShieldSeeder extends Seeder
 
         $adminUserId = AdminUser::query()
             ->where('email', 'admin@example.com')
-            ->value('id')
-            ?? AdminUser::query()->orderBy('id')->value('id');
+            ->value('id') ?? AdminUser::query()->orderBy('id')->value('id');
 
         if ($adminUserId === null) {
             return;

@@ -17,7 +17,7 @@ class ApiException extends Exception
         200 => 'OK',
         201 => 'Created',
         202 => 'Accepted',
-        10000 => '无效信息',
+        10_000 => '无效信息',
     ];
 
     public function __construct(

@@ -72,9 +72,10 @@ it('verifies signup code, creates the user, and returns a jwt payload', function
 
     $user = User::query()->where('email', 'verify-signup@example.com')->first();
 
-    expect($user)->not->toBeNull()
-        ->and($user?->email_verified_at)->not->toBeNull()
-        ->and($otp->fresh()?->used_at)->not->toBeNull();
+    expect($user)
+        ->not->toBeNull()->and($user?->email_verified_at)
+        ->not->toBeNull()->and($otp->fresh()?->used_at)
+        ->not->toBeNull();
 });
 
 it('throttles signup code resend requests within sixty seconds', function (): void {
@@ -87,7 +88,8 @@ it('throttles signup code resend requests within sixty seconds', function (): vo
     $this->postJson('/api/v1/auth/code/resend', [
         'email' => 'resend-signup@example.com',
         'action' => 'register',
-    ])->assertStatus(429)
+    ])
+        ->assertTooManyRequests()
         ->assertJsonPath('success', false)
         ->assertJsonPath('message', __('auth.verification_code_throttled', ['seconds' => 60]));
 });

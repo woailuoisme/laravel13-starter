@@ -17,14 +17,18 @@ use JsonException;
 use Meilisearch\Client as MeilisearchClient;
 use Throwable;
 
-#[Signature('app:verify-services {--database=default : 数据库连接名} {--redis=default : Redis 连接名} {--disk=garage : 存储磁盘}')]
+#[Signature(
+    'app:verify-services {--database=default : 数据库连接名} {--redis=default : Redis 连接名} {--disk=garage : 存储磁盘}',
+)]
 #[Description('验证 Redis、数据库、Scout(Meilisearch)、Garage、Centrifugo 和队列是否可用')]
 class VerifyServicesCommand extends Command
 {
     public function handle(): int
     {
         $checks = [
-            'database' => $this->checkDatabase($this->resolveDatabaseConnectionName((string) $this->option('database'))),
+            'database' => $this->checkDatabase($this->resolveDatabaseConnectionName((string) $this->option(
+                'database',
+            ))),
             'redis' => $this->checkRedis((string) $this->option('redis')),
             'scout' => $this->checkScoutMeilisearch(),
             'garage' => $this->checkGarage((string) $this->option('disk')),
@@ -76,7 +80,7 @@ class VerifyServicesCommand extends Command
 
             return [
                 'ok' => true,
-                'message' => "connection [$connection] reachable",
+                'message' => "connection [{$connection}] reachable",
             ];
         } catch (Throwable $exception) {
             return [
@@ -107,7 +111,7 @@ class VerifyServicesCommand extends Command
 
             return [
                 'ok' => true,
-                'message' => "connection [$connection] ping response: ".$this->stringifyValue($pong),
+                'message' => "connection [{$connection}] ping response: ".$this->stringifyValue($pong),
             ];
         } catch (Throwable $exception) {
             return [

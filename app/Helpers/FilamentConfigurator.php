@@ -42,8 +42,7 @@ class FilamentConfigurator
      */
     public static function configure(Panel $panel): Panel
     {
-        return $panel
-            ->default()
+        return $panel->default()
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
@@ -203,14 +202,18 @@ class FilamentConfigurator
             ->localStorageMaxItemsAllowed(50)
             ->RetainRecentIfFavorite(true)
             ->associateItemsWithTheirGroups()
-            ->searchUsing(fn (string $query, GlobalSearchResults $builder) => self::resolveGlobalSearch($query, $builder))
+            ->searchUsing(
+                static fn (string $query, GlobalSearchResults $builder) => self::resolveGlobalSearch($query, $builder),
+            )
             ->placeholder('搜索用户');
     }
 
     private static function resolveGlobalSearch(string $query, GlobalSearchResults $builder): GlobalSearchResults
     {
-        $users = User::search($query)->take(10)->get()
-            ->map(fn ($user): GlobalSearchResult => new GlobalSearchResult(
+        $users = User::search($query)
+            ->take(10)
+            ->get()
+            ->map(static fn ($user): GlobalSearchResult => new GlobalSearchResult(
                 title: $user->nickname ?? $user->name ?? "用户 #{$user->id}",
                 url: UserResource::getUrl('view', ['record' => $user->id]),
                 details: [

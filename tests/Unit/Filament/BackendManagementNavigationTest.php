@@ -14,13 +14,13 @@ it('keeps the dashboard outside the backend management group and pinned to the t
     $property = new ReflectionProperty(Dashboard::class, 'navigationSort');
     $property->setAccessible(true);
 
-    expect(Dashboard::getNavigationGroup())->toBeNull()
-        ->and($property->getValue())->toBe(-1000);
+    expect(Dashboard::getNavigationGroup())->toBeNull()->and($property->getValue())->toBe(-1000);
 });
 
 it('places the admin user, user, ecommerce, and shield role entries in the backend management group', function (): void {
     expect(UserResource::getNavigationGroup())->toBe(FilamentNavigationGroup::BackendManagement)
-        ->and(AdminUserResource::getNavigationGroup())->toBe(FilamentNavigationGroup::BackendManagement);
+        ->and(AdminUserResource::getNavigationGroup())
+        ->toBe(FilamentNavigationGroup::BackendManagement);
 
     $adminUserProperty = new ReflectionProperty(AdminUserResource::class, 'navigationSort');
     $adminUserProperty->setAccessible(true);
@@ -30,12 +30,17 @@ it('places the admin user, user, ecommerce, and shield role entries in the backe
     $ecommerceProperty->setAccessible(true);
 
     $shieldPlugin = collect(FilamentConfigurator::getPlugins())
-        ->first(fn (mixed $plugin): bool => $plugin instanceof FilamentShieldPlugin);
+        ->first(
+            fn (mixed $plugin): bool => $plugin instanceof FilamentShieldPlugin,
+        );
 
     expect($shieldPlugin)->toBeInstanceOf(FilamentShieldPlugin::class)
-        ->and($shieldPlugin->getNavigationGroup())->toBe(FilamentNavigationGroup::BackendManagement)
-        ->and($adminUserProperty->getValue())->toBe(-30)
-        ->and($userProperty->getValue())->toBe(-20);
+        ->and($shieldPlugin->getNavigationGroup())
+        ->toBe(FilamentNavigationGroup::BackendManagement)
+        ->and($adminUserProperty->getValue())
+        ->toBe(-30)
+        ->and($userProperty->getValue())
+        ->toBe(-20);
 });
 
 it('labels the ecommerce settings page as system settings', function (): void {
@@ -43,5 +48,6 @@ it('labels the ecommerce settings page as system settings', function (): void {
     $property->setAccessible(true);
 
     expect(ManageSystemSettings::getNavigationLabel())->toBe(__('navigation.system_settings'))
-        ->and($property->getValue())->toBe(FilamentNavigationGroup::SystemSettings);
+        ->and($property->getValue())
+        ->toBe(FilamentNavigationGroup::SystemSettings);
 });
