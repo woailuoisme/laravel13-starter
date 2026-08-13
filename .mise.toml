@@ -1,34 +1,39 @@
 [tools]
-# --- Runtimes ---
-node = "latest"
-bun = "latest"
+# --- PHP Runtime & Dependency Management ---
+# "ubi:adwinying/php" = 'latest' # PHP 语言运行时 不用编译
+php = "latest"                                # PHP 语言运行时
+mago = "latest"                               # PHP 语法分析、格式化与静态类型分析工具链
+"github:composer/composer" = "latest"         # Composer 依赖管理工具
+"github:php/pie" = "latest"                   # PHP 扩展安装器
+"github:PHPantom-dev/phpantom_lsp" = "latest" # PHPantom 语言服务器
 
-# --- Development Tools ---
-just = "latest"
-lefthook = "latest"
-k6 = "latest"
+# --- PHP Application Servers (Laravel Octane) ---
+"github:dunglas/frankenphp" = "latest" # Caddy 嵌入式高性能 PHP 应用服务器
+"github:spiral/roadrunner" = "latest"  # 高性能常驻内存 PHP 进程管理器 (rr)
+
+# --- Task Runner & Git Hooks ---
+just = "latest"     # 现代命令运行器与任务调度
+lefthook = "latest" # 高性能 Git Hooks 管理器
 
 # --- Code Quality & Linters ---
-hadolint = "latest"
-shellcheck = "latest"
-actionlint = "latest"
-rumdl = "latest"
-shfmt = "latest"
+rumdl = "latest"      # Markdown 规范检查工具 (markdownlint)
+shellcheck = "latest" # Shell 脚本静态分析检查器
+shfmt = "latest"      # Shell 脚本格式化工具
 
-# --- CLI Utilities ---
-rg = "latest"
-fd = "latest"
-sd = "latest"
+# --- CLI Search & Processing Utilities ---
+rg = "latest" # ripgrep 极速文本搜索工具
+fd = "latest" # 极速文件查找工具
+sd = "latest" # 现代流式文本替换工具 (sed 替代品)
 
-# --- Security Scan & Audit ---
-trivy = "latest"         # 代码库/镜像漏洞扫描与静态安全审计
-
-# --- Secrets Management ---
-sops = "latest"          # 多环境配置与敏感环境变量行级加密管理
-age = "latest"           # 现代非对称加密工具（配合 SOPS 生成密钥对）
+# --- Secrets & Key Management ---
+sops = "latest" # 多环境配置与敏感环境变量行级加密管理工具
+age = "latest"  # 现代非对称加密工具（配合 SOPS 生成与解密密钥）
 
 
 [env]
+# 显式锁定 Composer 全局工作目录，防止 Mise 的 PHP 自动切到 ~/.mise/installs/php/.../.composer 导致找不到全局配置
+COMPOSER_HOME = "{{env.HOME}}/.composer"
+
 # 将 macOS Homebrew 的 PHP@8.5 目录和 Composer 全局 binaries 注入到 PATH 最前方
 # 确保在该项目目录下，所有的 php/composer 命令都始终绑定到项目要求的 PHP 8.5 环境
 _.path = [

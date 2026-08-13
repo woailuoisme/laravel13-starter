@@ -1,0 +1,18 @@
+# $schema: https://github.com/PHPantom-dev/phpantom_lsp/raw/main/config-schema.json
+[php]
+# 与 composer.json 的 ^8.5 保持一致
+version = "8.5"
+
+[indexing]
+# 项目 optimize-autoloader 已开启，基于 classmap 索引最快；
+# 若 facade(_ide_helper.php) 诊断出现噪音，改为 "full"
+strategy = "composer"
+
+[diagnostics]
+# 项目已生成 _ide_helper.php，facade/模型属性可静态解析，噪音可控
+unresolved-member-access = true
+
+[laravel.migrations]
+# 显式声明：从 database/migrations 推断 Eloquent 属性（默认已开启）
+enabled = true
+paths = ["database/migrations"]
