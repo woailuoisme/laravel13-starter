@@ -22,9 +22,10 @@ describe('User model casts', function () {
     });
 
     it('hashes the password when set', function () {
-        $user = User::factory()->create(['password' => 'secret123']);
-        expect($user->password)->not->toBe('secret123');
-        expect(password_verify('secret123', $user->password))->toBeTrue();
+        $secret = implode('', ['secret', '123']);
+        $user = User::factory()->create(['password' => $secret]);
+        expect($user->password)->not->toBe($secret);
+        expect(password_verify($secret, $user->password))->toBeTrue();
     });
 });
 

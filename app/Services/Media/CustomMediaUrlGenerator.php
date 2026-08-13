@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Media;
 
 use Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
@@ -12,7 +14,7 @@ class CustomMediaUrlGenerator extends DefaultUrlGenerator
         $diskConfig = config("filesystems.disks.{$disk}");
 
         // 如果是 OSS 磁盘且配置了自定义 URL
-        if ($disk === 'oss' && ! empty($diskConfig['url'])) {
+        if ($disk === 'oss' && is_string($diskConfig['url'] ?? null) && $diskConfig['url'] !== '') {
             $path = $this->getPathRelativeToRoot();
 
             return mb_rtrim($diskConfig['url'], '/').'/'.mb_ltrim($path, '/');

@@ -1,6 +1,8 @@
 <?php
 
-function runDepCommand(string $arguments): string
+declare(strict_types=1);
+
+function run_dep_command(string $arguments): string
 {
     $dep = mb_trim((string) shell_exec('command -v dep'));
 
@@ -17,9 +19,10 @@ function runDepCommand(string $arguments): string
 }
 
 it('registers the deployer tasks', function () {
-    $output = runDepCommand('list');
+    $output = run_dep_command('list');
 
-    expect($output)->toContain('pre-check')
+    expect($output)
+        ->toContain('pre-check')
         ->toContain('update-code')
         ->toContain('composer-install')
         ->toContain('migrate')
@@ -36,14 +39,14 @@ it('registers the deployer tasks', function () {
 it('reports a clear error when the RoadRunner container is unavailable', function () {
     $script = file_get_contents(base_path('deploy.php'));
 
-    expect($script)->toContain('docker inspect')
-        ->toContain('错误：容器 %1$s 未运行或不可访问');
+    expect($script)->toContain('docker inspect')->toContain('错误：容器 %1$s 未运行或不可访问');
 });
 
 it('keeps the full deploy story order stable', function () {
-    $output = runDepCommand('tree deploy');
+    $output = run_dep_command('tree deploy');
 
-    expect($output)->toContain('pre-check')
+    expect($output)
+        ->toContain('pre-check')
         ->toContain('update-code')
         ->toContain('composer-install')
         ->toContain('migrate')
@@ -56,9 +59,10 @@ it('keeps the full deploy story order stable', function () {
 });
 
 it('keeps the quick deploy story minimal', function () {
-    $output = runDepCommand('tree quick-deploy');
+    $output = run_dep_command('tree quick-deploy');
 
-    expect($output)->toContain('update-code')
+    expect($output)
+        ->toContain('update-code')
         ->toContain('optimize')
         ->not->toContain('composer-install')
         ->not->toContain('migrate');

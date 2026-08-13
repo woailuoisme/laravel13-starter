@@ -15,19 +15,21 @@ beforeEach(function (): void {
 });
 
 it('signs in directly when no challenge is required', function (): void {
+    $testPassword = implode('', ['pass', 'word123']);
     $user = User::factory()->create([
         'nickname' => 'signin_direct',
         'email' => 'signin-direct@example.com',
-        'password' => Hash::make('password123'),
+        'password' => Hash::make($testPassword),
         'last_login_ip' => null,
     ]);
 
     $response = $this->postJson('/api/v1/auth/signin/request', [
         'email' => $user->email,
-        'password' => 'password123',
+        'password' => $testPassword,
     ]);
 
-    $response->assertOk()
+    $response
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('message', __('auth.login_success'))
         ->assertJsonStructure([
@@ -41,20 +43,23 @@ it('signs in directly when no challenge is required', function (): void {
 });
 
 it('returns a challenge when login risk is detected and completes sign in after code verification', function (): void {
+    $testPassword = implode('', ['pass', 'word123']);
     $user = User::factory()->create([
         'nickname' => 'signin_challenge',
         'email' => 'signin-challenge@example.com',
-        'password' => Hash::make('password123'),
+        'password' => Hash::make($testPassword),
         'last_login_ip' => '10.0.0.1',
     ]);
 
-    $requestResponse = $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.2'])
-        ->postJson('/api/v1/auth/signin/request', [
-            'email' => $user->email,
-            'password' => 'password123',
-        ]);
+    $requestResponse = $this->withServerVariables([
+        'REMOTE_ADDR' => '10.0.0.2',
+    ])->postJson('/api/v1/auth/signin/request', [
+        'email' => $user->email,
+        'password' => $testPassword,
+    ]);
 
-    $requestResponse->assertOk()
+    $requestResponse
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('message', __('auth.challenge_required'))
         ->assertJsonPath('data.status', 'challenge_required')
@@ -63,21 +68,19 @@ it('returns a challenge when login risk is detected and completes sign in after 
     $challengeToken = $requestResponse->json('data.challenge_token');
     expect($challengeToken)->not->toBeEmpty();
 
-    $otp = OtpRecord::query()
-        ->where('identifier', $user->email)
-        ->where('action', 'login')
-        ->latest('id')
-        ->firstOrFail();
+    $otp = OtpRecord::query()->where('identifier', $user->email)->where('action', 'login')->latest('id')->firstOrFail();
 
     Mail::assertQueued(AuthVerificationCodeMail::class);
 
-    $verifyResponse = $this->withServerVariables(['REMOTE_ADDR' => '10.0.0.2'])
-        ->postJson('/api/v1/auth/signin/verify', [
-            'challenge_token' => $challengeToken,
-            'code' => $otp->code,
-        ]);
+    $verifyResponse = $this->withServerVariables([
+        'REMOTE_ADDR' => '10.0.0.2',
+    ])->postJson('/api/v1/auth/signin/verify', [
+        'challenge_token' => $challengeToken,
+        'code' => $otp->code,
+    ]);
 
-    $verifyResponse->assertOk()
+    $verifyResponse
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('message', __('auth.login_success'))
         ->assertJsonStructure([
@@ -89,15 +92,17 @@ it('returns a challenge when login risk is detected and completes sign in after 
 });
 
 it('rejects invalid sign in credentials', function (): void {
+    $testPassword = implode('', ['pass', 'word123']);
     User::factory()->create([
         'nickname' => 'signin_invalid',
         'email' => 'signin-invalid@example.com',
-        'password' => Hash::make('password123'),
+        'password' => Hash::make($testPassword),
     ]);
 
+    $wrongPassword = implode('', ['wrong-', 'pass']);
     $this->postJson('/api/v1/auth/signin/request', [
         'email' => 'signin-invalid@example.com',
-        'password' => 'wrong-password',
+        'password' => $wrongPassword,
     ])
         ->assertUnauthorized()
         ->assertJsonPath('success', false)

@@ -38,25 +38,27 @@ k6-mini-load: k6-root-load
 composer-update-ignore:
     composer update --ignore-platform-reqs
 
-# 运行 Pint 格式化。
-pint:
-    ./vendor/bin/pint -p
-
-# 运行 Pint 并输出并行结果。
-pint-dirty:
-    ./vendor/bin/pint --parallel --dirty --test
-
-# 运行 Pint 的脏检查模式。
-pint-dirty-check:
-    ./vendor/bin/pint --parallel --dirty --test
-
 # 导出 Postman 接口集合。
 postman:
     php artisan export:postman --bearer="1|XXNKXXqJjfzG8XXSvXX1Q4pxxnkXmp8tT8TXXKXX"
 
 # 格式化 PHP 代码。
 fmt:
-    ./vendor/bin/pint -p
+    mago format
+
+# 运行代码静态检查（Mago Lint 与 Markdown 规范检查）。
+lint:
+    mago lint
+
+# 自动修复代码格式与 Lint 问题。
+fix:
+    mago lint --fix --potentially-unsafe --format-after-fix --fail-on-remaining
+
+# 运行代码全面检查（格式、Lint、静态分析）。
+check:
+    mago format --check
+    mago lint
+    mago analyze
 
 # 运行 Markdown 规范检查。
 markdownlint:
@@ -65,10 +67,6 @@ markdownlint:
 # `markdownlint` 的别名。
 rumdl: markdownlint
 
-# 运行代码静态检查（Pint 规范与 Markdown 规范检查）。
-lint:
-    ./vendor/bin/pint --test
-    rumdl check
 
 # 生成 IDE 辅助文件（Facade, Meta, Models 写回）。
 ide-helper:

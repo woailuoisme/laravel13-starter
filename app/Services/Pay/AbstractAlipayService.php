@@ -84,7 +84,7 @@ abstract class AbstractAlipayService
      */
     protected function validateOrderParams(string $outTradeNo, float|int $totalAmount, string $subject): void
     {
-        if (empty($outTradeNo)) {
+        if ($outTradeNo === '') {
             throw AlipayException::validationError('商户订单号不能为空');
         }
 
@@ -92,7 +92,7 @@ abstract class AbstractAlipayService
             throw AlipayException::validationError('商户订单号长度不能超过64位');
         }
 
-        if (empty($subject)) {
+        if ($subject === '') {
             throw AlipayException::validationError('订单标题不能为空');
         }
 

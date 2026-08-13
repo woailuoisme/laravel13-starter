@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Exports\UserExport;
 use App\Exports\UserImportTemplate;
 use App\Imports\UserImport;
@@ -31,7 +33,8 @@ it('exports users with simple excel', function (): void {
 
     $rows = SimpleExcelReader::create($path)->getRows()->all();
 
-    expect($rows)->toHaveCount(2)
+    expect($rows)
+        ->toHaveCount(2)
         ->and($rows[0]['nickname'])
         ->toBe($olderUser->nickname)
         ->and($rows[0]['openid'])
@@ -49,7 +52,8 @@ it('exports a user import template with simple excel', function (): void {
 
     $rows = SimpleExcelReader::create($path)->getRows()->all();
 
-    expect($rows)->toHaveCount(2)
+    expect($rows)
+        ->toHaveCount(2)
         ->and(array_keys($rows[0]))
         ->toBe(['nickname', 'email', 'openid'])
         ->and($rows[0]['nickname'])
@@ -80,7 +84,8 @@ it('imports users with simple excel and upserts by email', function (): void {
 
     $result = new UserImport()->import($path);
 
-    expect($result)->toBe(['imported' => 2, 'skipped' => 1])
+    expect($result)
+        ->toBe(['imported' => 2, 'skipped' => 1])
         ->and(User::query()->where('email', 'existing@example.com')->value('id'))
         ->toBe($existingUser->id)
         ->and(User::query()->where('email', 'existing@example.com')->value('nickname'))

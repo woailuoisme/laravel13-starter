@@ -81,7 +81,7 @@ class GlobalAlipayService extends AbstractAlipayService
 
     protected function validateType(string $type): void
     {
-        if (! isset(self::PAYMENT_TYPES[$type])) {
+        if (! array_key_exists($type, self::PAYMENT_TYPES)) {
             throw AlipayException::configError("不支持的全球支付类型: {$type}");
         }
     }
@@ -89,7 +89,7 @@ class GlobalAlipayService extends AbstractAlipayService
     protected function validateConfig(array $config): void
     {
         foreach (['app_id', 'private_key', 'alipay_public_key'] as $key) {
-            if (empty($config[$key])) {
+            if ((string) ($config[$key] ?? '') === '') {
                 throw AlipayException::configError("全球支付宝配置缺失: {$key}");
             }
         }
@@ -158,7 +158,7 @@ class GlobalAlipayService extends AbstractAlipayService
                 'success' => $result->code === '10000',
                 'trade_status' => $result->tradeStatus ?? '',
                 'trade_no' => $result->tradeNo ?? '',
-                'is_paid' => in_array($result->tradeStatus ?? '', ['TRADE_SUCCESS', 'TRADE_FINISHED']),
+                'is_paid' => in_array($result->tradeStatus ?? '', ['TRADE_SUCCESS', 'TRADE_FINISHED'], strict: true),
                 'currency' => $this->config['currency'],
                 'raw' => $result,
             ];
@@ -171,7 +171,7 @@ class GlobalAlipayService extends AbstractAlipayService
     {
         try {
             $amount = $this->formatAmount($refundAmount);
-            $refundNo = $outRequestNo ?: 'GREF'.time().Str::random(6);
+            $refundNo = $outRequestNo ?? 'GREF'.time().Str::random(6);
 
             $result = $this->payment->common()->optional('out_request_no', $refundNo)->refund($outTradeNo, $amount);
 

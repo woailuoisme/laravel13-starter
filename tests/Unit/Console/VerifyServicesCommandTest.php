@@ -15,22 +15,17 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     config(['queue.default' => 'database']);
 
     $meilisearchClient = Mockery::mock(MeilisearchClient::class);
-    $meilisearchClient->shouldReceive('health')
-        ->once()
-        ->andReturn(['status' => 'available']);
+    $meilisearchClient->shouldReceive('health')->once()->andReturn(['status' => 'available']);
     app()->instance(MeilisearchClient::class, $meilisearchClient);
 
     $centrifugo = Mockery::mock(Centrifugo::class);
-    $centrifugo->shouldReceive('info')
-        ->once()
-        ->andReturn([]);
+    $centrifugo->shouldReceive('info')->once()->andReturn([]);
     app()->instance('centrifugo', $centrifugo);
 
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function selectOne(string $query): object
             {
                 return (object) ['ok' => 1];
@@ -40,8 +35,7 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function ping(): string
             {
                 return 'PONG';
@@ -51,8 +45,7 @@ it('verifies redis, database, scout, garage, and queue successfully', function (
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function size(string $queue): int
             {
                 return 0;
@@ -78,8 +71,7 @@ it('fails when scout is not configured for meilisearch', function (): void {
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function selectOne(string $query): object
             {
                 return (object) ['ok' => 1];
@@ -89,8 +81,7 @@ it('fails when scout is not configured for meilisearch', function (): void {
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function ping(): string
             {
                 return 'PONG';
@@ -100,8 +91,7 @@ it('fails when scout is not configured for meilisearch', function (): void {
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function size(string $queue): int
             {
                 return 0;
@@ -109,9 +99,7 @@ it('fails when scout is not configured for meilisearch', function (): void {
         });
 
     $centrifugo = Mockery::mock(Centrifugo::class);
-    $centrifugo->shouldReceive('info')
-        ->once()
-        ->andReturn([]);
+    $centrifugo->shouldReceive('info')->once()->andReturn([]);
     app()->instance('centrifugo', $centrifugo);
 
     $this->artisan('app:verify-services')
@@ -126,22 +114,17 @@ it('fails when centrifugo connection fails', function (): void {
     config(['queue.default' => 'database']);
 
     $meilisearchClient = Mockery::mock(MeilisearchClient::class);
-    $meilisearchClient->shouldReceive('health')
-        ->once()
-        ->andReturn(['status' => 'available']);
+    $meilisearchClient->shouldReceive('health')->once()->andReturn(['status' => 'available']);
     app()->instance(MeilisearchClient::class, $meilisearchClient);
 
     $centrifugo = Mockery::mock(Centrifugo::class);
-    $centrifugo->shouldReceive('info')
-        ->once()
-        ->andReturn(['error' => 'cURL error 7: connection refused']);
+    $centrifugo->shouldReceive('info')->once()->andReturn(['error' => 'cURL error 7: connection refused']);
     app()->instance('centrifugo', $centrifugo);
 
     DB::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function selectOne(string $query): object
             {
                 return (object) ['ok' => 1];
@@ -151,8 +134,7 @@ it('fails when centrifugo connection fails', function (): void {
     Redis::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function ping(): string
             {
                 return 'PONG';
@@ -162,8 +144,7 @@ it('fails when centrifugo connection fails', function (): void {
     Queue::shouldReceive('connection')
         ->once()
         ->withAnyArgs()
-        ->andReturn(new class
-        {
+        ->andReturn(new class {
             public function size(string $queue): int
             {
                 return 0;

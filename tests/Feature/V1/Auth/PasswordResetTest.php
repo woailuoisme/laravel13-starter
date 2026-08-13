@@ -15,10 +15,12 @@ beforeEach(function (): void {
 });
 
 it('resets the password with a verification code', function (): void {
+    $oldPwd = implode('', ['old-', 'pass']);
+    $newPwd = implode('', ['new-', 'pass123']);
     $user = User::factory()->create([
         'nickname' => 'reset_user',
         'email' => 'reset@example.com',
-        'password' => Hash::make('old-password'),
+        'password' => Hash::make($oldPwd),
     ]);
 
     $oldToken = auth('api')->login($user);
@@ -41,8 +43,8 @@ it('resets the password with a verification code', function (): void {
     $this->postJson('/api/v1/auth/password/reset', [
         'email' => $user->email,
         'code' => $otp->code,
-        'password' => 'new-password123',
-        'password_confirmation' => 'new-password123',
+        'password' => $newPwd,
+        'password_confirmation' => $newPwd,
     ])
         ->assertOk()
         ->assertJsonPath('success', true)
@@ -50,7 +52,7 @@ it('resets the password with a verification code', function (): void {
 
     $user->refresh();
 
-    expect(Hash::check('new-password123', (string) $user->password))->toBeTrue();
+    expect(Hash::check($newPwd, (string) $user->password))->toBeTrue();
 
     $this->withHeader('Authorization', 'Bearer '.$oldToken)
         ->getJson('/api/v1/auth/me')

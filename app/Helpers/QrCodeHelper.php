@@ -68,10 +68,17 @@ class QrCodeHelper
      * @param  int  $size  尺寸（像素）
      * @param  bool  $useBase64  true 使用 base64 编码，false 使用 URL 编码（体积更小）
      */
+    /**
+     * 生成 SVG Data URL 格式二维码
+     *
+     * @param  string  $text  要编码的文本
+     * @param  int  $size  尺寸（像素）
+     * @param  string  $encodingMode  'url' 使用 URL 编码，'base64' 使用 base64 编码
+     */
     public static function generateSvgDataUrl(
         string $text,
         int $size = self::DEFAULT_SIZE,
-        bool $useBase64 = false,
+        string $encodingMode = 'url',
     ): string {
         $svg = self::generateSvg($text, $size);
 
@@ -79,7 +86,7 @@ class QrCodeHelper
             return '';
         }
 
-        if ($useBase64) {
+        if ($encodingMode === 'base64') {
             return 'data:image/svg+xml;base64,'.base64_encode($svg);
         }
 
@@ -142,7 +149,7 @@ class QrCodeHelper
         int $margin = 2,
         string $errorCorrection = 'M',
     ): string {
-        if (empty($text)) {
+        if ($text === '') {
             return '';
         }
 
@@ -223,7 +230,7 @@ class QrCodeHelper
         array $foregroundColor = [0, 0, 0],
         array $backgroundColor = [255, 255, 255],
     ): string {
-        if (empty($text)) {
+        if ($text === '') {
             return '';
         }
 
@@ -268,7 +275,7 @@ class QrCodeHelper
         array $formats = ['png', 'svg'],
         int $size = self::DEFAULT_SIZE,
     ): array {
-        if (empty($text)) {
+        if ($text === '') {
             return [];
         }
 
@@ -299,7 +306,7 @@ class QrCodeHelper
         string $format = 'png',
         int $size = self::DEFAULT_SIZE,
     ): bool {
-        if (empty($text)) {
+        if ($text === '') {
             return false;
         }
 
@@ -352,7 +359,7 @@ class QrCodeHelper
         array $labelColor = [0, 0, 0],
         int $fontSize = 16,
     ): string {
-        if (empty($text)) {
+        if ($text === '') {
             return '';
         }
 
@@ -389,7 +396,7 @@ class QrCodeHelper
         float $logoPercentage = 0.2,
         array $labelColor = [0, 0, 0],
     ): string {
-        if (empty($text)) {
+        if ($text === '') {
             return '';
         }
 
@@ -446,7 +453,7 @@ class QrCodeHelper
 
     private static function generateBasic(string $text, int $size, string $format, string $errorMessage): string
     {
-        if (empty($text)) {
+        if ($text === '' || $text === '0') {
             return '';
         }
 

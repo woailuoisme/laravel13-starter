@@ -7,7 +7,8 @@ use App\Settings\SystemSettings;
 it('defines defaults for every ecommerce setting property', function (): void {
     $settings = app(SystemSettings::class);
 
-    expect($settings->site_name)->toBe('My Shop')
+    expect($settings->site_name)
+        ->toBe('My Shop')
         ->and($settings->is_shop_open)
         ->toBeTrue()
         ->and($settings->free_shipping_threshold)

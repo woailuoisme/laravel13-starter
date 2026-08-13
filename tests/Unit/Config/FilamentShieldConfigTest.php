@@ -17,7 +17,8 @@ it('keeps shield discovery scoped to the current single panel setup', function (
 });
 
 it('keeps the role based super admin and panel user defaults enabled', function (): void {
-    expect(config('filament-shield.super_admin.enabled'))->toBeTrue()
+    expect(config('filament-shield.super_admin.enabled'))
+        ->toBeTrue()
         ->and(config('filament-shield.super_admin.name'))
         ->toBe('super_admin')
         ->and(config('filament-shield.panel_user.enabled'))

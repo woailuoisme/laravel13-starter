@@ -65,9 +65,9 @@ class TestStorageDisk extends Command
 
         $disks = (array) $this->option('disk');
 
-        if (empty($disks)) {
+        if ($disks === []) {
             $disks = $this->selectDisksInteractively();
-            if (empty($disks)) {
+            if ($disks === []) {
                 return self::FAILURE;
             }
         }
@@ -157,11 +157,14 @@ class TestStorageDisk extends Command
             $this->info("- 测试{$name}...");
             if ($name === '文件读取' || $name === '文件删除') {
                 $logic($testFile);
-            } else {
-                $result = $logic();
-                if ($name === '文件上传') {
-                    $testFile = $result;
-                }
+                $this->line("  [OK] {$name}测试通过");
+
+                continue;
+            }
+
+            $result = $logic();
+            if ($name === '文件上传') {
+                $testFile = $result;
             }
             $this->line("  [OK] {$name}测试通过");
         }
@@ -169,7 +172,7 @@ class TestStorageDisk extends Command
 
     private function testConnection(Filesystem $storage): void
     {
-        $this->executeWithTimeout(static fn () => $storage->directories(), 10);
+        $this->executeWithTimeout($storage->directories(...), 10);
     }
 
     private function testFileUpload(Filesystem $storage, string $disk): string
@@ -189,7 +192,7 @@ class TestStorageDisk extends Command
     private function testFileRead(Filesystem $storage, string $fileName): void
     {
         $content = $this->executeWithTimeout(static fn () => $storage->get($fileName), 30);
-        if (empty($content)) {
+        if ($content === '' || $content === null) {
             throw new RuntimeException('文件读取内容为空');
         }
     }
@@ -217,12 +220,16 @@ class TestStorageDisk extends Command
                 continue;
             }
 
-            if (empty($config['driver'])) {
+            $driver = (string) ($config['driver'] ?? '');
+            if ($driver === '') {
                 continue;
             }
 
+            $key = (string) ($config['key'] ?? '');
+            $bucket = (string) ($config['bucket'] ?? '');
+
             // 基本验证配置是否完整
-            if ($config['driver'] === 's3' && (empty($config['key']) || empty($config['bucket']))) {
+            if ($driver === 's3' && ($key === '' || $bucket === '')) {
                 continue;
             }
 
@@ -236,7 +243,7 @@ class TestStorageDisk extends Command
     {
         $availableDisks = $this->getAvailableDisks();
 
-        if (empty($availableDisks)) {
+        if ($availableDisks === []) {
             $this->error('没有找到可用的存储磁盘配置');
 
             return [];

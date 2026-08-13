@@ -58,7 +58,7 @@ class DatabaseQueryLogger
      */
     public function logQuery(string $connection, string $query, array $bindings, float $time): array
     {
-        if (! empty($bindings)) {
+        if ($bindings !== []) {
             $query = $this->replaceBindings($query, $bindings);
         }
 
@@ -73,7 +73,7 @@ class DatabaseQueryLogger
     private function replaceBindings(string $query, array $bindings): string
     {
         $formattedSql = str_replace(['%', '?'], ['%%', "'%s'"], $query);
-        $normalizedBindings = array_map(fn (mixed $b): string => $this->bindingToString($b), $bindings);
+        $normalizedBindings = array_map($this->bindingToString(...), $bindings);
 
         return vsprintf($formattedSql, $normalizedBindings);
     }

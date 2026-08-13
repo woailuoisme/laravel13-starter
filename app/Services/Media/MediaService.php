@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Media;
 
 use App\Helpers\AppHelper;
@@ -115,7 +117,7 @@ class MediaService
             'person' => 'people',
         ];
 
-        if (isset($specialCases[$pluralPath])) {
+        if (array_key_exists($pluralPath, $specialCases)) {
             $pluralPath = $specialCases[$pluralPath];
         }
 
@@ -163,7 +165,8 @@ class MediaService
         }
 
         try {
-            return $model->addMedia($file)
+            return $model
+                ->addMedia($file)
                 ->usingFileName($fileName) // 设置实际存储的文件名
                 ->usingName($file->getClientOriginalName()) // 使用原始文件名作为显示名称
                 ->withCustomProperties(array_merge([
@@ -201,7 +204,7 @@ class MediaService
      * @param  HasMedia  $model  模型实例
      * @param  array<UploadedFile>  $files  上传文件数组
      * @param  string  $collection  集合名称
-     * @param  bool  $preserveOrder  是否保持排序
+     * @param  string  $orderMode  排序模式 ('preserve' / 'none')
      * @return Collection<Media>
      *
      * @throws FileDoesNotExist|FileIsTooBig
@@ -210,10 +213,11 @@ class MediaService
         HasMedia $model,
         array $files,
         string $collection = 'images',
-        bool $preserveOrder = true,
+        string $orderMode = 'preserve',
     ): Collection {
         $uploadedMedia = collect();
-        $maxOrder = $preserveOrder ? $model->getMedia($collection)->max('order_column') ?? 0 : 0;
+        $shouldPreserve = $orderMode === 'preserve';
+        $maxOrder = $shouldPreserve ? $model->getMedia($collection)->max('order_column') ?? 0 : 0;
 
         foreach ($files as $file) {
             if (! $file instanceof UploadedFile) {
@@ -223,7 +227,7 @@ class MediaService
             }
             $media = $this->uploadSingle($model, $file, $collection);
 
-            if ($preserveOrder) {
+            if ($shouldPreserve) {
                 $maxOrder++;
                 $media->update(['order_column' => $maxOrder]);
             }
@@ -323,14 +327,15 @@ class MediaService
      *
      * @param  HasMedia  $model  模型实例
      * @param  string  $collection  集合名称
-     * @param  bool  $withUrls  是否包含 URL
+     * @param  string  $urlOption  是否包含 URL ('with_urls' / 'without_urls')
      * @return array 媒体文件信息数组
      */
-    public function getMediaInfo(HasMedia $model, string $collection = '', bool $withUrls = true): array
+    public function getMediaInfo(HasMedia $model, string $collection = '', string $urlOption = 'with_urls'): array
     {
         $media = $collection ? $model->getMedia($collection) : $model->getMedia();
+        $includeUrls = $urlOption === 'with_urls';
 
-        return $media->map(static function (Media $item) use ($withUrls) {
+        return $media->map(static function (Media $item) use ($includeUrls) {
             $info = [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -344,7 +349,7 @@ class MediaService
                 'custom_properties' => $item->custom_properties,
             ];
 
-            if ($withUrls) {
+            if ($includeUrls) {
                 $info['url'] = $item->getUrl();
                 $info['full_url'] = $item->getFullUrl();
             }
@@ -369,11 +374,9 @@ class MediaService
     ): ?Media {
         try {
             // 获取要替换的媒体
-            if ($replaceMediaId) {
-                $oldMedia = $model->getMedia($collection)->firstWhere('id', $replaceMediaId);
-            } else {
-                $oldMedia = $model->getMedia($collection)->first();
-            }
+            $oldMedia = $replaceMediaId !== null
+                ? $model->getMedia($collection)->firstWhere('id', $replaceMediaId)
+                : $model->getMedia($collection)->first();
 
             $oldOrder = $oldMedia ? $oldMedia->order_column : null;
             $oldCustomProperties = $oldMedia ? $oldMedia->custom_properties : [];
@@ -477,9 +480,7 @@ class MediaService
         array $customProperties = [],
     ): Media {
         /** @var User $model */
-        return $model->addMediaFromUrl($url)
-            ->withCustomProperties($customProperties)
-            ->toMediaCollection($collection);
+        return $model->addMediaFromUrl($url)->withCustomProperties($customProperties)->toMediaCollection($collection);
     }
 
     /**
@@ -501,7 +502,7 @@ class MediaService
     ): Collection {
         $sourceMedia = $sourceCollection ? $sourceModel->getMedia($sourceCollection) : $sourceModel->getMedia();
 
-        if (! empty($mediaIds)) {
+        if ($mediaIds !== []) {
             $sourceMedia = $sourceMedia->whereIn('id', $mediaIds);
         }
 
@@ -544,24 +545,20 @@ class MediaService
         ];
 
         // 按文件类型统计
-        $typeStats = $media->groupBy('mime_type')->map(static function ($files, $mimeType) {
-            return [
-                'count' => $files->count(),
-                'total_size' => $files->sum('size'),
-                'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
-            ];
-        });
+        $typeStats = $media->groupBy('mime_type')->map(static fn ($files, $mimeType) => [
+            'count' => $files->count(),
+            'total_size' => $files->sum('size'),
+            'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
+        ]);
 
         $stats['file_types'] = $typeStats->all();
 
         // 按集合统计
-        $collectionStats = $media->groupBy('collection_name')->map(static function ($files, $collectionName) {
-            return [
-                'count' => $files->count(),
-                'total_size' => $files->sum('size'),
-                'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
-            ];
-        });
+        $collectionStats = $media->groupBy('collection_name')->map(static fn ($files, $collectionName) => [
+            'count' => $files->count(),
+            'total_size' => $files->sum('size'),
+            'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
+        ]);
 
         $stats['collections'] = $collectionStats->all();
 
@@ -583,9 +580,7 @@ class MediaService
 
         return ($collection
             ? $model->getMedia($collection)
-            : $model->getMedia())->first(static function (Media $item) use ($fileName) {
-                return $item->file_name === $fileName;
-            });
+            : $model->getMedia())->first(static fn (Media $item) => $item->file_name === $fileName);
     }
 
     /**
@@ -594,16 +589,16 @@ class MediaService
      * @param  HasMedia  $model  模型实例
      * @param  array<UploadedFile>  $files  上传文件数组
      * @param  string  $collection  集合名称
-     * @param  bool  $skipDuplicates  是否跳过重复文件
-     * @param  bool  $preserveOrder  是否保持排序
+     * @param  string  $duplicateMode  去重模式 ('skip' / 'allow')
+     * @param  string  $orderMode  排序模式 ('preserve' / 'none')
      * @return array 处理结果
      */
     public function batchUpload(
         HasMedia $model,
         array $files,
         string $collection = 'images',
-        bool $skipDuplicates = true,
-        bool $preserveOrder = true,
+        string $duplicateMode = 'skip',
+        string $orderMode = 'preserve',
     ): array {
         $results = [
             'uploaded' => collect(),
@@ -611,7 +606,10 @@ class MediaService
             'errors' => collect(),
         ];
 
-        $maxOrder = $preserveOrder ? $model->getMedia($collection)->max('order_column') ?? 0 : 0;
+        $shouldSkipDuplicates = $duplicateMode === 'skip';
+        $shouldPreserveOrder = $orderMode === 'preserve';
+
+        $maxOrder = $shouldPreserveOrder ? $model->getMedia($collection)->max('order_column') ?? 0 : 0;
 
         foreach ($files as $file) {
             if (! $file instanceof UploadedFile) {
@@ -625,7 +623,7 @@ class MediaService
 
             try {
                 // 检查重复
-                if ($skipDuplicates) {
+                if ($shouldSkipDuplicates) {
                     $duplicate = $this->findDuplicateFile($model, $file, $collection);
                     if ($duplicate) {
                         $results['duplicates']->push([
@@ -640,7 +638,7 @@ class MediaService
                 // 上传文件
                 $media = $this->uploadSingle($model, $file, $collection);
 
-                if ($preserveOrder) {
+                if ($shouldPreserveOrder) {
                     $maxOrder++;
                     $media->update(['order_column' => $maxOrder]);
                 }

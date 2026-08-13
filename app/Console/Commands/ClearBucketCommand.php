@@ -27,10 +27,12 @@ class ClearBucketCommand extends Command
     public function handle(): int
     {
         $disk = (string) $this->option('disk');
-        $path = $this->option('path') ? (string) $this->option('path') : '';
+        $pathOption = $this->option('path');
+        $path = $pathOption !== null && $pathOption !== '' ? (string) $pathOption : '';
 
-        if (empty($disk) || ! config("filesystems.disks.{$disk}")) {
-            $this->error('磁盘 ['.($disk ?: 'NULL').'] 未在 config/filesystems.php 中配置！');
+        if ($disk === '' || ! config("filesystems.disks.{$disk}")) {
+            $diskDisplay = $disk !== '' ? $disk : 'NULL';
+            $this->error('磁盘 ['.$diskDisplay.'] 未在 config/filesystems.php 中配置！');
 
             return self::FAILURE;
         }
@@ -40,7 +42,7 @@ class ClearBucketCommand extends Command
         $this->info('正在扫描磁盘 ['.$disk.'] 路径 [/'.$path.'] 下的文件...');
         $files = $storage->allFiles($path);
 
-        if (empty($files)) {
+        if ($files === []) {
             $this->info('没有找到需要处理的文件。');
 
             return self::SUCCESS;

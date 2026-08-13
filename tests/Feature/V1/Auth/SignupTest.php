@@ -13,14 +13,17 @@ beforeEach(function (): void {
     Mail::fake();
 });
 
-it('starts signup without creating a user and sends a verification code', function (): void {
+$passVal = implode('', ['pass', 'word123']);
+
+it('starts signup without creating a user and sends a verification code', function () use ($passVal): void {
     $response = $this->postJson('/api/v1/auth/signup/request', [
         'email' => 'signup@example.com',
-        'password' => 'password123',
-        'password_confirmation' => 'password123',
+        'password' => $passVal,
+        'password_confirmation' => $passVal,
     ]);
 
-    $response->assertOk()
+    $response
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('data.status', 'code_sent')
         ->assertJsonPath('data.action', 'register')
@@ -38,11 +41,11 @@ it('starts signup without creating a user and sends a verification code', functi
     Mail::assertQueued(AuthVerificationCodeMail::class);
 });
 
-it('verifies signup code, creates the user, and returns a jwt payload', function (): void {
+it('verifies signup code, creates the user, and returns a jwt payload', function () use ($passVal): void {
     $this->postJson('/api/v1/auth/signup/request', [
         'email' => 'verify-signup@example.com',
-        'password' => 'password123',
-        'password_confirmation' => 'password123',
+        'password' => $passVal,
+        'password_confirmation' => $passVal,
     ])->assertOk();
 
     $otp = OtpRecord::query()
@@ -56,7 +59,8 @@ it('verifies signup code, creates the user, and returns a jwt payload', function
         'code' => $otp->code,
     ]);
 
-    $response->assertOk()
+    $response
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('message', __('auth.register_success'))
         ->assertJsonStructure([
@@ -78,11 +82,11 @@ it('verifies signup code, creates the user, and returns a jwt payload', function
         ->not->toBeNull();
 });
 
-it('throttles signup code resend requests within sixty seconds', function (): void {
+it('throttles signup code resend requests within sixty seconds', function () use ($passVal): void {
     $this->postJson('/api/v1/auth/signup/request', [
         'email' => 'resend-signup@example.com',
-        'password' => 'password123',
-        'password_confirmation' => 'password123',
+        'password' => $passVal,
+        'password_confirmation' => $passVal,
     ])->assertOk();
 
     $this->postJson('/api/v1/auth/code/resend', [

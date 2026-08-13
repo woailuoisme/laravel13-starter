@@ -18,13 +18,15 @@ class UserProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $avatarUrl = $this->getFirstMediaUrl('avatar');
+
         return [
             'id' => $this->id,
             'nickname' => $this->nickname,
             'email' => $this->email,
             'telephone' => $this->telephone,
             'gender' => $this->gender,
-            'avatar' => $this->getFirstMediaUrl('avatar') ?: $this->avatar,
+            'avatar' => $avatarUrl !== '' ? $avatarUrl : $this->avatar,
             'last_login_at' => $this->last_login_at?->toDateTimeString(),
             'coupon_count' => $this->whenCounted('availableCoupons'),
             'created_at' => $this->created_at->toDateTimeString(),

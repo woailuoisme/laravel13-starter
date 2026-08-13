@@ -95,7 +95,7 @@ class AuthFlowService
         #[SensitiveParameter]
         string $password,
         ?string $ip,
-        bool $forceChallenge = false,
+        string $challengeMode = 'auto',
     ): array {
         $user = User::query()->where('email', $email)->first();
 
@@ -103,7 +103,7 @@ class AuthFlowService
             throw new HttpException(401, __('auth.invalid_credentials'));
         }
 
-        if (! $this->shouldRequireChallenge($user, $ip, $forceChallenge)) {
+        if (! $this->shouldRequireChallenge($user, $ip, $challengeMode)) {
             $user->forceFill([
                 'last_login_at' => now(),
                 'last_login_ip' => $ip,
@@ -326,9 +326,9 @@ class AuthFlowService
         return $otp;
     }
 
-    private function shouldRequireChallenge(User $user, ?string $ip, bool $forceChallenge): bool
+    private function shouldRequireChallenge(User $user, ?string $ip, string $challengeMode): bool
     {
-        if ($forceChallenge) {
+        if ($challengeMode === 'force') {
             return true;
         }
 

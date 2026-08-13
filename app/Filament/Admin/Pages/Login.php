@@ -85,18 +85,20 @@ class Login extends BaseLogin
 
     protected function getRateLimitedNotification(TooManyRequestsException $exception): ?Notification
     {
+        $throttled = __('filament-panels::auth/pages/login.notifications.throttled');
+        $hasBody = is_array($throttled) && array_key_exists('body', $throttled);
+        $body = $hasBody
+            ? __('filament-panels::auth/pages/login.notifications.throttled.body', [
+                'seconds' => $exception->secondsUntilAvailable,
+                'minutes' => $exception->minutesUntilAvailable,
+            ]) : null;
+
         return Notification::make()
             ->title(__('filament-panels::auth/pages/login.notifications.throttled.title', [
                 'seconds' => $exception->secondsUntilAvailable,
                 'minutes' => $exception->minutesUntilAvailable,
             ]))
-            ->body(
-                array_key_exists('body', __('filament-panels::auth/pages/login.notifications.throttled') ?: [])
-                    ? __('filament-panels::auth/pages/login.notifications.throttled.body', [
-                        'seconds' => $exception->secondsUntilAvailable,
-                        'minutes' => $exception->minutesUntilAvailable,
-                    ]) : null,
-            )
+            ->body($body)
             ->danger();
     }
 
@@ -111,11 +113,9 @@ class Login extends BaseLogin
         $query = AdminUser::query();
 
         if (filter_var($loginIdentifier, FILTER_VALIDATE_EMAIL)) {
-            return $query->whereRaw('LOWER(email) = ?', [$normalizedIdentifier])
-                ->first();
+            return $query->whereRaw('LOWER(email) = ?', [$normalizedIdentifier])->first();
         }
 
-        return $query->whereRaw('LOWER(username) = ?', [$normalizedIdentifier])
-            ->first();
+        return $query->whereRaw('LOWER(username) = ?', [$normalizedIdentifier])->first();
     }
 }

@@ -2,9 +2,9 @@ glob_matcher: doublestar
 
 pre-commit:
   jobs:
-    - name: pint
+    - name: mago
       glob: "**/*.php"
-      run: vendor/bin/pint --parallel --silent --format agent {staged_files}
+      run: mago format {staged_files}
       stage_fixed: true
 
     - name: hadolint

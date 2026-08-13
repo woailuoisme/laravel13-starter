@@ -12,10 +12,7 @@ it('renders the demo dashboard with the demo widgets', function (): void {
         'is_active' => true,
     ]);
 
-    $this->actingAs($admin, 'filament')
-        ->get('/admin')
-        ->assertOk()
-        ->assertSee(__('dashboard.title'));
+    $this->actingAs($admin, 'filament')->get('/admin')->assertOk()->assertSee(__('dashboard.title'));
 });
 
 it('renders the demo dashboard widgets', function (): void {

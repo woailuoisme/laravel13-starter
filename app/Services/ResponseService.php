@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use BackedEnum;
@@ -106,15 +108,13 @@ class ResponseService
             ],
         ];
 
-        if (! empty($extraData)) {
+        if ($extraData !== []) {
             $data['extras'] = $extraData;
         }
 
-        if ($resource && class_exists($resource)) {
-            $data['items'] = $resource::collection($paginator->items());
-        } else {
-            $data['items'] = $paginator->items();
-        }
+        $data['items'] = $resource && class_exists($resource)
+            ? $resource::collection($paginator->items())
+            : $paginator->items();
 
         return $data;
     }
@@ -143,7 +143,7 @@ class ResponseService
             'message' => $message,
         ];
 
-        if (! empty($data)) {
+        if ($data !== []) {
             $res['data'] = $data;
         }
 

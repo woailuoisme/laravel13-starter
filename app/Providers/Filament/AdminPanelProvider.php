@@ -19,7 +19,8 @@ class AdminPanelProvider extends PanelProvider
      */
     public function panel(Panel $panel): Panel
     {
-        return $panel->default()
+        return $panel
+            ->default()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->defaultThemeMode(ThemeMode::Dark)
             ->spa(hasPrefetching: true)

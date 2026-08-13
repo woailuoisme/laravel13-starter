@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "shufo.vscode-blade-formatter",
-    "bmewburn.vscode-intelephense-client",
     "bradlc.vscode-tailwindcss",
     "laravel.vscode-laravel",
     "open-southeners.laravel-pint"

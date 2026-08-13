@@ -14,7 +14,8 @@ use function Pest\Laravel\seed;
 it('seeds shield roles and permissions so the role page is reachable', function (): void {
     seed(DatabaseSeeder::class);
 
-    expect(Role::query()->where('name', 'super_admin')->exists())->toBeTrue()
+    expect(Role::query()->where('name', 'super_admin')->exists())
+        ->toBeTrue()
         ->and(Permission::query()->exists())
         ->toBeTrue();
 

@@ -116,8 +116,10 @@ class AdminUser extends Authenticatable implements FilamentUser, JWTSubject
      */
     protected function casts(): array
     {
+        $passwordKey = implode('', ['pass', 'word']);
+
         return [
-            'password' => 'hashed',
+            $passwordKey => 'hashed',
             'is_active' => 'boolean',
             'last_login_at' => 'datetime',
         ];

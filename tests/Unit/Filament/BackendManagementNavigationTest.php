@@ -18,7 +18,8 @@ it('keeps the dashboard outside the backend management group and pinned to the t
 });
 
 it('places the admin user, user, ecommerce, and shield role entries in the backend management group', function (): void {
-    expect(UserResource::getNavigationGroup())->toBe(FilamentNavigationGroup::BackendManagement)
+    expect(UserResource::getNavigationGroup())
+        ->toBe(FilamentNavigationGroup::BackendManagement)
         ->and(AdminUserResource::getNavigationGroup())
         ->toBe(FilamentNavigationGroup::BackendManagement);
 
@@ -34,7 +35,8 @@ it('places the admin user, user, ecommerce, and shield role entries in the backe
             fn (mixed $plugin): bool => $plugin instanceof FilamentShieldPlugin,
         );
 
-    expect($shieldPlugin)->toBeInstanceOf(FilamentShieldPlugin::class)
+    expect($shieldPlugin)
+        ->toBeInstanceOf(FilamentShieldPlugin::class)
         ->and($shieldPlugin->getNavigationGroup())
         ->toBe(FilamentNavigationGroup::BackendManagement)
         ->and($adminUserProperty->getValue())
@@ -47,7 +49,8 @@ it('labels the ecommerce settings page as system settings', function (): void {
     $property = new ReflectionProperty(ManageSystemSettings::class, 'navigationGroup');
     $property->setAccessible(true);
 
-    expect(ManageSystemSettings::getNavigationLabel())->toBe(__('navigation.system_settings'))
+    expect(ManageSystemSettings::getNavigationLabel())
+        ->toBe(__('navigation.system_settings'))
         ->and($property->getValue())
         ->toBe(FilamentNavigationGroup::SystemSettings);
 });

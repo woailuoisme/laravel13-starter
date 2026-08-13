@@ -44,7 +44,7 @@ class UserExport
         return $this->query()
             ->select(['id', 'nickname', 'open_id', 'email', 'created_at'])
             ->cursor()
-            ->map(fn (User $user): array => $this->map($user));
+            ->map($this->map(...));
     }
 
     /**
@@ -82,7 +82,8 @@ class UserExport
 
     private function headerStyle(): Style
     {
-        return new Style()->setFontBold()
+        return new Style()
+            ->setFontBold()
             ->setFontSize(12);
     }
 }

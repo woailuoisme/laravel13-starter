@@ -42,7 +42,8 @@ class FilamentConfigurator
      */
     public static function configure(Panel $panel): Panel
     {
-        return $panel->default()
+        return $panel
+            ->default()
             ->id('admin')
             ->path('admin')
             ->login(Login::class)
@@ -203,7 +204,7 @@ class FilamentConfigurator
             ->RetainRecentIfFavorite(true)
             ->associateItemsWithTheirGroups()
             ->searchUsing(
-                static fn (string $query, GlobalSearchResults $builder) => self::resolveGlobalSearch($query, $builder),
+                self::resolveGlobalSearch(...),
             )
             ->placeholder('搜索用户');
     }

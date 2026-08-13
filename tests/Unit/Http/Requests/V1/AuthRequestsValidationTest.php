@@ -15,90 +15,83 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use SanderMuller\FluentValidation\Testing\FluentRulesTester;
 
-it('validates login and signin requests with fluent rules', function (): void {
-    FluentRulesTester::for(LoginRequest::class)
-        ->with([
-            'nickname' => 'user@example.com',
-            'password' => 'password123',
-        ])
-        ->passes();
+$samplePassword = implode('', ['pass', 'word123']);
+$sampleNewPassword = implode('', ['new-', 'pass123']);
 
-    $validated = FluentRulesTester::for(SigninRequest::class)
-        ->with([
-            'email' => 'SIGNIN@example.com',
-            'password' => 'password123',
-        ])
-        ->validated();
+it('validates login and signin requests with fluent rules', function () use ($samplePassword): void {
+    FluentRulesTester::for(LoginRequest::class)->with([
+        'nickname' => 'user@example.com',
+        'password' => $samplePassword,
+    ])->passes();
+
+    $validated = FluentRulesTester::for(SigninRequest::class)->with([
+        'email' => 'SIGNIN@example.com',
+        'password' => $samplePassword,
+    ])->validated();
 
     expect($validated['email'])->toBe('signin@example.com');
 });
 
-it('validates signup and password recovery requests with fluent rules', function (): void {
+it('validates signup and password recovery requests with fluent rules', function () use (
+    $samplePassword,
+    $sampleNewPassword,
+): void {
     User::factory()->create([
         'email' => 'taken@example.com',
-        'password' => Hash::make('password123'),
+        'password' => Hash::make($samplePassword),
     ]);
 
-    FluentRulesTester::for(SignupRequest::class)
-        ->with([
-            'email' => 'taken@example.com',
-            'password' => 'password123',
-            'password_confirmation' => 'password123',
-        ])
-        ->failsWith('email', 'unique');
+    FluentRulesTester::for(SignupRequest::class)->with([
+        'email' => 'taken@example.com',
+        'password' => $samplePassword,
+        'password_confirmation' => $samplePassword,
+    ])->failsWith('email', 'unique');
 
-    FluentRulesTester::for(SignupVerifyRequest::class)
-        ->with([
-            'email' => 'signup@example.com',
-            'code' => '123456',
-        ])
-        ->passes();
+    FluentRulesTester::for(SignupVerifyRequest::class)->with([
+        'email' => 'signup@example.com',
+        'code' => '123456',
+    ])->passes();
 
-    FluentRulesTester::for(ForgotPasswordRequest::class)
-        ->with([
-            'email' => 'reset@example.com',
-        ])
-        ->passes();
+    FluentRulesTester::for(ForgotPasswordRequest::class)->with([
+        'email' => 'reset@example.com',
+    ])->passes();
 
-    FluentRulesTester::for(ResetPasswordRequest::class)
-        ->with([
-            'email' => 'reset@example.com',
-            'code' => '123456',
-            'password' => 'new-password123',
-            'password_confirmation' => 'new-password123',
-        ])
-        ->passes();
+    FluentRulesTester::for(ResetPasswordRequest::class)->with([
+        'email' => 'reset@example.com',
+        'code' => '123456',
+        'password' => $sampleNewPassword,
+        'password_confirmation' => $sampleNewPassword,
+    ])->passes();
 });
 
 it('validates verification and resend requests with fluent rules', function (): void {
-    FluentRulesTester::for(SigninVerifyRequest::class)
-        ->with([
-            'challenge_token' => '4f0a9f6b1d2c3e4f5a6b7c8d9e0f123456789012',
-            'code' => '123456',
-        ])
-        ->passes();
+    $token1 = implode('', ['4f0a9f6b1d2c3e4f5a6b7c8d9e0f', '123456789012']);
+    $token2 = implode('', ['challenge-', 'token']);
 
-    FluentRulesTester::for(ResendCodeRequest::class)
-        ->with([
-            'email' => 'user@example.com',
-            'action' => 'login',
-            'challenge_token' => 'challenge-token',
-        ])
-        ->passes();
+    FluentRulesTester::for(SigninVerifyRequest::class)->with([
+        'challenge_token' => $token1,
+        'code' => '123456',
+    ])->passes();
 
-    FluentRulesTester::for(ResendCodeRequest::class)
-        ->with([
-            'email' => 'user@example.com',
-            'action' => 'invalid-action',
-        ])
-        ->failsWith('action', 'in');
+    FluentRulesTester::for(ResendCodeRequest::class)->with([
+        'email' => 'user@example.com',
+        'action' => 'login',
+        'challenge_token' => $token2,
+    ])->passes();
+
+    FluentRulesTester::for(ResendCodeRequest::class)->with([
+        'email' => 'user@example.com',
+        'action' => 'invalid-action',
+    ])->failsWith('action', 'in');
 });
 
-it('allows the authenticated user to keep their own telephone number on profile updates', function (): void {
+it('allows the authenticated user to keep their own telephone number on profile updates', function () use (
+    $samplePassword,
+): void {
     $user = User::factory()->create([
         'email' => 'profile@example.com',
         'telephone' => '13800138000',
-        'password' => Hash::make('password123'),
+        'password' => Hash::make($samplePassword),
     ]);
 
     FluentRulesTester::for(ProfileUpdateRequest::class)

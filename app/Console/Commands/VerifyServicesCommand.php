@@ -252,7 +252,7 @@ class VerifyServicesCommand extends Command
             /** @var string[] $supervisors */
             $supervisors = Redis::connection($redisConnection)->smembers("{$prefix}:master-supervisors");
 
-            if (empty($supervisors)) {
+            if ($supervisors === []) {
                 return [
                     'ok' => true,
                     'message' => 'not running (no master supervisor found)',
@@ -282,7 +282,7 @@ class VerifyServicesCommand extends Command
             /** @var array<string, mixed> $info */
             $info = $centrifugo->info();
 
-            if (isset($info['error'])) {
+            if (array_key_exists('error', $info) && $info['error'] !== null) {
                 return [
                     'ok' => false,
                     'message' => 'Centrifugo error: '.$info['error'],
@@ -311,7 +311,9 @@ class VerifyServicesCommand extends Command
         }
 
         if (is_array($value)) {
-            return json_encode($value, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) ?: '[]';
+            $encoded = json_encode($value, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+            return $encoded !== false ? $encoded : '[]';
         }
 
         return (string) $value;

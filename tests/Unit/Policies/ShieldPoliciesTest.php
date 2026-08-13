@@ -10,15 +10,19 @@ use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Role;
 
-function shieldAdminUser(string $ability, bool $allowed = true, bool $superAdmin = false): AdminUser
+function shield_admin_user(string $ability, string $mode = 'allowed'): AdminUser
 {
+    $superAdmin = $mode === 'superAdmin';
+    $allowed = $mode === 'allowed' || $superAdmin;
     $user = mock(AdminUser::class);
 
-    $user->shouldReceive('hasRole')
+    $user
+        ->shouldReceive('hasRole')
         ->with(config('filament-shield.super_admin.name', 'super_admin'))
         ->andReturn($superAdmin);
 
-    $user->shouldReceive('can')
+    $user
+        ->shouldReceive('can')
         ->with($ability)
         ->andReturn($superAdmin ? true : $allowed);
 
@@ -33,7 +37,7 @@ dataset('shield policies', [
 
 it('authorizes viewAny through shield permissions', function (string $policyClass, string $ability): void {
     $policy = new $policyClass;
-    $user = shieldAdminUser($ability);
+    $user = shield_admin_user($ability);
 
     expect($policy->viewAny($user))->toBeTrue();
 })->with('shield policies');
@@ -43,14 +47,14 @@ it('allows super admins regardless of direct permission assignment', function (
     string $ability,
 ): void {
     $policy = new $policyClass;
-    $user = shieldAdminUser($ability, allowed: false, superAdmin: true);
+    $user = shield_admin_user($ability, 'superAdmin');
 
     expect($policy->viewAny($user))->toBeTrue();
 })->with('shield policies');
 
 it('denies access when the matching permission is missing', function (string $policyClass, string $ability): void {
     $policy = new $policyClass;
-    $user = shieldAdminUser($ability, allowed: false);
+    $user = shield_admin_user($ability, 'denied');
 
     expect($policy->viewAny($user))->toBeFalse();
 })->with('shield policies');

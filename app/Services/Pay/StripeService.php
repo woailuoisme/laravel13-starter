@@ -84,12 +84,16 @@ class StripeService
         $builder = $user->newSubscription($name, $planId);
 
         // 优惠券
-        if (! empty($options['coupon'])) {
+        if (array_key_exists('coupon', $options) && is_string($options['coupon']) && $options['coupon'] !== '') {
             $builder->withCoupon($options['coupon']);
         }
 
         // 试用天数
-        if (! empty($options['trial_days'])) {
+        if (
+            array_key_exists('trial_days', $options)
+            && $options['trial_days'] !== null
+            && (int) $options['trial_days'] > 0
+        ) {
             $builder->trialDays((int) $options['trial_days']);
         }
 
@@ -171,7 +175,7 @@ class StripeService
      */
     public function billingPortalUrl(User $user, ?string $returnUrl = null): string
     {
-        return $user->billingPortalUrl($returnUrl ?: config('app.url'));
+        return $user->billingPortalUrl($returnUrl ?? config('app.url'));
     }
 
     // --- 支付方式管理 (Payment Methods) ---

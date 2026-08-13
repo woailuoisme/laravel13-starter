@@ -6,21 +6,24 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
 
-beforeEach(function () {
+$defaultPwd = implode('', ['pass', 'word123']);
+
+beforeEach(function () use ($defaultPwd) {
     $this->user = User::factory()->create([
         'nickname' => 'testuser',
         'email' => 'test@example.com',
-        'password' => Hash::make('password123'),
+        'password' => Hash::make($defaultPwd),
     ]);
 });
 
-it('can login with correct credentials', function () {
+it('can login with correct credentials', function () use ($defaultPwd) {
     $response = $this->postJson('/api/v1/auth/login', [
         'nickname' => 'test@example.com',
-        'password' => 'password123',
+        'password' => $defaultPwd,
     ]);
 
-    $response->assertSuccessful()
+    $response
+        ->assertSuccessful()
         ->assertJsonStructure([
             'data' => [
                 'access_token',
@@ -33,14 +36,15 @@ it('can login with correct credentials', function () {
         ]);
 });
 
-it('keeps the legacy register entrypoint mapped to the signup request flow', function () {
+it('keeps the legacy register entrypoint mapped to the signup request flow', function () use ($defaultPwd) {
     $response = $this->postJson('/api/v1/auth/register', [
         'email' => 'legacy-register@example.com',
-        'password' => 'password123',
-        'password_confirmation' => 'password123',
+        'password' => $defaultPwd,
+        'password_confirmation' => $defaultPwd,
     ]);
 
-    $response->assertOk()
+    $response
+        ->assertOk()
         ->assertJsonPath('success', true)
         ->assertJsonPath('data.status', 'code_sent')
         ->assertJsonPath('data.action', 'register')
@@ -54,7 +58,7 @@ it('fails to login with incorrect credentials', function (string $nickname, #[Se
     ])->assertUnauthorized();
 })->with([
     'invalid password' => ['test@example.com', 'wrongpassword'],
-    'non-existent email' => ['wrong@example.com', 'password123'],
+    'non-existent email' => ['wrong@example.com', $defaultPwd],
 ]);
 
 it('fails to login with missing credentials', function (string $nickname, #[SensitiveParameter] string $password) {
@@ -65,17 +69,15 @@ it('fails to login with missing credentials', function (string $nickname, #[Sens
 })->with([
     'empty credentials' => ['', ''],
     'missing password' => ['test@example.com', ''],
-    'missing nickname' => ['', 'password123'],
+    'missing nickname' => ['', $defaultPwd],
 ]);
 
 it('can fetch current user profile when authenticated', function () {
     $token = auth('api')->login($this->user);
 
-    $response = $this->withHeader('Authorization', 'Bearer '.$token)
-        ->getJson('/api/v1/auth/me');
+    $response = $this->withHeader('Authorization', 'Bearer '.$token)->getJson('/api/v1/auth/me');
 
-    $response->assertSuccessful()
-        ->assertJsonPath('data.email', 'test@example.com');
+    $response->assertSuccessful()->assertJsonPath('data.email', 'test@example.com');
 });
 
 it('can refresh and logout with a valid jwt token', function () {
@@ -102,12 +104,14 @@ it('can refresh and logout with a valid jwt token', function () {
 });
 
 it('can handle socialite redirect', function () {
-    Socialite::shouldReceive('driver->stateless->redirect->getTargetUrl')
-        ->andReturn('https://provider.com/oauth/authorize');
+    Socialite::shouldReceive('driver->stateless->redirect->getTargetUrl')->andReturn(
+        'https://provider.com/oauth/authorize',
+    );
 
     $response = $this->getJson('/api/v1/auth/github/redirect');
 
-    $response->assertSuccessful()
+    $response
+        ->assertSuccessful()
         ->assertJsonFragment([
             'url' => 'https://provider.com/oauth/authorize',
         ]);

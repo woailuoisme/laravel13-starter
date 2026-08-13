@@ -32,7 +32,8 @@ it('creates a pending signup challenge and finalizes user creation after code ve
 
     $user = $service->verifySignup('unit-signup@example.com', $otp->code, '127.0.0.1');
 
-    expect($user)->toBeInstanceOf(User::class)
+    expect($user)
+        ->toBeInstanceOf(User::class)
         ->and($user->email)
         ->toBe('unit-signup@example.com')
         ->and(Cache::get('auth:signup:unit-signup@example.com'))

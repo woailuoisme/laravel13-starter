@@ -9,7 +9,8 @@ use App\Filament\Admin\Resources\Users\UserResource;
 it('translates filament navigation labels for chinese and english', function (): void {
     app()->setLocale('zh_CN');
 
-    expect(UserResource::getNavigationLabel())->toBe('用户')
+    expect(UserResource::getNavigationLabel())
+        ->toBe('用户')
         ->and(AdminUserResource::getNavigationLabel())
         ->toBe('后台用户')
         ->and(ManageSystemSettings::getNavigationLabel())
@@ -23,7 +24,8 @@ it('translates filament navigation labels for chinese and english', function ():
 
     app()->setLocale('en');
 
-    expect(UserResource::getNavigationLabel())->toBe('Users')
+    expect(UserResource::getNavigationLabel())
+        ->toBe('Users')
         ->and(AdminUserResource::getNavigationLabel())
         ->toBe('Admin Users')
         ->and(ManageSystemSettings::getNavigationLabel())

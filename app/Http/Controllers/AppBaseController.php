@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Services\ResponseService;
@@ -14,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * 应用基础控制器
  * 提供统一的API响应格式和常用工具方法
  */
-final class AppBaseController extends Controller
+abstract class AppBaseController extends Controller
 {
     public function __construct(
         protected ResponseService $responseService,

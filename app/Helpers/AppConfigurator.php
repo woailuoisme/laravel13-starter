@@ -106,10 +106,7 @@ class AppConfigurator
      */
     private static function configureV1Routes(array $routes): void
     {
-        Route::middleware('api')
-            ->prefix(self::API_V1_PREFIX)
-            ->name('v1.')
-            ->group($routes);
+        Route::middleware('api')->prefix(self::API_V1_PREFIX)->name('v1.')->group($routes);
     }
 
     /**
@@ -139,9 +136,7 @@ class AppConfigurator
      */
     private static function configureDefaultRoutes(array $routes): void
     {
-        Route::middleware('api')
-            ->prefix(self::API_PREFIX)
-            ->group($routes);
+        Route::middleware('api')->prefix(self::API_PREFIX)->group($routes);
     }
 
     /**
@@ -332,11 +327,9 @@ class AppConfigurator
         }
 
         // Horizon 和 Scheduler 联调健康度测试任务
-        Schedule::job(new TestHorizonJob)
-            ->everyMinute()
-            ->before(static function (): void {
-                Log::info('Scheduler dispatched TestHorizonJob.');
-            });
+        Schedule::job(new TestHorizonJob)->everyMinute()->before(static function (): void {
+            Log::info('Scheduler dispatched TestHorizonJob.');
+        });
     }
 
     public static function configureLogColorStderr(): void
@@ -345,8 +338,7 @@ class AppConfigurator
             $handler = new StreamHandler('php://stderr');
 
             // 自定义格式化器，根据日志级别动态改变颜色
-            $formatter = new class extends LineFormatter
-            {
+            $formatter = new class extends LineFormatter {
                 // 定义不同级别的颜色代码
                 private array $levelColors = [
                     'DEBUG' => '34', // 蓝色
@@ -372,7 +364,7 @@ class AppConfigurator
                         $record->datetime->format('Y-m-d H:i:s'),
                         mb_strtoupper((string) $record->level->getName()),
                         $record->message,
-                        empty($record->context) ? '' : json_encode($record->context, JSON_THROW_ON_ERROR),
+                        $record->context === [] ? '' : json_encode($record->context, JSON_THROW_ON_ERROR),
                     );
                 }
             };
@@ -473,7 +465,7 @@ class AppConfigurator
 
         // 添加 errors 字段（如果存在）
         $errors = self::extractErrors($e);
-        if (! empty($errors)) {
+        if ($errors !== []) {
             $response['errors'] = $errors;
         }
 
@@ -510,8 +502,10 @@ class AppConfigurator
             return Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR] ?? 'Internal Server Error';
         }
 
+        $msg = $e->getMessage();
+
         // 返回异常消息或Laravel标准状态文本
-        return $e->getMessage() ?: Response::$statusTexts[$statusCode] ?? 'Unknown Error';
+        return $msg !== '' ? $msg : Response::$statusTexts[$statusCode] ?? 'Unknown Error';
     }
 
     /**
@@ -550,13 +544,18 @@ class AppConfigurator
             ];
 
             // 添加类信息（如果存在）
-            if (isset($item['class'])) {
+            if (array_key_exists('class', $item) && $item['class'] !== null) {
                 $traceItem['class'] = $item['class'];
                 $traceItem['type'] = $item['type'] ?? '->';
             }
 
             // 添加参数信息（仅在本地环境显示，避免敏感信息泄露）
-            if (app()->isLocal() && isset($item['args']) && ! empty($item['args'])) {
+            if (
+                app()->isLocal()
+                && array_key_exists('args', $item)
+                && is_array($item['args'])
+                && $item['args'] !== []
+            ) {
                 $traceItem['args'] = self::formatTraceArgs($item['args']);
             }
 
@@ -575,43 +574,36 @@ class AppConfigurator
         $formattedArgs = [];
 
         foreach ($args as $index => $arg) {
-            if (is_object($arg)) {
-                $formattedArgs[$index] = [
+            $formattedArgs[$index] = match (true) {
+                is_object($arg) => [
                     'type' => 'object',
                     'class' => get_class($arg),
-                ];
-            } elseif (is_array($arg)) {
-                $formattedArgs[$index] = [
+                ],
+                is_array($arg) => [
                     'type' => 'array',
                     'count' => count($arg),
-                ];
-            } elseif (is_string($arg)) {
-                // 限制字符串长度，避免过长的参数
-                $formattedArgs[$index] = [
+                ],
+                is_string($arg) => [
                     'type' => 'string',
                     'value' => mb_strlen($arg) > 100 ? mb_substr($arg, 0, 100).'...' : $arg,
-                ];
-            } elseif (is_numeric($arg)) {
-                $formattedArgs[$index] = [
+                ],
+                is_numeric($arg) => [
                     'type' => is_int($arg) ? 'integer' : 'float',
                     'value' => $arg,
-                ];
-            } elseif (is_bool($arg)) {
-                $formattedArgs[$index] = [
+                ],
+                is_bool($arg) => [
                     'type' => 'boolean',
                     'value' => $arg,
-                ];
-            } elseif (is_null($arg)) {
-                $formattedArgs[$index] = [
+                ],
+                is_null($arg) => [
                     'type' => 'null',
                     'value' => null,
-                ];
-            } else {
-                $formattedArgs[$index] = [
+                ],
+                default => [
                     'type' => gettype($arg),
                     'value' => 'unknown',
-                ];
-            }
+                ],
+            };
         }
 
         return $formattedArgs;
@@ -733,8 +725,9 @@ class AppConfigurator
     private static function handleUnauthorizedException(UnauthorizedHttpException $e, array $response): array
     {
         $statusCode = $e->getStatusCode();
+        $msg = $e->getMessage();
         $response['code'] = $statusCode;
-        $response['message'] = $e->getMessage() ?: Response::$statusTexts[$statusCode] ?? 'Unauthorized';
+        $response['message'] = $msg !== '' ? $msg : Response::$statusTexts[$statusCode] ?? 'Unauthorized';
 
         return [$statusCode, $response];
     }
@@ -753,23 +746,16 @@ class AppConfigurator
     private static function handleDatabaseException(Throwable $e, array $response): array
     {
         $response['code'] = Response::HTTP_INTERNAL_SERVER_ERROR;
-        if ($e instanceof UniqueConstraintViolationException) {
-            $response['message'] = config('app.debug')
-                ? 'Database query error: '.$e->getMessage()
-                : 'Database operation failed, please try again later';
-        } elseif ($e instanceof QueryException) {
-            $response['message'] = config('app.debug')
-                ? 'Database query error: '.$e->getMessage()
-                : 'Database operation failed, please try again later';
-        } elseif ($e instanceof PDOException) {
-            $response['message'] = config('app.debug')
-                ? 'Database connection error: '.$e->getMessage()
-                : 'Database operation failed, please try again later';
-        } else {
-            $response['message'] = config('app.debug')
-                ? 'Database error: '.$e->getMessage()
-                : 'Database operation failed, please try again later';
-        }
+        $isDbDebug = config('app.debug');
+
+        $detailMsg = match (true) {
+            $e instanceof UniqueConstraintViolationException => 'Database query error: '.$e->getMessage(),
+            $e instanceof QueryException => 'Database query error: '.$e->getMessage(),
+            $e instanceof PDOException => 'Database connection error: '.$e->getMessage(),
+            default => 'Database error: '.$e->getMessage(),
+        };
+
+        $response['message'] = $isDbDebug ? $detailMsg : 'Database operation failed, please try again later';
 
         return [$response['code'], $response];
     }
@@ -779,10 +765,11 @@ class AppConfigurator
      */
     private static function isNotFoundException(Throwable $e): bool
     {
-        return
+        return (
             $e instanceof NotFoundResourceException
             || $e instanceof ModelNotFoundException
-            || $e instanceof NotFoundHttpException;
+            || $e instanceof NotFoundHttpException
+        );
     }
 
     /**
@@ -791,16 +778,15 @@ class AppConfigurator
     private static function handleNotFoundException(Throwable $e, array $response): array
     {
         $response['code'] = Response::HTTP_NOT_FOUND;
+        $msg = $e->getMessage();
+        $defaultNotFound = $msg !== '' ? $msg : Response::$statusTexts[Response::HTTP_NOT_FOUND] ?? 'Not Found';
 
-        if ($e instanceof NotFoundResourceException) {
-            $response['message'] = 'Resource not found';
-        } elseif ($e instanceof ModelNotFoundException) {
-            $response['message'] = 'Data not found';
-        } elseif ($e instanceof NotFoundHttpException) {
-            $response['message'] = 'Route or Resource not found';
-        } else {
-            $response['message'] = $e->getMessage() ?: Response::$statusTexts[Response::HTTP_NOT_FOUND] ?? 'Not Found';
-        }
+        $response['message'] = match (true) {
+            $e instanceof NotFoundResourceException => 'Resource not found',
+            $e instanceof ModelNotFoundException => 'Data not found',
+            $e instanceof NotFoundHttpException => 'Route or Resource not found',
+            default => $defaultNotFound,
+        };
 
         return [Response::HTTP_NOT_FOUND, $response];
     }
@@ -810,8 +796,11 @@ class AppConfigurator
      */
     private static function handleHttpException(HttpExceptionInterface $e, int $statusCode, array $response): array
     {
+        $msg = $e->getMessage();
         $response['code'] = $statusCode;
-        $response['message'] = $e->getMessage() ?: Response::$statusTexts[$statusCode] ?? $response['message'];
+        $response['message'] = $msg !== ''
+            ? $msg
+            : Response::$statusTexts[$statusCode] ?? (string) ($response['message'] ?? '');
 
         return [$statusCode, $response];
     }
@@ -841,7 +830,7 @@ class AppConfigurator
             // 尝试从异常头部获取重试时间
             if (method_exists($e, 'getHeaders')) {
                 $headers = $e->getHeaders();
-                if (isset($headers['Retry-After'])) {
+                if (array_key_exists('Retry-After', $headers) && $headers['Retry-After'] !== null) {
                     $response['retry_after'] = (int) $headers['Retry-After'];
                 }
             }

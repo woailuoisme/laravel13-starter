@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\Media;
 
 use Illuminate\Support\Str;
@@ -19,7 +21,8 @@ class CustomMediaPathGenerator implements PathGenerator
         $pluralPath = Str::plural(Str::snake($modelName));
 
         // 获取 collection 名称
-        $collectionName = $media->collection_name ?: 'default';
+        $collectionName =
+            $media->collection_name !== null && $media->collection_name !== '' ? $media->collection_name : 'default';
 
         return $pluralPath.'/'.$media->model_id.'/'.$collectionName.'/';
     }

@@ -89,7 +89,7 @@ class AppHelper
      */
     public static function json_decode(string $str): mixed
     {
-        if (empty(mb_trim($str))) {
+        if (mb_trim($str) === '') {
             throw new JsonException('Empty JSON string provided');
         }
 
@@ -158,13 +158,13 @@ class AppHelper
     /**
      * 获取客户端真实 IP 地址
      *
-     * @param  bool  $allowPrivate  是否允许私有/保留 IP（通常用于本地开发）
+     * @param  string  $ipScope  'public' 仅公网 IP，'any' 允许私有/保留 IP（通常用于本地开发）
      */
-    public static function getIp(bool $allowPrivate = false): ?string
+    public static function getIp(string $ipScope = 'public'): ?string
     {
         $ip = Request::ip();
 
-        if ($ip && self::isValidIp($ip, $allowPrivate)) {
+        if ($ip && self::isValidIp($ip, $ipScope)) {
             return $ip;
         }
 
@@ -179,12 +179,12 @@ class AppHelper
         foreach ($proxyHeaders as $header) {
             $value = $_SERVER[$header] ?? null;
 
-            if (empty($value)) {
+            if ($value === null || $value === '') {
                 continue;
             }
 
-            foreach (array_map('trim', explode(',', $value)) as $candidate) {
-                if (self::isValidIp($candidate, $allowPrivate)) {
+            foreach (array_map('trim', explode(',', (string) $value)) as $candidate) {
+                if (self::isValidIp($candidate, $ipScope)) {
                     return $candidate;
                 }
             }
@@ -200,11 +200,12 @@ class AppHelper
      */
     public static function generateOrderNo(string $prefix = 'ORD'): string
     {
-        return
+        return (
             $prefix
             .date('YmdHis')
             .mb_str_pad((string) ((microtime(true) * 10_000) % 10_000), 4, '0', STR_PAD_LEFT)
-            .random_int(100_000, 999_999);
+            .random_int(100_000, 999_999)
+        );
     }
 
     /** 生成商城订单编号（前缀 SO）
@@ -311,13 +312,15 @@ class AppHelper
         if ($file instanceof UploadedFile) {
             $md5Hash = md5_file($file->getRealPath());
             $extension = mb_strtolower($file->getClientOriginalExtension());
-        } else {
-            $pathInfo = pathinfo($file);
-            $extension = $pathInfo['extension'] ?? '';
-            $md5Hash = md5($pathInfo['filename'] ?? $file);
+
+            return $extension !== '' ? "{$md5Hash}.{$extension}" : (string) $md5Hash;
         }
 
-        return $extension ? "{$md5Hash}.{$extension}" : $md5Hash;
+        $pathInfo = pathinfo($file);
+        $extension = $pathInfo['extension'] ?? '';
+        $md5Hash = md5($pathInfo['filename'] ?? $file);
+
+        return $extension !== '' ? "{$md5Hash}.{$extension}" : $md5Hash;
     }
 
     /**
@@ -340,7 +343,7 @@ class AppHelper
      */
     public static function cartesian(array $input): array
     {
-        if (empty($input)) {
+        if ($input === []) {
             return [];
         }
 
@@ -472,7 +475,7 @@ class AppHelper
         $sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         $i = (int) floor(log($bytes) / log(1024));
 
-        return sprintf('%.2F', $bytes / (1024 ** $i)).' '.$sizes[$i];
+        return sprintf('%.2F %s', $bytes / (1024 ** $i), $sizes[$i]);
     }
 
     /**
@@ -485,11 +488,14 @@ class AppHelper
 
     /**
      * 将大数字转换为人类可读的简写（如 1K、1.5M、2.3B）
+     *
+     * @param  string  $decimalMode  'integer' 全整数显式，'decimal' 包含小数
      */
-    public static function getHumanNumber(int $input, bool $showDecimal = false, int $decimals = 0): string
+    public static function getHumanNumber(int $input, string $decimalMode = 'integer', int $decimals = 0): string
     {
         $isNegative = $input < 0;
         $absoluteValue = abs($input);
+        $showDecimal = $decimalMode === 'decimal';
         $decimals = $showDecimal && $decimals === 0 ? 1 : $decimals;
 
         [$value, $suffix] = match (true) {
@@ -544,7 +550,7 @@ class AppHelper
 
         $errorCodes = self::getErrorCodeMappings();
 
-        if (isset($errorCodes[$errorCode])) {
+        if (array_key_exists($errorCode, $errorCodes)) {
             return $errorCodes[$errorCode];
         }
 
@@ -690,8 +696,9 @@ class AppHelper
     /**
      * 验证 IP 地址格式，生产环境下可排除私有/保留地址
      */
-    private static function isValidIp(string $ip, bool $allowPrivate): bool
+    private static function isValidIp(string $ip, string $ipScope = 'public'): bool
     {
+        $allowPrivate = $ipScope === 'any';
         $flags = FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6;
 
         if (! $allowPrivate && ! app()->isLocal()) {

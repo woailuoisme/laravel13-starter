@@ -14,24 +14,30 @@ excludes = []
 literal-separator = true
 
 [formatter]
-preset = "pint"
-preserve-breaking-member-access-chain = true
-preserve-breaking-member-access-chain-first-method-on-same-line = true
-preserve-breaking-argument-list = true
-preserve-breaking-array-like = true
-preserve-breaking-parameter-list = true
-preserve-breaking-attribute-list = true
-preserve-breaking-conditional-expression = true
-preserve-breaking-condition-expression = true
-preserve-redundant-logical-binary-expression-parentheses = true
+preset = "pint" # 格式化预设风格（使用 Laravel Pint 为基准）
+preserve-breaking-member-access-chain = false # [已修改: 原为 true] 设为 false 可解决 mago format 与 mago format --check 对链式调用的判断差异
+preserve-breaking-member-access-chain-first-method-on-same-line = false # [已修改: 原为 true] 设为 false 与 preserve-breaking-member-access-chain 保持一致
+preserve-breaking-argument-list = true # 保留多行函数/方法实参列表已有的换行排版
+preserve-breaking-array-like = true # 保留多行数组字面量已有的换行排版
+preserve-breaking-parameter-list = true # 保留多行函数/方法形参定义列表已有的换行排版
+preserve-breaking-attribute-list = true # 保留 PHP 8 Attribute 属性注解列表已有的多行换行排版
+preserve-breaking-conditional-expression = true # 保留三元条件表达式已有的多行换行排版
+preserve-breaking-condition-expression = true # 保留 if/elseif 等条件判断表达式已有的多行换行排版
+preserve-redundant-logical-binary-expression-parentheses = true # 保留逻辑二元表达式中冗余的显式括号（提升复杂逻辑可读性）
 
 [linter]
 integrations = ["laravel", "pest"]
 
 [linter.rules]
-ambiguous-function-call = { enabled = false }
-literal-named-argument = { enabled = false }
-halstead = { effort-threshold = 7000 }
+ambiguous-function-call = { enabled = false } # 禁用歧义函数调用检查
+literal-named-argument = { enabled = false } # 禁用字面量具名参数提示检查
+use-specific-expectations = { enabled = false } # [新增禁用: 原默认开启] 禁用 Pest 断言简化，防止把 ->not->toBeFalse() 误改写为 ->toBeTrue() 导致测试报错
+final-controller = { enabled = false } # [新增禁用: 原默认开启] 禁用强制 Controller 加 final，防止基类控制器（如 AppBaseController）加 final 导致继承报错
+halstead = { effort-threshold = 20000, volume-threshold = 5000, difficulty-threshold = 50 } # 配置 Halstead 复杂度评估规则阈值
+too-many-methods = { threshold = 50 } # 允许类最多有 50 个方法
+cyclomatic-complexity = { threshold = 100 } # [已修改: 原为 80] 允许类圈复杂度最高为 100，适配微信支付等大型 SDK 封装类
+kan-defect = { threshold = 5.0 } # 配置 Kan 缺陷阈值
+excessive-parameter-list = { threshold = 10 } # 允许参数列表最多 10 个参数
 
 [analyzer]
 plugins = []

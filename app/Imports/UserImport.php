@@ -86,7 +86,7 @@ class UserImport
         return SimpleExcelReader::create($path)
             ->preserveEmptyRows()
             ->trimHeaderRow()
-            ->formatHeadersUsing(fn (string $header): string => $this->normalizeHeader($header))
+            ->formatHeadersUsing($this->normalizeHeader(...))
             ->getRows()
             ->values()
             ->mapWithKeys(fn (array $row, int $index): array => [$index + 2 => $this->normalizeRow($row)]);
@@ -138,10 +138,11 @@ class UserImport
      */
     public function isEmptyRow(array $row): bool
     {
-        return
+        return (
             mb_trim((string) ($row['nickname'] ?? '')) === ''
             && mb_trim((string) ($row['email'] ?? '')) === ''
-            && mb_trim((string) ($row['openid'] ?? '')) === '';
+            && mb_trim((string) ($row['openid'] ?? '')) === ''
+        );
     }
 
     private function normalizeHeader(string $header): string

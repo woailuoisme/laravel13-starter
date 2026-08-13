@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
 use Exception;
@@ -82,26 +84,31 @@ final class AlipayException extends Exception
 
         // 如果没有找到友好信息，使用原始信息
         if ($friendlyMessage === null) {
-            $friendlyMessage = $subMsg ?: $msg ?: $originalMessage ?: '支付服务暂时不可用，请稍后重试';
+            $friendlyMessage = match (true) {
+                $subMsg !== '' => $subMsg,
+                $msg !== '' => $msg,
+                $originalMessage !== '' => $originalMessage,
+                default => '支付服务暂时不可用，请稍后重试',
+            };
         }
 
         // 在调试模式下显示详细错误信息
         if (config('app.debug')) {
             $debugInfo = [];
-            if ($code) {
+            if ($code !== '') {
                 $debugInfo[] = "错误码: {$code}";
             }
-            if ($subCode) {
+            if ($subCode !== '') {
                 $debugInfo[] = "子错误码: {$subCode}";
             }
-            if ($msg) {
+            if ($msg !== '') {
                 $debugInfo[] = "错误信息: {$msg}";
             }
-            if ($subMsg) {
+            if ($subMsg !== '') {
                 $debugInfo[] = "详细信息: {$subMsg}";
             }
 
-            if (! empty($debugInfo)) {
+            if ($debugInfo !== []) {
                 $friendlyMessage .= ' ('.implode(', ', $debugInfo).')';
             }
         }
@@ -241,12 +248,12 @@ final class AlipayException extends Exception
         ];
 
         // 优先返回子错误码的友好信息
-        if ($subCode && isset($subErrorMessages[$subCode])) {
+        if ($subCode !== '' && array_key_exists($subCode, $subErrorMessages)) {
             return $subErrorMessages[$subCode];
         }
 
         // 返回主错误码的友好信息
-        if ($code && isset($mainErrorMessages[$code])) {
+        if ($code !== '' && array_key_exists($code, $mainErrorMessages)) {
             return $mainErrorMessages[$code];
         }
 

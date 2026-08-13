@@ -61,7 +61,7 @@ class AlipayService extends AbstractAlipayService
 
     protected function validateType(string $type): void
     {
-        if (! isset(self::PAYMENT_TYPES[$type])) {
+        if (! array_key_exists($type, self::PAYMENT_TYPES)) {
             throw AlipayException::configError("不支持的支付类型: {$type}");
         }
     }
@@ -69,7 +69,7 @@ class AlipayService extends AbstractAlipayService
     protected function validateConfig(array $config): void
     {
         foreach (['app_id', 'private_key', 'public_key'] as $key) {
-            if (empty($config[$key])) {
+            if ((string) ($config[$key] ?? '') === '') {
                 throw AlipayException::configError("支付宝配置缺失: {$key}");
             }
         }
@@ -89,7 +89,7 @@ class AlipayService extends AbstractAlipayService
             $options->alipayPublicKey = (string) $this->config['public_key'];
             $options->notifyUrl = (string) ($this->config['notify_url'] ?? '');
 
-            if (! empty($this->config['app_cert_path'])) {
+            if (is_string($this->config['app_cert_path'] ?? null) && $this->config['app_cert_path'] !== '') {
                 $options->merchantCertPath = $this->config['app_cert_path'];
                 $options->alipayCertPath = $this->config['alipay_cert_path'];
                 $options->alipayRootCertPath = $this->config['root_cert_path'];
@@ -140,7 +140,7 @@ class AlipayService extends AbstractAlipayService
                 'success' => true,
                 'trade_status' => $result->tradeStatus,
                 'trade_no' => $result->tradeNo,
-                'is_paid' => in_array($result->tradeStatus, ['TRADE_SUCCESS', 'TRADE_FINISHED']),
+                'is_paid' => in_array($result->tradeStatus, ['TRADE_SUCCESS', 'TRADE_FINISHED'], strict: true),
                 'raw' => $result,
             ];
         } catch (Throwable $e) {
@@ -156,7 +156,7 @@ class AlipayService extends AbstractAlipayService
     ): array {
         try {
             $amount = $this->formatAmount($refundAmount);
-            $refundNo = $outRequestNo ?: 'REF'.time().Str::random(6);
+            $refundNo = $outRequestNo ?? 'REF'.time().Str::random(6);
 
             $result = $this->payment->common()->optional('out_request_no', $refundNo)->refund($outTradeNo, $amount);
             if ($result->code !== '10000') {
@@ -211,7 +211,7 @@ class AlipayService extends AbstractAlipayService
 
     protected function handleFaceToFacePay(string $subject, string $outTradeNo, string $amount, array $options): array
     {
-        if (empty($options['auth_code'])) {
+        if ((string) ($options['auth_code'] ?? '') === '') {
             throw AlipayException::validationError('当面付缺少 auth_code');
         }
         $result = $this->payment

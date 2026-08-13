@@ -82,7 +82,7 @@ final class AuthController extends AppBaseController
             email: $user->email,
             password: $request->string('password')->toString(),
             ip: $request->ip(),
-            forceChallenge: $this->forceChallenge($request),
+            challengeMode: $this->forceChallenge($request) ? 'force' : 'auto',
         );
 
         if ($result['status'] === 'authenticated') {
@@ -123,7 +123,7 @@ final class AuthController extends AppBaseController
             email: $request->string('email')->toString(),
             password: $request->string('password')->toString(),
             ip: $request->ip(),
-            forceChallenge: $this->forceChallenge($request),
+            challengeMode: $this->forceChallenge($request) ? 'force' : 'auto',
         );
 
         if ($result['status'] === 'authenticated') {
@@ -383,7 +383,7 @@ final class AuthController extends AppBaseController
             /** @var User $user */
             $user->update($data);
 
-            if (isset($data['avatar'])) {
+            if (array_key_exists('avatar', $data) && $data['avatar'] !== null) {
                 $this->mediaService->uploadSingle($user, $data['avatar'], 'avatar');
             }
         });
@@ -478,19 +478,27 @@ final class AuthController extends AppBaseController
                 $idColumn => $socialUser->getId(),
                 'last_login_at' => now(),
             ]);
-        } else {
-            $displayName = $socialUser->getNickname() ?: $socialUser->getName() ?: 'social_user';
 
-            $user = User::create([
-                'name' => $displayName,
-                'nickname' => $displayName,
-                $idColumn => $socialUser->getId(),
-                'email' => $socialUser->getEmail(),
-                'password' => str()->random(24),
-                'avatar' => $socialUser->getAvatar(),
-                'last_login_at' => now(),
-            ]);
+            return $this->sendAuthResult($user, __('auth.login_success'));
         }
+
+        $nickname = $socialUser->getNickname();
+        $name = $socialUser->getName();
+        $displayName = match (true) {
+            $nickname !== null && $nickname !== '' => $nickname,
+            $name !== null && $name !== '' => $name,
+            default => 'social_user',
+        };
+
+        $user = User::create([
+            'name' => $displayName,
+            'nickname' => $displayName,
+            $idColumn => $socialUser->getId(),
+            'email' => $socialUser->getEmail(),
+            'password' => str()->random(24),
+            'avatar' => $socialUser->getAvatar(),
+            'last_login_at' => now(),
+        ]);
 
         return $this->sendAuthResult($user, __('auth.login_success'));
     }
@@ -513,8 +521,7 @@ final class AuthController extends AppBaseController
     {
         /** @var User $user */
         $user = auth('api')->user();
-        $notifications = $user->notifications()
-            ->paginate($request->integer('per_page', 15));
+        $notifications = $user->notifications()->paginate($request->integer('per_page', 15));
 
         return $this->sendResponse(
             NotificationResource::collection($notifications)->response()->getData(true),

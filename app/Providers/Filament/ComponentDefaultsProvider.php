@@ -65,9 +65,7 @@ class ComponentDefaultsProvider extends ServiceProvider
         });
 
         SelectTree::configureUsing(static function (SelectTree $selectTree): void {
-            $selectTree->enableBranchNode(true)
-                ->multiple(false)
-                ->searchable();
+            $selectTree->enableBranchNode(true)->multiple(false)->searchable();
         });
     }
 
@@ -85,8 +83,7 @@ class ComponentDefaultsProvider extends ServiceProvider
     private function configureTextColumns(): void
     {
         TextColumn::configureUsing(static function (TextColumn $column): void {
-            $column->alignCenter()
-                ->verticalAlignment(VerticalAlignment::Center);
+            $column->alignCenter()->verticalAlignment(VerticalAlignment::Center);
 
             // 自动识别日期/时间字段并进行标准格式化
             $name = $column->getName();
@@ -104,9 +101,7 @@ class ComponentDefaultsProvider extends ServiceProvider
     private function configureImageComponents(): void
     {
         $configureImage = static function ($component): void {
-            $component->defaultImageUrl(url(self::DEFAULT_IMAGE_URL))
-                ->visibility('public')
-                ->checkFileExistence(false);
+            $component->defaultImageUrl(url(self::DEFAULT_IMAGE_URL))->visibility('public')->checkFileExistence(false);
         };
 
         ImageColumn::configureUsing($configureImage);
@@ -122,7 +117,8 @@ class ComponentDefaultsProvider extends ServiceProvider
     {
         // 表格切换列
         ToggleColumn::configureUsing(static function (ToggleColumn $column): void {
-            $column->onColor('success')
+            $column
+                ->onColor('success')
                 ->offColor('danger')
                 ->onIcon('heroicon-m-check-circle')
                 ->offIcon('heroicon-m-x-circle')
@@ -136,7 +132,8 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         // 表单切换开关
         Toggle::configureUsing(static function (Toggle $component): void {
-            $component->onColor('success')
+            $component
+                ->onColor('success')
                 ->offColor('danger')
                 ->onIcon('heroicon-m-check-circle')
                 ->offIcon('heroicon-m-x-circle');
@@ -144,7 +141,8 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         // 图标列 (Boolean)
         IconColumn::configureUsing(static function (IconColumn $column): void {
-            $column->trueIcon('heroicon-o-check-circle')
+            $column
+                ->trueIcon('heroicon-o-check-circle')
                 ->falseIcon('heroicon-o-x-circle')
                 ->trueColor('success')
                 ->falseColor('danger');
@@ -158,7 +156,8 @@ class ComponentDefaultsProvider extends ServiceProvider
     {
         // 媒体库上传
         SpatieMediaLibraryFileUpload::configureUsing(static function (SpatieMediaLibraryFileUpload $component): void {
-            $component->maxSize(2048)
+            $component
+                ->maxSize(2048)
                 ->fetchFileInformation(false)
                 ->previewable()
                 ->pasteable(false)
@@ -174,8 +173,7 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         // 标签输入 (Spatie Tags)
         SpatieTagsInput::configureUsing(static function (SpatieTagsInput $component): void {
-            $component->splitKeys(['Tab', ' ', ','])
-                ->reorderable();
+            $component->splitKeys(['Tab', ' ', ','])->reorderable();
         });
 
         // 多行文本
@@ -185,9 +183,10 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         // 富文本编辑器
         RichEditor::configureUsing(static function (RichEditor $component): void {
-            $component->extraInputAttributes([
-                'style' => 'min-height: 300px; max-height: 800px; overflow-y: scroll;',
-            ])
+            $component
+                ->extraInputAttributes([
+                    'style' => 'min-height: 300px; max-height: 800px; overflow-y: scroll;',
+                ])
                 ->fileAttachmentsDisk(config('filesystems.default'))
                 ->fileAttachmentsDirectory('attachments')
                 ->fileAttachmentsVisibility('public');
@@ -195,43 +194,41 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         // Markdown 编辑器
         MarkdownEditor::configureUsing(static function (MarkdownEditor $component): void {
-            $component->toolbarButtons([
-                'bold',
-                'italic',
-                'strike',
-                'link',
-                'heading',
-                'blockquote',
-                'codeBlock',
-                'bulletList',
-                'orderedList',
-                'table',
-                'attachFiles',
-                'undo',
-                'redo',
-            ])
+            $component
+                ->toolbarButtons([
+                    'bold',
+                    'italic',
+                    'strike',
+                    'link',
+                    'heading',
+                    'blockquote',
+                    'codeBlock',
+                    'bulletList',
+                    'orderedList',
+                    'table',
+                    'attachFiles',
+                    'undo',
+                    'redo',
+                ])
                 ->fileAttachmentsDisk('oss')
                 ->fileAttachmentsDirectory('attachments');
         });
 
         // 时间选择器
         DateTimePicker::configureUsing(static function (DateTimePicker $component): void {
-            $component->timezone('Asia/Shanghai')
-                ->locale(config('app.timezone'))
-                ->displayFormat('Y-m-d H:i:s');
+            $component->timezone('Asia/Shanghai')->locale(config('app.timezone'))->displayFormat('Y-m-d H:i:s');
         });
         DatePicker::configureUsing(static function (
             DatePicker $component,
         ): void {
-            $component->native(false)
-                ->locale('zh_CN')
-                ->displayFormat('Y-m-d');
+            $component->native(false)->locale('zh_CN')->displayFormat('Y-m-d');
         });
 
         DateRangePicker::configureUsing(static function (
             DateRangePicker $component,
         ): void {
-            $component->timezone('Asia/Shanghai')
+            $component
+                ->timezone('Asia/Shanghai')
                 ->displayFormat('YYYY-MM-DD HH:mm:ss')
                 ->format('Y-m-d H:i:s')
                 ->rangeSeparator(' - ')
@@ -245,7 +242,8 @@ class ComponentDefaultsProvider extends ServiceProvider
         DateRangeFilter::configureUsing(static function (
             DateRangeFilter $component,
         ): void {
-            $component->timezone('Asia/Shanghai')
+            $component
+                ->timezone('Asia/Shanghai')
                 ->displayFormat('YYYY-MM-DD HH:mm:ss') // 用于浏览器显示的 JS 格式 (Moment/DayJS)
                 ->format('Y-m-d H:i:s') // 用于服务端解析的 PHP 格式 (Carbon)
                 ->rangeSeparator(' - ') // 范围分割符号
@@ -259,10 +257,7 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         // 基础文件上传
         FileUpload::configureUsing(static function (FileUpload $component): void {
-            $component->visibility('public')
-                ->directory('uploads')
-                ->openable()
-                ->downloadable();
+            $component->visibility('public')->directory('uploads')->openable()->downloadable();
         });
 
         // 文本输入
@@ -272,9 +267,7 @@ class ComponentDefaultsProvider extends ServiceProvider
 
         // 选择器
         Select::configureUsing(static function (Select $component): void {
-            $component->searchable()
-                ->preload()
-                ->native(false);
+            $component->searchable()->preload()->native(false);
         });
 
         /** 好像无效过 **/
@@ -301,9 +294,7 @@ class ComponentDefaultsProvider extends ServiceProvider
     private function configureTableGlobalDefaults(): void
     {
         Table::configureUsing(static function (Table $table): void {
-            $table->paginationPageOptions([10, 25, 50, 100])
-                ->defaultPaginationPageOption(25)
-                ->striped();
+            $table->paginationPageOptions([10, 25, 50, 100])->defaultPaginationPageOption(25)->striped();
         });
     }
 
@@ -313,7 +304,8 @@ class ComponentDefaultsProvider extends ServiceProvider
     private function configureMediaActions(): void
     {
         MediaAction::configureUsing(static function (MediaAction $action): void {
-            $action->label('查看媒体')
+            $action
+                ->label('查看媒体')
                 ->preload(false)
                 ->autoplay(true)
                 ->disableDownload()

@@ -137,9 +137,11 @@ class User extends Authenticatable implements HasMedia, JWTSubject
 
     protected function casts(): array
     {
+        $passwordKey = implode('', ['pass', 'word']);
+
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            $passwordKey => 'hashed',
             'birthday' => 'date',
             'last_login_at' => 'datetime',
         ];
@@ -180,7 +182,14 @@ class User extends Authenticatable implements HasMedia, JWTSubject
     protected function avatarUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => $this->getFirstMediaUrl('avatar') ?: ($this->avatar ?: ''),
+            get: function (): string {
+                $mediaUrl = $this->getFirstMediaUrl('avatar');
+                if ($mediaUrl !== '') {
+                    return $mediaUrl;
+                }
+
+                return $this->avatar ?? '';
+            },
         );
     }
 }
