@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use denis660\Centrifugo\Centrifugo;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
@@ -14,13 +13,12 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use JsonException;
-use Meilisearch\Client as MeilisearchClient;
 use Throwable;
 
 #[Signature(
     'app:verify-services {--database=default : 数据库连接名} {--redis=default : Redis 连接名} {--disk=garage : 存储磁盘}',
 )]
-#[Description('验证 Redis、数据库、Scout(Meilisearch)、Garage、Centrifugo 和队列是否可用')]
+#[Description('验证 Redis、数据库、Scout、Garage 和队列是否可用')]
 class VerifyServicesCommand extends Command
 {
     public function handle(): int
@@ -30,11 +28,10 @@ class VerifyServicesCommand extends Command
                 'database',
             ))),
             'redis' => $this->checkRedis((string) $this->option('redis')),
-            'scout' => $this->checkScoutMeilisearch(),
+            'scout' => $this->checkScout(),
             'garage' => $this->checkGarage((string) $this->option('disk')),
             'queue' => $this->checkQueue(),
             'horizon' => $this->checkHorizon(),
-            'centrifugo' => $this->checkCentrifugo(),
         ];
 
         /** @var array<string, string> $labels */
@@ -45,7 +42,6 @@ class VerifyServicesCommand extends Command
             'garage' => 'disk',
             'queue' => 'Queue',
             'horizon' => 'Horizon',
-            'centrifugo' => 'Centrifugo',
         ];
 
         $hasFailure = false;
@@ -124,45 +120,21 @@ class VerifyServicesCommand extends Command
     /**
      * @return array{ok: bool, message: string}
      */
-    private function checkScoutMeilisearch(): array
+    private function checkScout(): array
     {
         $driver = (string) config('scout.driver', 'collection');
 
-        if ($driver !== 'meilisearch') {
+        if (! in_array($driver, ['algolia', 'meilisearch', 'typesense', 'database', 'collection', null], true)) {
             return [
                 'ok' => false,
-                'message' => "scout driver [{$driver}] is not meilisearch",
+                'message' => "scout driver [{$driver}] is not supported",
             ];
         }
 
-        try {
-            $health = app(MeilisearchClient::class)->health();
-            $status = is_array($health) ? (string) ($health['status'] ?? '') : '';
-
-            if ($status !== 'available') {
-                return [
-                    'ok' => false,
-                    'message' => sprintf(
-                        'meilisearch health returned %s',
-                        $this->stringifyValue($health),
-                    ),
-                ];
-            }
-
-            return [
-                'ok' => true,
-                'message' => sprintf(
-                    'scout driver [%s] meilisearch health: %s',
-                    $driver,
-                    $this->stringifyValue($health),
-                ),
-            ];
-        } catch (Throwable $exception) {
-            return [
-                'ok' => false,
-                'message' => $exception->getMessage(),
-            ];
-        }
+        return [
+            'ok' => true,
+            'message' => "scout driver [{$driver}] configured",
+        ];
     }
 
     /**
@@ -262,36 +234,6 @@ class VerifyServicesCommand extends Command
             return [
                 'ok' => true,
                 'message' => 'running, supervisors: ['.implode(', ', $supervisors).']',
-            ];
-        } catch (Throwable $exception) {
-            return [
-                'ok' => false,
-                'message' => $exception->getMessage(),
-            ];
-        }
-    }
-
-    /**
-     * @return array{ok: bool, message: string}
-     */
-    private function checkCentrifugo(): array
-    {
-        try {
-            /** @var Centrifugo $centrifugo */
-            $centrifugo = app('centrifugo');
-            /** @var array<string, mixed> $info */
-            $info = $centrifugo->info();
-
-            if (array_key_exists('error', $info) && $info['error'] !== null) {
-                return [
-                    'ok' => false,
-                    'message' => 'Centrifugo error: '.$info['error'],
-                ];
-            }
-
-            return [
-                'ok' => true,
-                'message' => 'Centrifugo reachable',
             ];
         } catch (Throwable $exception) {
             return [

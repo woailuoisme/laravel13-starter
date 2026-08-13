@@ -8,7 +8,6 @@ use App\Exceptions\WePayException;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ServerException;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use JsonException;
@@ -16,7 +15,6 @@ use OpenSSLAsymmetricKey;
 use Throwable;
 use WeChatPay\Builder;
 use WeChatPay\BuilderChainable;
-use WeChatPay\Crypto\AesGcm;
 use WeChatPay\Crypto\Rsa;
 
 /**
@@ -24,8 +22,8 @@ use WeChatPay\Crypto\Rsa;
  *
  * 合并重构版：
  * - 统一入口，支持 App, Native, JSAPI, H5 支付方式
- * - 自动处理平台证书下载与缓存
  * - 完整的支付、查询、退款、回调验证逻辑
+ * - 签名、证书、解密等底层逻辑委托给 WechatPayCrypto
  * - 使用 PHP 8.3+ 特性 (Constructor Promotion, Match, Typed Properties)
  */
 class WechatPayService
@@ -43,6 +41,9 @@ class WechatPayService
 
     /** @var OpenSSLAsymmetricKey 缓存的私钥实例 */
     protected OpenSSLAsymmetricKey $privateKey;
+
+    /** @var WechatPayCrypto 签名与证书辅助 */
+    protected WechatPayCrypto $crypto;
 
     /**
      * @param  string  $type  默认支付类型 (native / js / app / h5)
@@ -93,11 +94,7 @@ class WechatPayService
      */
     public function pay(string $outTradeNo, int $total, string $description, array $extra = []): array
     {
-        $params = array_merge([
-            'out_trade_no' => $outTradeNo,
-            'amount' => $total,
-            'description' => $description,
-        ], $extra);
+        $params = ['out_trade_no' => $outTradeNo, 'amount' => $total, 'description' => $description, ...$extra];
 
         $this->validateOrderParams($params);
 
@@ -204,18 +201,21 @@ class WechatPayService
         $body ??= request()->getContent();
 
         try {
-            if (! $this->verifySignature($headers, (string) $body)) {
-                throw WePayException::signatureError();
-            }
+            throw_unless($this->crypto->verifySignature($headers, (string) $body), WePayException::signatureError());
 
             $data = json_decode((string) $body, true, 512, JSON_THROW_ON_ERROR);
-            $decrypted = $this->decryptResource($data['resource'] ?? []);
+            $rawResource = is_array($data) ? data_get($data, 'resource') : null;
+            $resource = is_array($rawResource) ? $rawResource : [];
+            $decrypted = $this->crypto->decryptResource($resource);
+            $eventType = is_array($data) && is_string(data_get($data, 'event_type'))
+                ? (string) data_get($data, 'event_type')
+                : '';
 
-            Log::info('微信支付回调处理成功', ['event' => $data['event_type'] ?? '']);
+            Log::info('微信支付回调处理成功', ['event' => $eventType]);
 
             return [
                 'success' => true,
-                'event_type' => $data['event_type'] ?? '',
+                'event_type' => $eventType,
                 'resource' => $decrypted,
             ];
         } catch (Throwable $e) {
@@ -233,11 +233,13 @@ class WechatPayService
             // 加载 Rsa 私钥
             $this->privateKey = Rsa::from('file://'.$this->config['private_key_path'], Rsa::KEY_TYPE_PRIVATE);
 
+            $this->crypto = new WechatPayCrypto($this->config, $this->privateKey, $this->type);
+
             // 解析证书序列号
-            $serial = $this->resolveSerial();
+            $serial = $this->crypto->resolveSerial();
 
             // 获取平台证书 (带缓存)
-            $platformCerts = $this->getPlatformCerts($serial);
+            $platformCerts = $this->crypto->getPlatformCerts($serial);
 
             $this->client = Builder::factory([
                 'mchid' => $this->config['mch_id'],
@@ -267,10 +269,10 @@ class WechatPayService
             $response = $this->client->chain($endpoint)->{$method}($options);
 
             $body = $response->getBody()->getContents();
-
-            if ($response->getStatusCode() >= 400) {
-                throw WePayException::fromWechatResponse($body, $response->getStatusCode());
-            }
+            throw_if($response->getStatusCode() >= 400, WePayException::fromWechatResponse(
+                $body,
+                $response->getStatusCode(),
+            ));
 
             $decoded = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
@@ -291,7 +293,7 @@ class WechatPayService
             'mchid' => $this->config['mch_id'],
             'description' => $params['description'],
             'out_trade_no' => $params['out_trade_no'],
-            'notify_url' => $this->config['notify_url'] ?? '',
+            'notify_url' => data_get($this->config, 'notify_url', ''),
             'amount' => [
                 'total' => (int) $params['amount'],
                 'currency' => 'CNY',
@@ -299,13 +301,14 @@ class WechatPayService
         ];
 
         return match ($this->type) {
-            'js' => array_merge($body, ['payer' => ['openid' => $params['openid']]]),
-            'h5' => array_merge($body, [
+            'js' => [...$body, 'payer' => ['openid' => $params['openid']]],
+            'h5' => [
+                ...$body,
                 'scene_info' => [
-                    'payer_client_ip' => $params['client_ip'] ?? request()->ip(),
+                    'payer_client_ip' => data_get($params, 'client_ip', request()->ip()),
                     'h5_info' => ['type' => 'Wap'],
                 ],
-            ]),
+            ],
             default => $body,
         };
     }
@@ -315,174 +318,38 @@ class WechatPayService
         $base = ['success' => true, 'type' => $this->type];
 
         return match ($this->type) {
-            'js' => array_merge($base, ['js_config' => $this->signPayData([
-                'appId' => $this->config['app_id'],
-                'timeStamp' => (string) time(),
-                'nonceStr' => Str::random(32),
-                'package' => 'prepay_id='.($data['prepay_id'] ?? ''),
-                'signType' => 'RSA',
-            ])]),
-            'app' => array_merge($base, ['app_config' => $this->signPayData([
-                'appid' => $this->config['app_id'],
-                'partnerid' => $this->config['mch_id'],
-                'prepayid' => $data['prepay_id'] ?? '',
-                'package' => 'Sign=WXPay',
-                'noncestr' => Str::random(32),
-                'timestamp' => (string) time(),
-            ])]),
-            'native' => array_merge($base, [
-                'code_url' => $data['code_url'] ?? '',
-                'qr_code' => array_key_exists('code_url', $data) && $data['code_url'] !== null
+            'js' => [
+                ...$base,
+                'js_config' => $this->crypto->signPayData([
+                    'appId' => (string) data_get($this->config, 'app_id', ''),
+                    'timeStamp' => (string) now()->timestamp,
+                    'nonceStr' => Str::random(32),
+                    'package' => 'prepay_id='.(string) data_get($data, 'prepay_id', ''),
+                    'signType' => 'RSA',
+                ]),
+            ],
+            'app' => [
+                ...$base,
+                'app_config' => $this->crypto->signPayData([
+                    'appid' => (string) data_get($this->config, 'app_id', ''),
+                    'partnerid' => (string) data_get($this->config, 'mch_id', ''),
+                    'prepayid' => (string) data_get($data, 'prepay_id', ''),
+                    'package' => 'Sign=WXPay',
+                    'noncestr' => Str::random(32),
+                    'timestamp' => (string) now()->timestamp,
+                ]),
+            ],
+            'native' => [
+                ...$base,
+                'code_url' => (string) data_get($data, 'code_url', ''),
+                'qr_code' => filled(data_get($data, 'code_url'))
                     ? 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='
                     .urlencode((string) $data['code_url'])
                     : '',
-            ]),
-            'h5' => array_merge($base, ['h5_url' => $data['h5_url'] ?? '']),
+            ],
+            'h5' => [...$base, 'h5_url' => (string) data_get($data, 'h5_url', '')],
             default => $base,
         };
-    }
-
-    protected function signPayData(array $payload): array
-    {
-        $message = match ($this->type) {
-            'js' => "{$payload['appId']}\n{$payload['timeStamp']}\n{$payload['nonceStr']}\n{$payload['package']}\n",
-            'app' => "{$payload['appid']}\n{$payload['timestamp']}\n{$payload['noncestr']}\n{$payload['prepayid']}\n",
-            default => '',
-        };
-
-        if ($message !== '') {
-            $key = $this->type === 'js' ? 'paySign' : 'sign';
-            $payload[$key] = Rsa::sign($message, $this->privateKey);
-        }
-
-        return $payload;
-    }
-
-    // --- 签名与证书辅助 ---
-
-    /**
-     * @throws WePayException
-     */
-    protected function verifySignature(array $headers, string $body): bool
-    {
-        $signature = $headers['wechatpay-signature'][0] ?? '';
-        $timestamp = $headers['wechatpay-timestamp'][0] ?? '';
-        $nonce = $headers['wechatpay-nonce'][0] ?? '';
-        $serial = $headers['wechatpay-serial'][0] ?? '';
-
-        if ($signature === '' || $timestamp === '' || $nonce === '' || $serial === '') {
-            return false;
-        }
-
-        $certs = $this->getPlatformCerts($this->resolveSerial());
-        if (! array_key_exists($serial, $certs) || $certs[$serial] === null || $certs[$serial] === '') {
-            return false;
-        }
-
-        $message = "{$timestamp}\n{$nonce}\n{$body}\n";
-
-        return Rsa::verify($message, $signature, Rsa::from($certs[$serial], Rsa::KEY_TYPE_PUBLIC));
-    }
-
-    /**
-     * @throws JsonException
-     */
-    protected function decryptResource(array $resource): array
-    {
-        $decrypted = AesGcm::decrypt(
-            $resource['ciphertext'] ?? '',
-            $this->config['key'] ?? '',
-            $resource['nonce'] ?? '',
-            $resource['associated_data'] ?? '',
-        );
-
-        $decoded = json_decode($decrypted, true, 512, JSON_THROW_ON_ERROR);
-
-        return is_array($decoded) ? $decoded : [];
-    }
-
-    protected function getPlatformCerts(string $serial): array
-    {
-        $cacheKey = "wechat_platform_certs_{$this->config['mch_id']}";
-
-        $cachedCerts = cache()->remember($cacheKey, now()->addHours(24), function () use ($serial) {
-            $timestamp = time();
-            $nonce = Str::random(32);
-            $sign = Rsa::sign("GET\n/v3/certificates\n{$timestamp}\n{$nonce}\n\n", $this->privateKey);
-
-            $response = Http::withHeaders([
-                'Authorization' => sprintf(
-                    'WECHATPAY2-SHA256-RSA2048 mchid="%s",nonce_str="%s",timestamp="%d",serial_no="%s",signature="%s"',
-                    $this->config['mch_id'],
-                    $nonce,
-                    $timestamp,
-                    $serial,
-                    $sign,
-                ),
-                'Accept' => 'application/json',
-                'User-Agent' => 'WeChatPay-SDK/Merged',
-            ])->get('https://api.mch.weixin.qq.com/v3/certificates');
-
-            if (! $response->successful()) {
-                // 回退本地磁盘搜索
-                return $this->loadLocalCerts();
-            }
-
-            $certs = [];
-            foreach ($response->json()['data'] ?? [] as $item) {
-                $certs[$item['serial_no']] = AesGcm::decrypt(
-                    $item['encrypt_certificate']['ciphertext'],
-                    $this->config['key'],
-                    $item['encrypt_certificate']['nonce'],
-                    $item['encrypt_certificate']['associated_data'],
-                );
-            }
-
-            return $certs !== [] ? $certs : $this->loadLocalCerts();
-        });
-
-        return is_array($cachedCerts) ? $cachedCerts : [];
-    }
-
-    protected function loadLocalCerts(): array
-    {
-        $certs = [];
-        $files = glob(storage_path('certs/wechat/platform_*.pem'));
-        foreach ($files !== false ? $files : [] as $file) {
-            if (! file_exists($file)) {
-                continue;
-            }
-            $raw = file_get_contents($file);
-            if ($raw === false || $raw === '') {
-                continue;
-            }
-
-            $parsed = openssl_x509_parse($raw);
-            if (is_array($parsed) && array_key_exists('serialNumber', $parsed) && $parsed['serialNumber'] !== null) {
-                $certs[mb_strtoupper((string) $parsed['serialNumber'])] = $raw;
-            }
-        }
-
-        return $certs;
-    }
-
-    protected function resolveSerial(): string
-    {
-        if (is_string($this->config['certificate_serial'] ?? null) && $this->config['certificate_serial'] !== '') {
-            return $this->config['certificate_serial'];
-        }
-
-        $certPath = (string) ($this->config['cert_path'] ?? '');
-        if ($certPath !== '' && file_exists($certPath)) {
-            $raw = file_get_contents($certPath);
-            if ($raw !== false && $raw !== '') {
-                $parsed = openssl_x509_parse($raw);
-
-                return mb_strtoupper((string) ($parsed['serialNumber'] ?? ''));
-            }
-        }
-
-        throw WePayException::configError('缺少 certificate_serial 或 cert_path');
     }
 
     /**
@@ -492,9 +359,7 @@ class WechatPayService
     {
         $keys = ['app_id', 'mch_id', 'key', 'private_key_path'];
         foreach ($keys as $k) {
-            if ((string) ($this->config[$k] ?? '') === '') {
-                throw WePayException::configError("微信支付配置缺失: {$k}");
-            }
+            throw_if(blank(data_get($this->config, $k)), WePayException::configError("微信支付配置缺失: {$k}"));
         }
 
         if (! str_starts_with((string) $this->config['private_key_path'], '/')) {
@@ -507,11 +372,13 @@ class WechatPayService
      */
     protected function validateOrderParams(array $params): void
     {
-        if ((string) ($params['out_trade_no'] ?? '') === '' || (int) ($params['amount'] ?? 0) <= 0) {
-            throw WePayException::configError('下单参数不完整');
-        }
-        if ($this->type === 'js' && (string) ($params['openid'] ?? '') === '') {
-            throw WePayException::configError('JSAPI 支付缺少 openid');
-        }
+        throw_if(
+            blank(data_get($params, 'out_trade_no')) || (int) data_get($params, 'amount', 0) <= 0,
+            WePayException::configError('下单参数不完整'),
+        );
+        throw_if(
+            $this->type === 'js' && blank(data_get($params, 'openid')),
+            WePayException::configError('JSAPI 支付缺少 openid'),
+        );
     }
 }

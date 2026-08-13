@@ -10,7 +10,6 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use JsonException;
-use Random\RandomException;
+use RoundingMode;
 use RuntimeException;
 use SensitiveParameter;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -42,15 +41,10 @@ class AppHelper
      */
     public static function json_encode(array $arr): string
     {
-        try {
-            return json_encode(
-                $arr,
-                JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
-            );
-        } catch (JsonException $e) {
-            Log::error('JSON encode failed', ['data' => $arr, 'error' => $e->getMessage()]);
-            throw $e;
-        }
+        return json_encode(
+            $arr,
+            JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+        );
     }
 
     /**
@@ -60,25 +54,22 @@ class AppHelper
      */
     public static function json_encode_pretty(array $arr): string
     {
-        try {
-            return json_encode(
-                $arr,
-                JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
-            );
-        } catch (JsonException $e) {
-            Log::error('JSON pretty encode failed', ['data' => $arr, 'error' => $e->getMessage()]);
-
-            throw $e;
-        }
+        return json_encode(
+            $arr,
+            JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
+        );
     }
 
     /**
      * 带舍入模式的浮点数取整
      *
-     * @param  1|2|3|4  $mode
+     * @param  RoundingMode  $mode  PHP 8.4+ 枚举，替代已弃用的 PHP_ROUND_HALF_* 常量
      */
-    public static function round(float $num, int $precision = 2, int $mode = PHP_ROUND_HALF_DOWN): float
-    {
+    public static function round(
+        float $num,
+        int $precision = 2,
+        RoundingMode $mode = RoundingMode::HalfTowardsZero,
+    ): float {
         return round($num, $precision, $mode);
     }
 
@@ -89,17 +80,9 @@ class AppHelper
      */
     public static function json_decode(string $str): mixed
     {
-        if (mb_trim($str) === '') {
-            throw new JsonException('Empty JSON string provided');
-        }
+        throw_if(blank($str), new JsonException('Empty JSON string provided'));
 
-        try {
-            return json_decode($str, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $e) {
-            Log::error('JSON decode failed', ['json' => $str, 'error' => $e->getMessage()]);
-
-            throw $e;
-        }
+        return json_decode($str, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -183,83 +166,16 @@ class AppHelper
                 continue;
             }
 
-            foreach (array_map('trim', explode(',', (string) $value)) as $candidate) {
-                if (self::isValidIp($candidate, $ipScope)) {
-                    return $candidate;
-                }
+            $candidate = Str::of((string) $value)->explode(',')->map(
+                static fn (string $ip): string => trim($ip),
+            )->first(static fn (string $ip): bool => self::isValidIp($ip, $ipScope));
+
+            if ($candidate !== null) {
+                return $candidate;
             }
         }
 
         return app()->isLocal() ? '127.0.0.1' : null;
-    }
-
-    /**
-     * 生成带前缀的唯一订单编号
-     *
-     * @throws RandomException
-     */
-    public static function generateOrderNo(string $prefix = 'ORD'): string
-    {
-        return (
-            $prefix
-            .date('YmdHis')
-            .mb_str_pad((string) ((microtime(true) * 10_000) % 10_000), 4, '0', STR_PAD_LEFT)
-            .random_int(100_000, 999_999)
-        );
-    }
-
-    /** 生成商城订单编号（前缀 SO）
-     * @throws RandomException
-     */
-    public static function generateShopOrderNo(): string
-    {
-        return self::generateOrderNo('SO');
-    }
-
-    /** 生成产品订单编号（前缀 PO）
-     * @throws RandomException
-     */
-    public static function generateProductOrderNo(): string
-    {
-        return self::generateOrderNo('PO');
-    }
-
-    /** 生成外部交易流水编号（前缀 OT）
-     * @throws RandomException
-     */
-    public static function generateOutTradeNo(): string
-    {
-        return self::generateOrderNo('OT');
-    }
-
-    /** 生成充值订单编号（前缀 TU）
-     * @throws RandomException
-     */
-    public static function generateTopUpOrderNo(): string
-    {
-        return self::generateOrderNo('TU');
-    }
-
-    /** 生成提现订单编号（前缀 WD） */
-    public static function generateWithdrawOrderNo(): string
-    {
-        return self::generateOrderNo('WD');
-    }
-
-    /** 生成退款订单编号（前缀 RF）
-     * @throws RandomException
-     */
-    public static function generateRefundOrderNo(): string
-    {
-        return self::generateOrderNo('RF');
-    }
-
-    /** 生成产品退款单号（前缀 PR）
-     * @throws RandomException
-     */
-    public static function generateProductRefoundNo(): string
-    {
-        return self::generateOrderNo('PR');
     }
 
     /**
@@ -416,37 +332,6 @@ class AppHelper
     }
 
     /**
-     * 生成基于微秒时间戳的唯一订单号
-     */
-    public static function orderNumber(): string
-    {
-        $today = now()->format('YmdHisu');
-        $rand = mb_strtoupper(mb_substr(uniqid(sha1($today), true), 0, 4));
-
-        return $today.$rand;
-    }
-
-    /**
-     * 生成基于时间戳+毫秒+随机数的订单代码
-     *
-     * @throws RuntimeException 当随机数生成失败时抛出
-     */
-    public static function orderCode(): string
-    {
-        try {
-            $now = now();
-            $milliseconds = mb_str_pad((string) $now->milli, 3, '0', STR_PAD_LEFT);
-            $randomNumber = mb_str_pad((string) random_int(1, 999), 3, '0', STR_PAD_LEFT);
-
-            return $now->timestamp.$milliseconds.$randomNumber;
-        } catch (Exception $e) {
-            Log::error('Failed to generate order code', ['error' => $e->getMessage()]);
-
-            throw new RuntimeException('Unable to generate order code: '.$e->getMessage());
-        }
-    }
-
-    /**
      * 验证用户生日数据
      *
      * @param  array{day: int|string, month: int|string, year: int|string}  $data
@@ -468,14 +353,7 @@ class AppHelper
      */
     public static function readableBytes(int $bytes): string
     {
-        if ($bytes <= 0) {
-            return '0 B';
-        }
-
-        $sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-        $i = (int) floor(log($bytes) / log(1024));
-
-        return sprintf('%.2F %s', $bytes / (1024 ** $i), $sizes[$i]);
+        return Number::fileSize((int) max($bytes, 0));
     }
 
     /**
@@ -483,7 +361,9 @@ class AppHelper
      */
     public static function getNumber(int $input): string
     {
-        return number_format($input);
+        $formatted = Number::format($input);
+
+        return is_string($formatted) ? $formatted : (string) $input;
     }
 
     /**
@@ -514,26 +394,6 @@ class AppHelper
     }
 
     /**
-     * 返回统一结构的 JSON API 响应
-     */
-    public static function response(
-        mixed $data = null,
-        ?string $message = null,
-        int $code = 200,
-        bool $status = true,
-    ): JsonResponse {
-        if ($code < 100 || $code > 599) {
-            Log::warning('Invalid HTTP status code provided', ['code' => $code]);
-            $code = 500;
-        }
-
-        return response()->json(
-            ['status' => $status, 'code' => $code, 'message' => $message, 'data' => $data],
-            $code,
-        );
-    }
-
-    /**
      * 将 QueryException 转换为用户友好的中文错误消息
      */
     public static function getUserFriendlyMessage(QueryException $e): string
@@ -549,14 +409,9 @@ class AppHelper
         ]);
 
         $errorCodes = self::getErrorCodeMappings();
+        $friendlyMessage = $errorCodes[$errorCode] ?? self::matchErrorByPattern($originalMessage);
 
-        if (array_key_exists($errorCode, $errorCodes)) {
-            return $errorCodes[$errorCode];
-        }
-
-        $friendlyMessage = self::matchErrorByPattern($originalMessage);
-
-        if ($friendlyMessage) {
+        if (is_string($friendlyMessage) && $friendlyMessage !== '') {
             return $friendlyMessage;
         }
 

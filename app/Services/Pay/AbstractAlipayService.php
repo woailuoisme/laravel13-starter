@@ -8,6 +8,7 @@ use Alipay\EasySDK\Kernel\Base;
 use Alipay\EasySDK\Kernel\Payment;
 use Alipay\EasySDK\Kernel\Util;
 use App\Exceptions\AlipayException;
+use Illuminate\Support\Str;
 use Throwable;
 
 /**
@@ -70,9 +71,9 @@ abstract class AbstractAlipayService
      */
     protected function validateKeyFormat(string $key, string $keyName): void
     {
-        $trimKey = mb_trim(str_replace(["\r", "\n", ' '], '', $key));
+        $trimKey = Str::of($key)->replace(["\r", "\n", ' '], '')->trim()->toString();
 
-        if (! str_contains($trimKey, 'BEGIN') && ! str_contains($trimKey, 'END')) {
+        if (! Str::contains($trimKey, ['BEGIN', 'END'])) {
             if (! preg_match('/^[A-Za-z0-9+\/=]+$/', $trimKey)) {
                 throw AlipayException::configError("{$keyName}格式不正确");
             }
@@ -84,29 +85,12 @@ abstract class AbstractAlipayService
      */
     protected function validateOrderParams(string $outTradeNo, float|int $totalAmount, string $subject): void
     {
-        if ($outTradeNo === '') {
-            throw AlipayException::validationError('商户订单号不能为空');
-        }
-
-        if (mb_strlen($outTradeNo) > 64) {
-            throw AlipayException::validationError('商户订单号长度不能超过64位');
-        }
-
-        if ($subject === '') {
-            throw AlipayException::validationError('订单标题不能为空');
-        }
-
-        if (mb_strlen($subject) > 256) {
-            throw AlipayException::validationError('订单标题长度不能超过256个字符');
-        }
-
-        if ($totalAmount <= 0) {
-            throw AlipayException::validationError('订单金额必须大于0');
-        }
-
-        if ($totalAmount > 100_000_000) {
-            throw AlipayException::validationError('订单金额不能超过1亿元');
-        }
+        throw_if(blank($outTradeNo), AlipayException::validationError('商户订单号不能为空'));
+        throw_if(Str::length($outTradeNo) > 64, AlipayException::validationError('商户订单号长度不能超过64位'));
+        throw_if(blank($subject), AlipayException::validationError('订单标题不能为空'));
+        throw_if(Str::length($subject) > 256, AlipayException::validationError('订单标题长度不能超过256个字符'));
+        throw_if($totalAmount <= 0, AlipayException::validationError('订单金额必须大于0'));
+        throw_if($totalAmount > 100_000_000, AlipayException::validationError('订单金额不能超过1亿元'));
     }
 
     /**
@@ -120,20 +104,18 @@ abstract class AbstractAlipayService
     public function handleCallback(array $params): array
     {
         try {
-            if (! $this->verifyNotify($params)) {
-                throw AlipayException::signatureError('支付宝签名验证失败');
-            }
+            throw_unless($this->verifyNotify($params), AlipayException::signatureError('支付宝签名验证失败'));
 
-            $tradeStatus = $params['trade_status'] ?? '';
+            $tradeStatus = (string) data_get($params, 'trade_status', '');
             $isPaid = in_array($tradeStatus, ['TRADE_SUCCESS', 'TRADE_FINISHED'], true);
 
             return [
                 'success' => true,
                 'is_paid' => $isPaid,
                 'trade_status' => $tradeStatus,
-                'out_trade_no' => $params['out_trade_no'] ?? '',
-                'trade_no' => $params['trade_no'] ?? '',
-                'total_amount' => $params['total_amount'] ?? '',
+                'out_trade_no' => (string) data_get($params, 'out_trade_no', ''),
+                'trade_no' => (string) data_get($params, 'trade_no', ''),
+                'total_amount' => (string) data_get($params, 'total_amount', ''),
                 'raw' => $params,
             ];
         } catch (Throwable $e) {
@@ -146,6 +128,10 @@ abstract class AbstractAlipayService
      */
     public function verifyNotify(array $params): bool
     {
+        if ($this->payment === null) {
+            return false;
+        }
+
         try {
             return $this->payment->common()->verifyNotify($params);
         } catch (Throwable) {

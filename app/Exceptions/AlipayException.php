@@ -16,7 +16,7 @@ final class AlipayException extends Exception
 {
     public static function paymentFailed(string $message, array $context = []): static
     {
-        Log::error('支付宝支付失败', array_merge(['message' => $message], $context));
+        Log::error('支付宝支付失败', ['message' => $message, ...$context]);
 
         return new self("支付失败: {$message}", 4001);
     }
@@ -247,13 +247,11 @@ final class AlipayException extends Exception
             'ACQ.CLIENT_VERSION_NOT_SUPPORT' => '买家客户端版本不支持该功能',
         ];
 
-        // 优先返回子错误码的友好信息
-        if ($subCode !== '' && array_key_exists($subCode, $subErrorMessages)) {
+        if ($subCode !== '' && ($subErrorMessages[$subCode] ?? null) !== null) {
             return $subErrorMessages[$subCode];
         }
 
-        // 返回主错误码的友好信息
-        if ($code !== '' && array_key_exists($code, $mainErrorMessages)) {
+        if ($code !== '' && ($mainErrorMessages[$code] ?? null) !== null) {
             return $mainErrorMessages[$code];
         }
 

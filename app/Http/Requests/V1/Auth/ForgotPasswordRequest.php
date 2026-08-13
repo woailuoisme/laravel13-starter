@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\V1\Auth;
 
 use Illuminate\Support\Str;
+use Override;
 use SanderMuller\FluentValidation\FluentFormRequest;
 use SanderMuller\FluentValidation\FluentRule;
 
@@ -22,6 +23,7 @@ class ForgotPasswordRequest extends FluentFormRequest
         ]);
     }
 
+    #[Override]
     public function rules(): array
     {
         return [

@@ -20,6 +20,9 @@ pest()->extend(TestCase::class)->use(RefreshDatabase::class)->in('Feature');
 
 pest()->extend(TestCase::class)->use(RefreshDatabase::class)->in('Unit');
 
+pest()->group('api')->in('Feature/V1', 'Unit/Http', 'Unit/Services/Auth');
+pest()->group('filament')->in('Feature/Filament', 'Unit/Filament');
+
 /*
  |--------------------------------------------------------------------------
  | Expectations

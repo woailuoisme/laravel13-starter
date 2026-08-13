@@ -10,6 +10,7 @@ use Alipay\EasySDK\Kernel\EasySDKKernel;
 use Alipay\EasySDK\Kernel\Payment;
 use Alipay\EasySDK\Kernel\Util;
 use App\Exceptions\AlipayException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
@@ -56,22 +57,21 @@ class AlipayService extends AbstractAlipayService
 
     protected function mergeDefaultConfig(array $config): array
     {
-        return array_merge(config('pay.alipay', []), $config);
+        $baseConfig = config('pay.alipay');
+        $baseArray = is_array($baseConfig) ? $baseConfig : [];
+
+        return [...$baseArray, ...$config];
     }
 
     protected function validateType(string $type): void
     {
-        if (! array_key_exists($type, self::PAYMENT_TYPES)) {
-            throw AlipayException::configError("不支持的支付类型: {$type}");
-        }
+        throw_unless(Arr::has(self::PAYMENT_TYPES, $type), AlipayException::configError("不支持的支付类型: {$type}"));
     }
 
     protected function validateConfig(array $config): void
     {
         foreach (['app_id', 'private_key', 'public_key'] as $key) {
-            if ((string) ($config[$key] ?? '') === '') {
-                throw AlipayException::configError("支付宝配置缺失: {$key}");
-            }
+            throw_if(blank(data_get($config, $key)), AlipayException::configError("支付宝配置缺失: {$key}"));
         }
         $this->validateKeyFormat((string) $config['private_key'], '私钥');
         $this->validateKeyFormat((string) $config['public_key'], '公钥');
@@ -132,9 +132,7 @@ class AlipayService extends AbstractAlipayService
     {
         try {
             $result = $this->payment->common()->query($outTradeNo);
-            if ($result->code !== '10000') {
-                throw AlipayException::fromAlipayResponse($result, '查询失败');
-            }
+            throw_if($result->code !== '10000', AlipayException::fromAlipayResponse($result, '查询失败'));
 
             return [
                 'success' => true,
@@ -156,12 +154,10 @@ class AlipayService extends AbstractAlipayService
     ): array {
         try {
             $amount = $this->formatAmount($refundAmount);
-            $refundNo = $outRequestNo ?? 'REF'.time().Str::random(6);
+            $refundNo = $outRequestNo ?? 'REF'.now()->timestamp.Str::random(6);
 
             $result = $this->payment->common()->optional('out_request_no', $refundNo)->refund($outTradeNo, $amount);
-            if ($result->code !== '10000') {
-                throw AlipayException::fromAlipayResponse($result, '退款失败');
-            }
+            throw_if($result->code !== '10000', AlipayException::fromAlipayResponse($result, '退款失败'));
 
             return ['success' => true, 'trade_no' => $result->tradeNo, 'refund_no' => $refundNo];
         } catch (Throwable $e) {
@@ -178,10 +174,10 @@ class AlipayService extends AbstractAlipayService
 
     protected function handlePagePay(string $subject, string $outTradeNo, string $amount, array $options): array
     {
-        $returnUrl = $options['return_url'] ?? $this->config['return_url'] ?? '';
+        $returnUrl = (string) data_get($options, 'return_url', data_get($this->config, 'return_url', ''));
         $result = $this->payment
             ->page()
-            ->batchOptional($options['optional'] ?? [])
+            ->batchOptional(data_get($options, 'optional', []))
             ->pay($subject, $outTradeNo, $amount, $returnUrl);
 
         return ['success' => true, 'type' => 'page', 'form' => $result->body];
@@ -196,9 +192,9 @@ class AlipayService extends AbstractAlipayService
 
     protected function handleWapPay(string $subject, string $outTradeNo, string $amount, array $options): array
     {
-        $quitUrl = $options['quit_url'] ?? '';
-        $returnUrl = $options['return_url'] ?? $this->config['return_url'] ?? '';
-        $result = $this->payment->wap()->batchOptional($options['optional'] ?? [])->pay(
+        $quitUrl = (string) data_get($options, 'quit_url', '');
+        $returnUrl = (string) data_get($options, 'return_url', data_get($this->config, 'return_url', ''));
+        $result = $this->payment->wap()->batchOptional(data_get($options, 'optional', []))->pay(
             $subject,
             $outTradeNo,
             $amount,
@@ -211,17 +207,15 @@ class AlipayService extends AbstractAlipayService
 
     protected function handleFaceToFacePay(string $subject, string $outTradeNo, string $amount, array $options): array
     {
-        if ((string) ($options['auth_code'] ?? '') === '') {
-            throw AlipayException::validationError('当面付缺少 auth_code');
-        }
+        $authCode = (string) data_get($options, 'auth_code', '');
+        throw_if(blank($authCode), AlipayException::validationError('当面付缺少 auth_code'));
+
         $result = $this->payment
             ->faceToFace()
-            ->batchOptional($options['optional'] ?? [])
-            ->pay($subject, $outTradeNo, $amount, $options['auth_code']);
+            ->batchOptional(data_get($options, 'optional', []))
+            ->pay($subject, $outTradeNo, $amount, $authCode);
 
-        if ($result->code !== '10000') {
-            throw AlipayException::fromAlipayResponse($result, '当面付提交失败');
-        }
+        throw_if($result->code !== '10000', AlipayException::fromAlipayResponse($result, '当面付提交失败'));
 
         return ['success' => true, 'type' => 'face_to_face', 'trade_no' => $result->tradeNo];
     }

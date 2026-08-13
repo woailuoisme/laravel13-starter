@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\ResponseService;
+use App\Support\ResponseFormatter;
 use BackedEnum;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
@@ -18,10 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AppBaseController extends Controller
 {
-    public function __construct(
-        protected ResponseService $responseService,
-    ) {}
-
     /**
      * 发送成功响应
      *
@@ -31,7 +27,7 @@ abstract class AppBaseController extends Controller
      */
     public function sendResponse(mixed $data, string $message, int $code = Response::HTTP_OK): JsonResponse
     {
-        return $this->responseService->sendResponse($data, $message, $code);
+        return ResponseFormatter::sendResponse($data, $message, $code);
     }
 
     /**
@@ -65,7 +61,7 @@ abstract class AppBaseController extends Controller
         mixed $data = null,
         ?int $customCode = null,
     ): JsonResponse {
-        return $this->responseService->sendError($message, $code, $data, $customCode);
+        return ResponseFormatter::sendError($message, $code, $data, $customCode);
     }
 
     /**
@@ -76,7 +72,7 @@ abstract class AppBaseController extends Controller
      */
     public function sendEnumError(BackedEnum $enum, ?int $httpCode = null): JsonResponse
     {
-        return $this->responseService->sendEnumError($enum, $httpCode);
+        return ResponseFormatter::sendEnumError($enum, $httpCode);
     }
 
     /**
@@ -93,7 +89,7 @@ abstract class AppBaseController extends Controller
         int $code = 200,
         ?int $customCode = null,
     ): JsonResponse {
-        return $this->responseService->sendSuccess($message, $data, $code, $customCode);
+        return ResponseFormatter::sendSuccess($message, $data, $code, $customCode);
     }
 
     /**
@@ -104,7 +100,7 @@ abstract class AppBaseController extends Controller
      */
     public function sendRetrieved(string $modelName, mixed $data): JsonResponse
     {
-        return $this->responseService->sendRetrieved($modelName, $data);
+        return ResponseFormatter::sendRetrieved($modelName, $data);
     }
 
     /**
@@ -115,7 +111,7 @@ abstract class AppBaseController extends Controller
      */
     public function sendCreated(string $modelName, mixed $data): JsonResponse
     {
-        return $this->responseService->sendCreated($modelName, $data);
+        return ResponseFormatter::sendCreated($modelName, $data);
     }
 
     /**
@@ -126,7 +122,7 @@ abstract class AppBaseController extends Controller
      */
     public function sendUpdated(string $modelName, mixed $data): JsonResponse
     {
-        return $this->responseService->sendUpdated($modelName, $data);
+        return ResponseFormatter::sendUpdated($modelName, $data);
     }
 
     /**
@@ -137,7 +133,7 @@ abstract class AppBaseController extends Controller
      */
     public function sendDeleted(string $modelName, mixed $data = null): JsonResponse
     {
-        return $this->responseService->sendDeleted($modelName, $data);
+        return ResponseFormatter::sendDeleted($modelName, $data);
     }
 
     /**
@@ -152,7 +148,7 @@ abstract class AppBaseController extends Controller
         ?string $resource = null,
         array $extraData = [],
     ): array {
-        return $this->responseService->paginatorData($paginator, $resource, $extraData);
+        return ResponseFormatter::paginatorData($paginator, $resource, $extraData);
     }
 
     /**
@@ -167,6 +163,6 @@ abstract class AppBaseController extends Controller
         ?string $resource = null,
         array $extraData = [],
     ): JsonResponse {
-        return $this->responseService->sendPaginatorData($paginator, $resource, $extraData);
+        return ResponseFormatter::sendPaginatorData($paginator, $resource, $extraData);
     }
 }

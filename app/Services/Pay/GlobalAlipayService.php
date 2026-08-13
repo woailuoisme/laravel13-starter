@@ -10,6 +10,7 @@ use Alipay\EasySDK\Kernel\EasySDKKernel;
 use Alipay\EasySDK\Kernel\Payment;
 use Alipay\EasySDK\Kernel\Util;
 use App\Exceptions\AlipayException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Throwable;
@@ -76,26 +77,29 @@ class GlobalAlipayService extends AbstractAlipayService
             'sandbox' => false,
         ];
 
-        return array_merge($defaults, config('pay.alipay_global', []), $config);
+        $baseConfig = config('pay.alipay_global');
+        $baseArray = is_array($baseConfig) ? $baseConfig : [];
+
+        return [...$defaults, ...$baseArray, ...$config];
     }
 
     protected function validateType(string $type): void
     {
-        if (! array_key_exists($type, self::PAYMENT_TYPES)) {
-            throw AlipayException::configError("不支持的全球支付类型: {$type}");
-        }
+        throw_unless(
+            Arr::has(self::PAYMENT_TYPES, $type),
+            AlipayException::configError("不支持的全球支付类型: {$type}"),
+        );
     }
 
     protected function validateConfig(array $config): void
     {
         foreach (['app_id', 'private_key', 'alipay_public_key'] as $key) {
-            if ((string) ($config[$key] ?? '') === '') {
-                throw AlipayException::configError("全球支付宝配置缺失: {$key}");
-            }
+            throw_if(blank(data_get($config, $key)), AlipayException::configError("全球支付宝配置缺失: {$key}"));
         }
-        if (! in_array($config['currency'], self::SUPPORTED_CURRENCIES, true)) {
-            throw AlipayException::configError("不支持的币种: {$config['currency']}");
-        }
+        throw_unless(
+            in_array($config['currency'], self::SUPPORTED_CURRENCIES, true),
+            AlipayException::configError("不支持的币种: {$config['currency']}"),
+        );
     }
 
     /**
@@ -171,7 +175,7 @@ class GlobalAlipayService extends AbstractAlipayService
     {
         try {
             $amount = $this->formatAmount($refundAmount);
-            $refundNo = $outRequestNo ?? 'GREF'.time().Str::random(6);
+            $refundNo = $outRequestNo ?? 'GREF'.now()->timestamp.Str::random(6);
 
             $result = $this->payment->common()->optional('out_request_no', $refundNo)->refund($outTradeNo, $amount);
 
@@ -231,12 +235,10 @@ class GlobalAlipayService extends AbstractAlipayService
         return ['success' => true, 'type' => 'wap', 'form' => $result->body, 'currency' => $this->config['currency']];
     }
 
-    protected function handleQrCodePay(string $subject, string $outTradeNo, string $amount): array
+    protected function handleQrCodePay(string $subject, string $outTradeNo, string $amount, array $options = []): array
     {
         $result = $this->payment->faceToFace()->preCreate($subject, $outTradeNo, $amount);
-        if ($result->code !== '10000') {
-            throw AlipayException::fromAlipayResponse($result, '跨境扫码预下单失败');
-        }
+        throw_if($result->code !== '10000', AlipayException::fromAlipayResponse($result, '跨境扫码预下单失败'));
 
         return [
             'success' => true,

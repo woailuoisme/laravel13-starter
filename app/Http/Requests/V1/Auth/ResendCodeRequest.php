@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\V1\Auth;
 
+use Override;
 use SanderMuller\FluentValidation\FluentFormRequest;
 use SanderMuller\FluentValidation\FluentRule;
 
@@ -14,6 +15,7 @@ class ResendCodeRequest extends FluentFormRequest
         return true;
     }
 
+    #[Override]
     public function rules(): array
     {
         return [

@@ -30,19 +30,32 @@ preserve-redundant-logical-binary-expression-parentheses = true # 保留逻辑�
 integrations = ["laravel", "pest"]
 
 [linter.rules]
+# --- 适配性与兼容性规则调整 ---
 ambiguous-function-call = { enabled = false } # 禁用歧义函数调用检查
-literal-named-argument = { enabled = false } # 禁用字面量具名参数提示检查
-strict-types = { enabled = false } # [禁用] 全局禁用 declare(strict_types=1) 强制要求，防止与 mago format (Pint 预设) 冲突
-use-specific-expectations = { enabled = false } # [禁用] 禁用 Pest 断言简化，防止把 ->not->toBeFalse() 误改写为 ->toBeTrue() 导致测试报错
-final-controller = { enabled = false } # [禁用] 禁用强制 Controller 加 final，防止基类控制器加 final 导致继承报错
-prefer-static-closure = { enabled = true } # [推荐开启: PHP 8.5 & Octane 最佳实践] 强制闭包使用 static，提升长驻内存与性能
-prefer-arrow-function = { enabled = true } # [推荐开启: PHP 8.5 最佳实践] 强制简单单行表达式使用短箭头函数 fn () => ...
-no-redundant-use = { enabled = true } # [推荐开启] 自动清理无用 use 导入
-halstead = { effort-threshold = 20000, volume-threshold = 5000, difficulty-threshold = 50 } # 配置 Halstead 复杂度评估规则阈值
-cyclomatic-complexity = { threshold = 100 } # [修改: 原为 80] 允许类圈复杂度最高为 100，适配微信支付等大型 SDK 封装类
-too-many-methods = { threshold = 50 } # [阈值 50] 理论最佳实践为 20-30，设为 50 容纳 AppConfigurator (40 个配置方法) 与 AppHelper (32 个工具方法)
-kan-defect = { threshold = 5.0 } # [阈值 5.0] 业界标准 Kan 软件缺陷密度估算阈值
-excessive-parameter-list = { threshold = 10 } # [阈值 10] 理论 Clean Code 最佳实践为 3-5 个，设为 10 兼容 QrCodeHelper 等多可选参数的 Helper 方法
+literal-named-argument = { enabled = false } # 禁用字面量具名参数强制检查
+strict-types = { enabled = false } # 禁用 linter 强制添加，防止与 Pint 格式化产生头部冲突
+use-specific-expectations = { enabled = false } # 禁用 Pest 断言过度简化，防止误改导致测试行为变化
+final-controller = { enabled = false } # 允许 Controller 基类被子类继承
+
+# --- PHP 8.5 & Laravel 13 最佳实践规则 (全部支持自动修复) ---
+prefer-static-closure = { enabled = true } # [Octane & PHP 8.5] 强制未捕获闭包使用 static，彻底防止内存泄漏
+prefer-arrow-function = { enabled = true } # [PHP 8.5] 简单单行表达式优先使用短箭头函数 fn () => ...
+prefer-first-class-callable = { enabled = true } # [PHP 8.1+] 优先使用一等公民函数语法 $this->method(...)
+prefer-array-spread = { enabled = true } # [PHP 8.x] 数组合并优先使用解构展开运算符 [...$a, ...$b]
+prefer-casts-method = { enabled = true } # [Laravel 13] 强制 Eloquent Model 使用 casts() 方法代替 $casts 属性
+prefer-anonymous-migration = { enabled = true } # [Laravel 13] 强制使用匿名迁移类
+prefer-fake-helper = { enabled = true } # [Laravel 13 & Testing] 统一使用 fake() 辅助函数
+no-redundant-use = { enabled = true } # 自动清理无用的 use 导入
+no-unused-closure-capture = { enabled = true } # 自动清理闭包中未使用的 use 变量
+combine-consecutive-issets = { enabled = true } # 自动合并连续的 isset($a) && isset($b)
+no-only = { enabled = true } # [Pest 质量门禁] 严禁代码中残留 it()->only() 导致漏测
+
+# --- 软件工程与复杂度控制阈值 ---
+halstead = { effort-threshold = 20000, volume-threshold = 5000, difficulty-threshold = 50 } # Halstead 复杂度评估阈值
+cyclomatic-complexity = { threshold = 100 } # 圈复杂度上限设为 100，适配支付网关等复杂业务封装
+too-many-methods = { threshold = 50 } # 类方法数上限设为 50，适配 AppConfigurator 与 AppHelper
+kan-defect = { threshold = 5.0 } # Kan 软件缺陷密度估算阈值
+excessive-parameter-list = { threshold = 10 } # 构造与常规方法形参上限设为 10，兼容多选项 Helper
 
 [analyzer]
 baseline = "mago-baseline.toml"

@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace App\Services\Media;
 
-use App\Helpers\AppHelper;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\UnreachableUrl;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Throwable;
 
 class MediaService
 {
@@ -70,7 +71,7 @@ class MediaService
      */
     public function validateFileType(UploadedFile $file, ?array $allowedTypes = null): bool
     {
-        $allowedTypes ??= array_merge(self::SUPPORTED_IMAGE_TYPES, self::SUPPORTED_VIDEO_TYPES);
+        $allowedTypes ??= [...self::SUPPORTED_IMAGE_TYPES, ...self::SUPPORTED_VIDEO_TYPES];
 
         return in_array($file->getMimeType(), $allowedTypes, true);
     }
@@ -96,10 +97,10 @@ class MediaService
      */
     public function generateFileName(UploadedFile $file): string
     {
-        $extension = mb_strtolower($file->getClientOriginalExtension());
+        $extension = Str::lower($file->getClientOriginalExtension());
         $md5Hash = md5_file($file->getRealPath());
 
-        return $extension ? "{$md5Hash}.{$extension}" : $md5Hash;
+        return $extension !== '' ? "{$md5Hash}.{$extension}" : (string) $md5Hash;
     }
 
     /**
@@ -108,7 +109,7 @@ class MediaService
     public function generateStoragePath(HasMedia $model, string $subPath = ''): string
     {
         $className = class_basename($model);
-        $pluralPath = Str::plural(mb_strtolower($className));
+        $pluralPath = Str::plural(Str::lower($className));
 
         // 特殊处理一些模型的复数形式
         $specialCases = [
@@ -117,11 +118,9 @@ class MediaService
             'person' => 'people',
         ];
 
-        if (array_key_exists($pluralPath, $specialCases)) {
-            $pluralPath = $specialCases[$pluralPath];
-        }
+        $pluralPath = $specialCases[$pluralPath] ?? $pluralPath;
 
-        return $subPath ? "{$pluralPath}/{$subPath}/" : "{$pluralPath}/";
+        return $subPath !== '' ? "{$pluralPath}/{$subPath}/" : "{$pluralPath}/";
     }
 
     /**
@@ -169,12 +168,13 @@ class MediaService
                 ->addMedia($file)
                 ->usingFileName($fileName) // 设置实际存储的文件名
                 ->usingName($file->getClientOriginalName()) // 使用原始文件名作为显示名称
-                ->withCustomProperties(array_merge([
+                ->withCustomProperties([
                     'original_name' => $file->getClientOriginalName(),
                     'file_hash' => $md5Hash,
                     'file_size' => $file->getSize(),
                     'upload_time' => now()->toISOString(),
-                ], $customProperties))
+                    ...$customProperties,
+                ])
                 ->toMediaCollection($collection);
         } catch (Exception $e) {
             Log::error('文件上传失败', [
@@ -342,7 +342,7 @@ class MediaService
                 'file_name' => $item->file_name,
                 'mime_type' => $item->mime_type,
                 'size' => $item->size,
-                'human_readable_size' => AppHelper::formatFileSize($item->size),
+                'human_readable_size' => Number::fileSize((int) max($item->size, 0)),
                 'collection_name' => $item->collection_name,
                 'order_column' => $item->order_column,
                 'created_at' => $item->created_at?->format('Y-m-d H:i:s'),
@@ -479,7 +479,7 @@ class MediaService
         string $collection = 'default',
         array $customProperties = [],
     ): Media {
-        /** @var User $model */
+        /** @var InteractsWithMedia $model */
         return $model->addMediaFromUrl($url)->withCustomProperties($customProperties)->toMediaCollection($collection);
     }
 
@@ -534,31 +534,40 @@ class MediaService
      */
     public function getMediaStats(HasMedia $model, string $collection = ''): array
     {
-        $media = $collection ? $model->getMedia($collection) : $model->getMedia();
+        $media = $collection !== '' ? $model->getMedia($collection) : $model->getMedia();
+        $totalSize = (int) $media->sum('size');
 
         $stats = [
             'total_files' => $media->count(),
-            'total_size' => $media->sum('size'),
-            'total_size_formatted' => AppHelper::formatFileSize($media->sum('size')),
+            'total_size' => $totalSize,
+            'total_size_formatted' => Number::fileSize(max($totalSize, 0)),
             'file_types' => [],
             'collections' => [],
         ];
 
         // 按文件类型统计
-        $typeStats = $media->groupBy('mime_type')->map(static fn ($files, $mimeType) => [
-            'count' => $files->count(),
-            'total_size' => $files->sum('size'),
-            'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
-        ]);
+        $typeStats = $media->groupBy('mime_type')->map(static function ($files) {
+            $size = (int) $files->sum('size');
+
+            return [
+                'count' => $files->count(),
+                'total_size' => $size,
+                'size_formatted' => Number::fileSize(max($size, 0)),
+            ];
+        });
 
         $stats['file_types'] = $typeStats->all();
 
         // 按集合统计
-        $collectionStats = $media->groupBy('collection_name')->map(static fn ($files, $collectionName) => [
-            'count' => $files->count(),
-            'total_size' => $files->sum('size'),
-            'size_formatted' => AppHelper::formatFileSize($files->sum('size')),
-        ]);
+        $collectionStats = $media->groupBy('collection_name')->map(static function ($files) {
+            $size = (int) $files->sum('size');
+
+            return [
+                'count' => $files->count(),
+                'total_size' => $size,
+                'size_formatted' => Number::fileSize(max($size, 0)),
+            ];
+        });
 
         $stats['collections'] = $collectionStats->all();
 
@@ -671,25 +680,30 @@ class MediaService
      */
     public function cleanupInvalidMedia(HasMedia $model, string $collection = ''): int
     {
-        $media = $collection ? $model->getMedia($collection) : $model->getMedia();
+        $media = $collection !== '' ? $model->getMedia($collection) : $model->getMedia();
         $cleanedCount = 0;
 
         foreach ($media as $item) {
-            try {
-                // 尝试访问文件路径，如果文件不存在会抛出异常
-                $item->getPath();
-            } catch (Exception $e) {
-                // 文件不存在，删除数据库记录
-                try {
-                    $item->delete();
-                    $cleanedCount++;
-                    Log::info('清理无效媒体文件', ['media_id' => $item->id, 'file_name' => $item->file_name]);
-                } catch (Exception $deleteException) {
-                    Log::error('删除无效媒体记录失败', [
-                        'media_id' => $item->id,
-                        'error' => $deleteException->getMessage(),
-                    ]);
-                }
+            if (! $item instanceof Media) {
+                continue;
+            }
+
+            $pathExists = rescue(static fn (): bool => file_exists($item->getPath()), false, report: false);
+            if (! $pathExists) {
+                rescue(
+                    static function () use ($item, &$cleanedCount): void {
+                        $item->delete();
+                        $cleanedCount++;
+                        Log::info('清理无效媒体文件', ['media_id' => $item->getKey(), 'file_name' => $item->file_name]);
+                    },
+                    static function (Throwable $deleteException) use ($item): void {
+                        Log::error('删除无效媒体记录失败', [
+                            'media_id' => $item->getKey(),
+                            'error' => $deleteException->getMessage(),
+                        ]);
+                    },
+                    report: false,
+                );
             }
         }
 

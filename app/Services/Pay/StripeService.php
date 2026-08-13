@@ -38,10 +38,15 @@ class StripeService
     {
         $items = is_array($priceId) ? $priceId : [$priceId => $quantity];
 
-        return $user->checkout($items, array_merge([
-            'success_url' => $options['success_url'] ?? route('pay.success').'?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => $options['cancel_url'] ?? route('pay.cancel'),
-        ], $options));
+        return $user->checkout($items, [
+            'success_url' => data_get(
+                $options,
+                'success_url',
+                route('pay.success').'?session_id={CHECKOUT_SESSION_ID}',
+            ),
+            'cancel_url' => data_get($options, 'cancel_url', route('pay.cancel')),
+            ...$options,
+        ]);
     }
 
     /**
@@ -59,8 +64,9 @@ class StripeService
      */
     public function refund(string $paymentIntentId, ?int $amount = null, array $options = []): Refund
     {
-        $params = array_merge(['payment_intent' => $paymentIntentId], $options);
-        if ($amount) {
+        $params = $options;
+        $params['payment_intent'] = $paymentIntentId;
+        if ($amount !== null && $amount > 0) {
             $params['amount'] = $amount;
         }
 
@@ -91,7 +97,7 @@ class StripeService
         // 试用天数
         if (
             array_key_exists('trial_days', $options)
-            && $options['trial_days'] !== null
+            && is_numeric($options['trial_days'])
             && (int) $options['trial_days'] > 0
         ) {
             $builder->trialDays((int) $options['trial_days']);
@@ -131,14 +137,17 @@ class StripeService
     public function reportUsage(User $user, string $subscriptionName, int $quantity, ?string $priceId = null): void
     {
         $subscription = $user->subscription($subscriptionName);
-        if ($subscription) {
-            if ($priceId) {
-                $subscription->reportUsageFor($priceId, $quantity);
-
-                return;
-            }
-            $subscription->reportUsage($quantity);
+        if (! $subscription) {
+            return;
         }
+
+        if (filled($priceId)) {
+            $subscription->reportUsageFor((string) $priceId, $quantity);
+
+            return;
+        }
+
+        $subscription->reportUsage($quantity);
     }
 
     // --- 发票与账单 (Invoices & Billing) ---

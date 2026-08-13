@@ -20,6 +20,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Subscription;
+use Override;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -59,12 +60,21 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property-read MediaCollection<int, Media> $media
  * @property-read int|null $media_count
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $unreadNotifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $readNotifications
  * @property-read int|null $notifications_count
+ * @property-read int|null $unread_notifications_count
+ * @property-read int|null $read_notifications_count
  * @property-read Collection<int, OtpRecord> $otpRecords
  * @property-read int|null $otp_records_count
  * @property-read Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  *
+ * @method \Illuminate\Database\Eloquent\Relations\MorphMany notifications()
+ * @method \Illuminate\Database\Eloquent\Relations\MorphMany unreadNotifications()
+ * @method \Illuminate\Database\Eloquent\Relations\MorphMany readNotifications()
+ * @method \Spatie\MediaLibrary\MediaCollections\FileAdder addMediaFromUrl(string $url)
+ * @method \Spatie\MediaLibrary\MediaCollections\FileAdder addMedia(string|\Symfony\Component\HttpFoundation\File\UploadedFile $file)
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User hasExpiredGenericTrial()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
@@ -98,12 +108,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTelephone($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereTrialEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUsername($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User withTrashed(bool $withTrashed = true)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutTrashed()
+ * @method bool update(array $attributes = [], array $options = [])
  *
  * @mixin Model
- * @mixin \Eloquent
  */
 #[Fillable([
     'name',
@@ -135,6 +142,7 @@ class User extends Authenticatable implements HasMedia, JWTSubject
     use Notifiable;
     use SoftDeletes;
 
+    #[Override]
     protected function casts(): array
     {
         $passwordKey = implode('', ['pass', 'word']);

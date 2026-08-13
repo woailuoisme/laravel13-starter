@@ -18,15 +18,15 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class AuthFlowService
 {
-    private const OTP_TTL_SECONDS = 600;
+    private const int OTP_TTL_SECONDS = 600;
 
-    private const RESEND_COOLDOWN_SECONDS = 60;
+    private const int RESEND_COOLDOWN_SECONDS = 60;
 
-    private const SIGNUP_CACHE_PREFIX = 'auth:signup:';
+    private const string SIGNUP_CACHE_PREFIX = 'auth:signup:';
 
-    private const SIGNIN_CACHE_PREFIX = 'auth:signin:challenge:';
+    private const string SIGNIN_CACHE_PREFIX = 'auth:signin:challenge:';
 
-    private const RESET_CACHE_PREFIX = 'auth:password-reset:';
+    private const string RESET_CACHE_PREFIX = 'auth:password-reset:';
 
     public function requestSignup(string $email, #[SensitiveParameter] string $password, ?string $ip): array
     {
@@ -56,22 +56,20 @@ class AuthFlowService
     public function verifySignup(string $email, string $code, ?string $ip): User
     {
         $pendingSignup = Cache::get($this->signupCacheKey($email));
-
-        if (! is_array($pendingSignup)) {
-            throw new HttpException(410, __('auth.signup_context_expired'));
-        }
+        throw_unless(is_array($pendingSignup), new HttpException(410, __('auth.signup_context_expired')));
 
         $otp = $this->verifyOtp($email, 'register', $code);
 
         $user = DB::transaction(function () use ($email, $pendingSignup, $ip, $otp): User {
-            $nickname = $this->makeUniqueValue($pendingSignup['nickname_seed'], 'nickname');
-            $displayName = $this->makeUniqueValue($pendingSignup['nickname_seed'], 'name');
+            $nickname = $this->makeUniqueValue((string) data_get($pendingSignup, 'nickname_seed'), 'nickname');
+            $displayName = $this->makeUniqueValue((string) data_get($pendingSignup, 'nickname_seed'), 'name');
 
+            /** @var User $user */
             $user = User::create([
                 'name' => $displayName,
                 'nickname' => $nickname,
                 'email' => $email,
-                'password' => $pendingSignup['password_hash'],
+                'password' => (string) data_get($pendingSignup, 'password_hash'),
                 'email_verified_at' => now(),
                 'last_login_at' => now(),
                 'last_login_ip' => $ip,
@@ -98,8 +96,7 @@ class AuthFlowService
         string $challengeMode = 'auto',
     ): array {
         $user = User::query()->where('email', $email)->first();
-
-        if (! $user || ! Hash::check($password, $user->password)) {
+        if (! $user instanceof User || ! Hash::check($password, $user->password)) {
             throw new HttpException(401, __('auth.invalid_credentials'));
         }
 
@@ -258,9 +255,10 @@ class AuthFlowService
 
     private function requestSigninResend(string $email, #[SensitiveParameter] ?string $challengeToken): array
     {
-        if (! $challengeToken || ! is_array(Cache::get($this->signinCacheKey($challengeToken)))) {
-            throw new HttpException(410, __('auth.challenge_expired'));
-        }
+        throw_if(
+            blank($challengeToken) || ! is_array(Cache::get($this->signinCacheKey((string) $challengeToken))),
+            new HttpException(410, __('auth.challenge_expired')),
+        );
 
         $this->enforceCooldown($email, 'login');
         $user = User::query()->where('email', $email)->first();
@@ -289,7 +287,7 @@ class AuthFlowService
             throw new HttpException(422, __('auth.verification_code_invalid'));
         }
 
-        if ($otp->expires_at && $otp->expires_at->isPast()) {
+        if ($otp->expires_at?->isPast() ?? false) {
             throw new HttpException(410, __('auth.verification_code_expired'));
         }
 
@@ -384,6 +382,6 @@ class AuthFlowService
             return 0;
         }
 
-        return max(0, self::RESEND_COOLDOWN_SECONDS - (time() - $createdAtTimestamp));
+        return (int) max(0, self::RESEND_COOLDOWN_SECONDS - ((int) now()->timestamp - $createdAtTimestamp));
     }
 }

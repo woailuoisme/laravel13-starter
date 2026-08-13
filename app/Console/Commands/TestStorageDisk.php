@@ -23,7 +23,7 @@ class TestStorageDisk extends Command
      */
     private function executeWithTimeout(callable $callback, int $timeout = 30): mixed
     {
-        $startTime = time();
+        $startTime = (int) now()->timestamp;
         $oldTimeLimit = (int) ini_get('max_execution_time');
 
         if ($oldTimeLimit > $timeout || $oldTimeLimit === 0) {
@@ -33,7 +33,7 @@ class TestStorageDisk extends Command
         try {
             $result = $callback();
 
-            if ((time() - $startTime) >= $timeout) {
+            if (((int) now()->timestamp - $startTime) >= $timeout) {
                 throw new RuntimeException('操作超时');
             }
 
@@ -43,7 +43,7 @@ class TestStorageDisk extends Command
         } catch (Throwable $e) {
             set_time_limit($oldTimeLimit);
 
-            if ((time() - $startTime) >= $timeout) {
+            if (((int) now()->timestamp - $startTime) >= $timeout) {
                 throw new RuntimeException('操作超时: '.$e->getMessage());
             }
 
@@ -144,30 +144,25 @@ class TestStorageDisk extends Command
     {
         $storage = Storage::disk($disk);
 
-        $steps = [
-            '连接' => fn () => $this->testConnection($storage),
-            '文件上传' => fn () => $this->testFileUpload($storage, $disk),
-            '文件读取' => fn ($file) => $this->testFileRead($storage, $file),
-            '文件列表' => fn () => $this->testFileList($storage),
-            '文件删除' => fn ($file) => $this->testFileDelete($storage, $file),
-        ];
+        $this->info('- 测试连接...');
+        $this->testConnection($storage);
+        $this->line('  [OK] 连接测试通过');
 
-        $testFile = null;
-        foreach ($steps as $name => $logic) {
-            $this->info("- 测试{$name}...");
-            if ($name === '文件读取' || $name === '文件删除') {
-                $logic($testFile);
-                $this->line("  [OK] {$name}测试通过");
+        $this->info('- 测试文件上传...');
+        $testFile = $this->testFileUpload($storage, $disk);
+        $this->line('  [OK] 文件上传测试通过');
 
-                continue;
-            }
+        $this->info('- 测试文件读取...');
+        $this->testFileRead($storage, $testFile);
+        $this->line('  [OK] 文件读取测试通过');
 
-            $result = $logic();
-            if ($name === '文件上传') {
-                $testFile = $result;
-            }
-            $this->line("  [OK] {$name}测试通过");
-        }
+        $this->info('- 测试文件列表...');
+        $this->testFileList($storage);
+        $this->line('  [OK] 文件列表测试通过');
+
+        $this->info('- 测试文件删除...');
+        $this->testFileDelete($storage, $testFile);
+        $this->line('  [OK] 文件删除测试通过');
     }
 
     private function testConnection(Filesystem $storage): void
@@ -178,13 +173,10 @@ class TestStorageDisk extends Command
     private function testFileUpload(Filesystem $storage, string $disk): string
     {
         $testContent = "{$disk} 存储测试文件内容 - ".now()->toDateTimeString();
-        $testFileName = "test/{$disk}-test-".time().'.txt';
+        $testFileName = "test/{$disk}-test-".now()->timestamp.'.txt';
 
         $this->executeWithTimeout(static fn () => $storage->put($testFileName, $testContent), 30);
-
-        if (! $storage->exists($testFileName)) {
-            throw new RuntimeException('文件上传后未检测到存在');
-        }
+        throw_unless($storage->exists($testFileName), new RuntimeException('文件上传后未检测到存在'));
 
         return $testFileName;
     }
@@ -192,9 +184,7 @@ class TestStorageDisk extends Command
     private function testFileRead(Filesystem $storage, string $fileName): void
     {
         $content = $this->executeWithTimeout(static fn () => $storage->get($fileName), 30);
-        if ($content === '' || $content === null) {
-            throw new RuntimeException('文件读取内容为空');
-        }
+        throw_if(blank($content), new RuntimeException('文件读取内容为空'));
     }
 
     private function testFileList(Filesystem $storage): void

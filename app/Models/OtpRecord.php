@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\OtpRecordFactory;
@@ -46,6 +48,7 @@ class OtpRecord extends Model
     /** @use HasFactory<OtpRecordFactory> */
     use HasFactory;
 
+    #[\Override]
     protected function casts(): array
     {
         return [

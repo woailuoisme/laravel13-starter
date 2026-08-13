@@ -7,6 +7,7 @@ namespace App\Http\Resources\V1\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 use SensitiveParameter;
 
 /**
@@ -26,6 +27,7 @@ class AuthResultResource extends JsonResource
     /**
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\V1\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,9 +29,9 @@ Route::prefix('auth')->group(function (): void {
 
     // Authenticated routes
     Route::middleware(['auth:api'])->group(function (): void {
-        Route::get('me', [AuthController::class, 'me'])->name('auth.me');
-        Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
-        Route::post('refresh', [AuthController::class, 'refresh'])->name('auth.refresh');
-        Route::post('profile', [AuthController::class, 'profileUpdate'])->name('auth.profile.update');
+        Route::get('me', [ProfileController::class, 'me'])->name('auth.me');
+        Route::post('logout', [ProfileController::class, 'logout'])->name('auth.logout');
+        Route::post('refresh', [ProfileController::class, 'refresh'])->name('auth.refresh');
+        Route::post('profile', [ProfileController::class, 'profileUpdate'])->name('auth.profile.update');
     });
 });

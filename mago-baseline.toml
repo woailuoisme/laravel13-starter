@@ -74,39 +74,9 @@ count = 2
 
 [[issues]]
 file = "app/Console/Commands/TestStorageDisk.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `App\Console\Commands\TestStorageDisk::testFileDelete`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Console/Commands/TestStorageDisk.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `App\Console\Commands\TestStorageDisk::testFileRead`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Console/Commands/TestStorageDisk.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
 count = 8
-
-[[issues]]
-file = "app/Console/Commands/TestStorageDisk.php"
-code = "too-few-arguments"
-message = "Too few arguments provided for closure `{closure:app/Console/Commands/TestStorageDisk.php:150:31}`."
-count = 1
-
-[[issues]]
-file = "app/Console/Commands/TestStorageDisk.php"
-code = "too-many-arguments"
-message = "Too many arguments provided for closure `{closure:app/Console/Commands/TestStorageDisk.php:148:25}`."
-count = 1
-
-[[issues]]
-file = "app/Console/Commands/TestStorageDisk.php"
-code = "too-many-arguments"
-message = "Too many arguments provided for closure `{closure:app/Console/Commands/TestStorageDisk.php:149:31}`."
-count = 1
 
 [[issues]]
 file = "app/Console/Commands/VerifyServicesCommand.php"
@@ -125,12 +95,6 @@ file = "app/Console/Commands/VerifyServicesCommand.php"
 code = "invalid-type-cast"
 message = "Casting `mixed` to `array`."
 count = 2
-
-[[issues]]
-file = "app/Console/Commands/VerifyServicesCommand.php"
-code = "mixed-operand"
-message = "Invalid right operand: type `nonnull` cannot be reliably used in string concatenation."
-count = 1
 
 [[issues]]
 file = "app/Console/Commands/VerifyServicesCommand.php"
@@ -422,86 +386,8 @@ count = 1
 
 [[issues]]
 file = "app/Helpers/AppConfigurator.php"
-code = "invalid-operand"
-message = "Invalid type for left operand."
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureDefaultRoutes`: expected `array<array-key, mixed>`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureV1AdminRoutes`: expected `array<array-key, mixed>`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureV1Routes`: expected `array<array-key, mixed>`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureV2AdminRoutes`: expected `array<array-key, mixed>`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `Illuminate\Contracts\Routing\ResponseFactory::json`: expected `int`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #2 of `array_key_exists`: expected `array<array-key, mixed>`, but found `mixed`."
-count = 2
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-array-access"
-message = "Unsafe array access on type `mixed`."
-count = 2
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 5
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
 code = "mixed-assignment"
 message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "possible-method-access-on-null"
-message = "Attempting to call a method on `null`."
-count = 3
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "redundant-cast"
-message = "Redundant cast to `(string)`: the expression already has this type."
-count = 2
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "redundant-null-coalesce"
-message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
-count = 1
-
-[[issues]]
-file = "app/Helpers/AppConfigurator.php"
-code = "unused-method"
-message = "Method `configuresentryintegration()` is never used."
 count = 1
 
 [[issues]]
@@ -643,24 +529,6 @@ message = 'Possible argument type mismatch for argument #1 of `Filament\Panel\Co
 count = 1
 
 [[issues]]
-file = "app/Helpers/QrCodeHelper.php"
-code = "possibly-invalid-argument"
-message = 'Possible argument type mismatch for argument #1 of `Endroid\QrCode\Color\Color::__construct`: expected `int<0, 255>`, but possibly received `int`.'
-count = 1
-
-[[issues]]
-file = "app/Helpers/QrCodeHelper.php"
-code = "possibly-invalid-argument"
-message = 'Possible argument type mismatch for argument #2 of `Endroid\QrCode\Color\Color::__construct`: expected `int<0, 255>`, but possibly received `int`.'
-count = 1
-
-[[issues]]
-file = "app/Helpers/QrCodeHelper.php"
-code = "possibly-invalid-argument"
-message = 'Possible argument type mismatch for argument #3 of `Endroid\QrCode\Color\Color::__construct`: expected `int<0, 255>`, but possibly received `int`.'
-count = 1
-
-[[issues]]
 file = "app/Http/Controllers/AppBaseController.php"
 code = "unsafe-instantiation"
 message = 'Unsafe `new $class_name`: constructor of `Illuminate\Database\Eloquent\Model` is not final and its signature might change in child classes, potentially leading to runtime errors.'
@@ -682,7 +550,7 @@ count = 1
 file = "app/Http/Controllers/V1/AuthController.php"
 code = "dynamic-static-method-call"
 message = 'Cannot call magic static method `App\Models\User::update` on an instance.'
-count = 2
+count = 1
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
@@ -710,33 +578,15 @@ count = 1
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `App\Services\Media\MediaService::uploadSingle`: expected `Illuminate\Http\UploadedFile`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Http/Controllers/V1/AuthController.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #2 of `array_key_exists`: expected `array<array-key, mixed>`, but found `mixed`."
-count = 1
-
-[[issues]]
-file = "app/Http/Controllers/V1/AuthController.php"
-code = "mixed-array-access"
-message = "Unsafe array access on type `mixed`."
-count = 1
-
-[[issues]]
-file = "app/Http/Controllers/V1/AuthController.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 3
+count = 2
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 6
+count = 5
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
@@ -752,12 +602,6 @@ count = 1
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
-code = "non-documented-property"
-message = 'Ambiguous property access: $unreadNotifications on class `App\Models\User`.'
-count = 1
-
-[[issues]]
-file = "app/Http/Controllers/V1/AuthController.php"
 code = "possibly-invalid-argument"
 message = 'Possible argument type mismatch for argument #1 of `App\Http\Controllers\AppBaseController::sendError`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
 count = 1
@@ -766,13 +610,13 @@ count = 1
 file = "app/Http/Controllers/V1/AuthController.php"
 code = "possibly-invalid-argument"
 message = 'Possible argument type mismatch for argument #1 of `App\Http\Controllers\AppBaseController::sendSuccess`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
-count = 5
+count = 1
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
 code = "possibly-invalid-argument"
 message = 'Possible argument type mismatch for argument #2 of `App\Http\Controllers\AppBaseController::sendResponse`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
-count = 6
+count = 5
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
@@ -784,7 +628,7 @@ count = 6
 file = "app/Http/Controllers/V1/AuthController.php"
 code = "redundant-docblock-type"
 message = "Redundant docblock type for variable `$user`."
-count = 2
+count = 1
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
@@ -796,7 +640,7 @@ count = 2
 file = "app/Http/Controllers/V1/AuthController.php"
 code = "too-many-arguments"
 message = 'Too many arguments provided for method `App\Models\User::update`.'
-count = 2
+count = 1
 
 [[issues]]
 file = "app/Http/Controllers/V1/AuthController.php"
@@ -988,78 +832,36 @@ count = 2
 file = "app/Services/Auth/AuthFlowService.php"
 code = "dynamic-static-method-call"
 message = 'Cannot call magic static method `App\Models\User::where` on an instance.'
-count = 4
-
-[[issues]]
-file = "app/Services/Auth/AuthFlowService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::makeUniqueValue`: expected `string`, but found `mixed`.'
-count = 2
-
-[[issues]]
-file = "app/Services/Auth/AuthFlowService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::shouldRequireChallenge`: expected `App\Models\User`, but found `truthy-mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Auth/AuthFlowService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `Illuminate\Support\Facades\Hash::check`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Auth/AuthFlowService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #3 of `App\Services\Auth\AuthFlowService::issueOtp`: expected `App\Models\User|null`, but found `mixed`.'
-count = 1
+count = 3
 
 [[issues]]
 file = "app/Services/Auth/AuthFlowService.php"
 code = "mixed-argument"
 message = 'Invalid argument type for argument #3 of `App\Services\Auth\AuthFlowService::issueOtp`: expected `App\Models\User|null`, but found `truthy-mixed`.'
-count = 2
+count = 1
 
 [[issues]]
 file = "app/Services/Auth/AuthFlowService.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 9
+count = 7
 
 [[issues]]
 file = "app/Services/Auth/AuthFlowService.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 14
-
-[[issues]]
-file = "app/Services/Auth/AuthFlowService.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`truthy-mixed`)."
-count = 1
-
-[[issues]]
-file = "app/Services/Auth/AuthFlowService.php"
-code = "mixed-property-access"
-message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 1
+count = 12
 
 [[issues]]
 file = "app/Services/Auth/AuthFlowService.php"
 code = "mixed-property-access"
 message = "Attempting to access a property on a non-object type (`truthy-mixed`)."
-count = 4
-
-[[issues]]
-file = "app/Services/Auth/AuthFlowService.php"
-code = "mixed-return-statement"
-message = 'Could not infer a precise return type for function `App\Services\Auth\AuthFlowService::verifySignup`. Saw type `mixed`.'
 count = 1
 
 [[issues]]
 file = "app/Services/Auth/AuthFlowService.php"
 code = "mixed-return-statement"
-message = "Could not infer a precise return type for function `{closure:app/Services/Auth/AuthFlowService.php:66:33}`. Saw type `mixed`."
+message = 'Could not infer a precise return type for function `App\Services\Auth\AuthFlowService::verifySignup`. Saw type `mixed`.'
 count = 1
 
 [[issues]]
@@ -1084,7 +886,7 @@ count = 2
 file = "app/Services/Auth/AuthFlowService.php"
 code = "possibly-invalid-argument"
 message = 'Possible argument type mismatch for argument #1 of `App\Services\Auth\AuthFlowService::secondsUntilResendAvailable`: expected `int|null`, but possibly received `float|int|null|string`.'
-count = 5
+count = 4
 
 [[issues]]
 file = "app/Services/Auth/AuthFlowService.php"
@@ -1102,7 +904,7 @@ count = 2
 file = "app/Services/Auth/AuthFlowService.php"
 code = "too-few-arguments"
 message = 'Too few arguments provided for method `App\Models\User::where`.'
-count = 4
+count = 3
 
 [[issues]]
 file = "app/Services/Media/CustomMediaPathGenerator.php"
@@ -1136,12 +938,6 @@ count = 2
 
 [[issues]]
 file = "app/Services/Media/MediaService.php"
-code = "falsable-return-statement"
-message = '''Function `App\Services\Media\MediaService::generateFileName` is declared to return `string` but possibly returns 'false' (inferred as `false|string`).'''
-count = 1
-
-[[issues]]
-file = "app/Services/Media/MediaService.php"
 code = "impossible-condition"
 message = "This condition (type `false`) will always evaluate to false."
 count = 2
@@ -1150,12 +946,6 @@ count = 2
 file = "app/Services/Media/MediaService.php"
 code = "invalid-return-statement"
 message = 'Invalid return type for function `App\Services\Media\MediaService::copyMediaBetweenModels`: expected `Illuminate\Support\Collection<Spatie\MediaLibrary\MediaCollections\Models\Media, mixed>`, but found `Illuminate\Support\Collection<array-key, mixed>`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Media/MediaService.php"
-code = "invalid-return-statement"
-message = 'Invalid return type for function `App\Services\Media\MediaService::generateFileName`: expected `string`, but found `false|string`.'
 count = 1
 
 [[issues]]
@@ -1185,12 +975,6 @@ count = 1
 [[issues]]
 file = "app/Services/Media/MediaService.php"
 code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Helpers\AppHelper::formatFileSize`: expected `float|int`, but found `mixed`.'
-count = 3
-
-[[issues]]
-file = "app/Services/Media/MediaService.php"
-code = "mixed-argument"
 message = 'Invalid argument type for argument #4 of `App\Services\Media\MediaService::uploadSingle`: expected `array<array-key, mixed>`, but found `mixed`.'
 count = 1
 
@@ -1210,7 +994,7 @@ count = 2
 file = "app/Services/Media/MediaService.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 4
+count = 2
 
 [[issues]]
 file = "app/Services/Media/MediaService.php"
@@ -1228,7 +1012,7 @@ count = 2
 file = "app/Services/Media/MediaService.php"
 code = "mixed-property-access"
 message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 3
+count = 1
 
 [[issues]]
 file = "app/Services/Media/MediaService.php"
@@ -1286,12 +1070,6 @@ count = 1
 
 [[issues]]
 file = "app/Services/Pay/AbstractAlipayService.php"
-code = "mixed-assignment"
-message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/AbstractAlipayService.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
 count = 1
@@ -1309,52 +1087,34 @@ message = 'Could not infer a precise return type for function `App\Services\Pay\
 count = 1
 
 [[issues]]
-file = "app/Services/Pay/AbstractAlipayService.php"
-code = "possible-method-access-on-null"
-message = "Attempting to call a method on `null`."
-count = 1
-
-[[issues]]
 file = "app/Services/Pay/AlipayService.php"
 code = "mixed-argument"
 message = 'Invalid argument type for argument #1 of `App\Exceptions\AlipayException::fromAlipayResponse`: expected `object`, but found `mixed`.'
-count = 3
-
-[[issues]]
-file = "app/Services/Pay/AlipayService.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #1 of `array_merge`: expected `array<array-key, mixed>`, but found `mixed`."
-count = 1
+count = 2
 
 [[issues]]
 file = "app/Services/Pay/AlipayService.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
 count = 6
-
-[[issues]]
-file = "app/Services/Pay/AlipayService.php"
-code = "mixed-assignment"
-message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
-count = 3
 
 [[issues]]
 file = "app/Services/Pay/AlipayService.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 10
+count = 8
 
 [[issues]]
 file = "app/Services/Pay/AlipayService.php"
 code = "mixed-property-access"
 message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 10
+count = 5
 
 [[issues]]
 file = "app/Services/Pay/AlipayService.php"
 code = "possible-method-access-on-null"
 message = "Attempting to call a method on `null`."
-count = 6
+count = 5
 
 [[issues]]
 file = "app/Services/Pay/GlobalAlipayService.php"
@@ -1364,15 +1124,9 @@ count = 1
 
 [[issues]]
 file = "app/Services/Pay/GlobalAlipayService.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #2 of `array_merge`: expected `array<array-key, mixed>`, but found `mixed`."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/GlobalAlipayService.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 6
+count = 7
 
 [[issues]]
 file = "app/Services/Pay/GlobalAlipayService.php"
@@ -1390,7 +1144,7 @@ count = 9
 file = "app/Services/Pay/GlobalAlipayService.php"
 code = "mixed-property-access"
 message = "Attempting to access a property on a non-object type (`mixed`)."
-count = 7
+count = 6
 
 [[issues]]
 file = "app/Services/Pay/GlobalAlipayService.php"
@@ -1429,10 +1183,10 @@ message = '''Possible argument type mismatch for argument #1 of `Stripe\Service\
 count = 1
 
 [[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "invalid-iterator"
-message = "The expression provided to `foreach` is not iterable. It resolved to type `nonnull`, which is not iterable."
-count = 1
+file = "app/Services/Pay/WechatPayCrypto.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 10
 
 [[issues]]
 file = "app/Services/Pay/WechatPayService.php"
@@ -1443,103 +1197,13 @@ count = 1
 [[issues]]
 file = "app/Services/Pay/WechatPayService.php"
 code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Services\Pay\WechatPayService::decryptResource`: expected `array<array-key, mixed>`, but found `nonnull`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #1 of `array_key_exists`: expected `bool|float|int|string`, but found `nonnull`."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #1 of `json_decode`: expected `string`, but found `mixed`."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
 message = 'Invalid argument type for argument #2 of `App\Exceptions\WePayException::fromWechatResponse`: expected `int`, but found `mixed`.'
 count = 1
 
 [[issues]]
 file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `WeChatPay\Crypto\Rsa::verify`: expected `string`, but found `nonnull`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = "Invalid argument type for argument #2 of `sprintf`: expected `Stringable|null|scalar`, but found `mixed`."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #3 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #3 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #4 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #4 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-array-access"
-message = "Unsafe array access on type `mixed`."
-count = 7
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
 code = "mixed-assignment"
 message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 6
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-assignment"
-message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
 count = 4
 
 [[issues]]
@@ -1552,12 +1216,6 @@ count = 4
 file = "app/Services/Pay/WechatPayService.php"
 code = "mixed-operand"
 message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "mixed-operand"
-message = "Invalid right operand: type `nonnull` cannot be reliably used in string concatenation."
 count = 1
 
 [[issues]]
@@ -1582,55 +1240,13 @@ count = 1
 file = "app/Services/Pay/WechatPayService.php"
 code = "redundant-cast"
 message = "Redundant cast to `(string)`: the expression already has this type."
-count = 4
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "redundant-comparison"
-message = "Redundant `!==` comparison: left-hand side is always not identical to right-hand side."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "redundant-condition"
-message = "Redundant ternary operator: condition is always truthy."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "redundant-logical-operation"
-message = "Redundant `&&` operation: left operand is evaluated and right operand is always truthy."
-count = 1
-
-[[issues]]
-file = "app/Services/Pay/WechatPayService.php"
-code = "redundant-type-comparison"
-message = "Redundant type assertion: `$cachedCerts` is already `array<array-key, mixed>`."
-count = 1
+count = 2
 
 [[issues]]
 file = "app/Services/Pay/WechatPayService.php"
 code = "string-member-selector"
 message = "This member selector uses a non-literal string type (`string`); its specific value cannot be statically determined."
 count = 1
-
-[[issues]]
-file = "app/Services/ResponseService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #1 of `App\Services\ResponseService::sendError`: expected `string`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/ResponseService.php"
-code = "mixed-argument"
-message = 'Invalid argument type for argument #2 of `App\Services\ResponseService::sendError`: expected `int`, but found `mixed`.'
-count = 1
-
-[[issues]]
-file = "app/Services/ResponseService.php"
-code = "mixed-assignment"
-message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
-count = 2
 
 [[issues]]
 file = "app/Traits/EnumValues.php"
@@ -2005,30 +1621,6 @@ message = "Attempting to access a property on a non-object type (`mixed`)."
 count = 1
 
 [[issues]]
-file = "tests/Feature/QrCodeHelperTest.php"
-code = "deprecated-method"
-message = 'Call to deprecated method: `App\Helpers\QrCodeHelper::generateEps`.'
-count = 1
-
-[[issues]]
-file = "tests/Feature/QrCodeHelperTest.php"
-code = "deprecated-method"
-message = 'Call to deprecated method: `App\Helpers\QrCodeHelper::generateGradient`.'
-count = 1
-
-[[issues]]
-file = "tests/Feature/QrCodeHelperTest.php"
-code = "missing-magic-method"
-message = "Access to documented magic property `$not` on a class that cannot handle it."
-count = 2
-
-[[issues]]
-file = "tests/Feature/QrCodeHelperTest.php"
-code = "too-many-arguments"
-message = 'Too many arguments provided for method `Illuminate\Support\Facades\Facade::shouldReceive`.'
-count = 6
-
-[[issues]]
 file = "tests/Feature/TestHorizonJobTest.php"
 code = "too-many-arguments"
 message = 'Too many arguments provided for method `Illuminate\Support\Facades\Facade::shouldReceive`.'
@@ -2177,6 +1769,48 @@ file = "tests/Feature/V1/Auth/PasswordResetTest.php"
 code = "too-few-arguments"
 message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
 count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileMeAndLogoutTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonpath` on class `Pest\PendingCalls\TestCall`.'
+count = 5
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileMeAndLogoutTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonstructure` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileMeAndLogoutTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertok` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileMeAndLogoutTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjson` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileMeAndLogoutTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `postjson` on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileMeAndLogoutTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `withheader` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileMeAndLogoutTest.php"
+code = "non-existent-method"
+message = 'Method `login` does not exist on type `Illuminate\Contracts\Auth\Guard`.'
+count = 3
 
 [[issues]]
 file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
@@ -2522,45 +2156,27 @@ count = 1
 
 [[issues]]
 file = "tests/Unit/Console/VerifyServicesCommandTest.php"
-code = "mixed-method-access"
-message = "Attempting to access a method on a non-object type (`mixed`)."
-count = 5
-
-[[issues]]
-file = "tests/Unit/Console/VerifyServicesCommandTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `artisan` on class `Pest\PendingCalls\TestCall`.'
-count = 3
+count = 2
 
 [[issues]]
 file = "tests/Unit/Console/VerifyServicesCommandTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `assertexitcode` on class `Pest\PendingCalls\TestCall`.'
-count = 3
+count = 2
 
 [[issues]]
 file = "tests/Unit/Console/VerifyServicesCommandTest.php"
 code = "non-documented-method"
 message = 'Ambiguous method call to `expectsoutputtocontain` on class `Pest\PendingCalls\TestCall`.'
-count = 11
-
-[[issues]]
-file = "tests/Unit/Console/VerifyServicesCommandTest.php"
-code = "non-documented-method"
-message = 'Ambiguous method call to `once` on class `Mockery\HigherOrderMessage`.'
-count = 5
-
-[[issues]]
-file = "tests/Unit/Console/VerifyServicesCommandTest.php"
-code = "non-existent-method"
-message = 'Method `once` does not exist on type `Mockery\ExpectationInterface`.'
-count = 5
+count = 8
 
 [[issues]]
 file = "tests/Unit/Console/VerifyServicesCommandTest.php"
 code = "too-many-arguments"
 message = 'Too many arguments provided for method `Illuminate\Support\Facades\Facade::shouldReceive`.'
-count = 9
+count = 6
 
 [[issues]]
 file = "tests/Unit/DeployScriptTest.php"
@@ -2585,6 +2201,12 @@ file = "tests/Unit/Filament/BackendManagementNavigationTest.php"
 code = "mixed-method-access"
 message = "Attempting to access a method on a non-object type (`mixed`)."
 count = 1
+
+[[issues]]
+file = "tests/Unit/Http/NotificationControllerTest.php"
+code = "non-existent-method"
+message = 'Method `login` does not exist on type `Illuminate\Contracts\Auth\Guard`.'
+count = 2
 
 [[issues]]
 file = "tests/Unit/Http/Requests/V1/AuthRequestsValidationTest.php"

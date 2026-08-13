@@ -4,9 +4,9 @@
 version = "8.5"
 
 [indexing]
-# 项目 optimize-autoloader 已开启，基于 classmap 索引最快；
-# 若 facade(_ide_helper.php) 诊断出现噪音，改为 "full"
-strategy = "composer"
+# 使用 full 全量索引：composer 策略无法解析 factory 继承链
+# (如 AdminUserFactory::create() 来自基类 Factory)，导致误报
+strategy = "full"
 
 [diagnostics]
 # 项目已生成 _ide_helper.php，facade/模型属性可静态解析，噪音可控

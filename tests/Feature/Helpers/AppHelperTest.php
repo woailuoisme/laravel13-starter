@@ -62,33 +62,13 @@ describe('AppHelper::formatFileSize', function () {
     });
 });
 
-describe('AppHelper::generateOrderNo', function () {
-    it('generates an order number with the correct prefix', function () {
-        expect(AppHelper::generateOrderNo('ORD'))->toStartWith('ORD');
-    });
-
-    it('generates a unique order number each time', function () {
-        $orderNo1 = AppHelper::generateOrderNo();
-        $orderNo2 = AppHelper::generateOrderNo();
-        expect($orderNo1)->not->toBe($orderNo2);
-    });
-
-    it('generates a shop order number with SO prefix', function () {
-        expect(AppHelper::generateShopOrderNo())->toStartWith('SO');
-    });
-
-    it('generates a product order number with PO prefix', function () {
-        expect(AppHelper::generateProductOrderNo())->toStartWith('PO');
-    });
-});
-
 describe('AppHelper::round', function () {
     it('rounds a float to 2 decimal places by default', function () {
         expect(AppHelper::round(3.141_59))->toBe(3.14);
     });
 
-    it('rounds down with PHP_ROUND_HALF_DOWN mode', function () {
-        expect(AppHelper::round(2.345, 2, PHP_ROUND_HALF_DOWN))->toBe(2.34);
+    it('rounds down with RoundingMode::HalfTowardsZero', function () {
+        expect(AppHelper::round(2.345, 2, RoundingMode::HalfTowardsZero))->toBe(2.34);
     });
 });
 
