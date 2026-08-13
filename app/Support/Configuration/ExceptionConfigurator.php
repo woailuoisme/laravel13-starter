@@ -35,15 +35,21 @@ class ExceptionConfigurator
 
     /**
      * 配置异常处理
-     * 统一处理API和Web请求的异常响应
+     * 统一处理API和非管理后台请求的异常响应
      */
     public static function configureExceptions(Exceptions $exceptions): void
     {
-        // 配置API异常处理
-        self::configureApiExceptions($exceptions);
+        $exceptions->shouldRenderJsonWhen(
+            static fn (Request $request, Throwable $e): bool => self::shouldRenderJson($request),
+        );
 
-        // 配置Web异常处理
-        self::configureWebExceptions($exceptions);
+        $exceptions->render(static function (Throwable $e, Request $request): ?JsonResponse {
+            if (self::shouldRenderJson($request)) {
+                return self::renderApiException($e);
+            }
+
+            return null;
+        });
 
         // 配置限流异常处理
         self::configureThrottleExceptions($exceptions);
@@ -53,15 +59,15 @@ class ExceptionConfigurator
     }
 
     /**
-     * 配置API异常处理
+     * 判断当前请求是否应该渲染为统一 JSON 异常
      */
-    private static function configureApiExceptions(Exceptions $exceptions): void
+    public static function shouldRenderJson(Request $request): bool
     {
-        $exceptions->renderable(static function (Throwable $e, Request $request) {
-            if ($request->is(self::API_PREFIX.'/*')) {
-                return self::renderApiException($e);
-            }
-        });
+        if ($request->is('admin', 'admin/*')) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -511,25 +517,20 @@ class ExceptionConfigurator
     }
 
     /**
-     * 配置Web异常处理
-     */
-    private static function configureWebExceptions(Exceptions $exceptions): void
-    {
-        // Web异常处理应该让Laravel默认处理，不强制返回JSON
-        // 只有API路径才需要特殊的JSON异常处理
-    }
-
-    /**
      * 配置限流异常处理
      */
     private static function configureThrottleExceptions(Exceptions $exceptions): void
     {
-        $exceptions->renderable(static function (ThrottleRequestsException $e) {
+        $exceptions->renderable(static function (ThrottleRequestsException $e, Request $request): ?JsonResponse {
+            if (! self::shouldRenderJson($request)) {
+                return null;
+            }
+
             $response = [
                 'success' => false,
                 'code' => Response::HTTP_TOO_MANY_REQUESTS,
                 'message' => Response::$statusTexts[Response::HTTP_TOO_MANY_REQUESTS] ?? 'Too Many Requests',
-                'timestamp' => now()->format('Y-m-d h:i:s'),
+                'timestamp' => now()->toIso8601String(),
             ];
 
             // 尝试从异常头部获取重试时间

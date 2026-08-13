@@ -44,6 +44,13 @@ class MiddlewareConfigurator
             'api/v1/stripe/webhook',
         ]);
 
+        $middleware->preventRequestsDuringMaintenance(except: [
+            'up',
+            '/up',
+            'ready',
+            '/ready',
+        ]);
+
         // 移除 API 组的频率限制（如果你在压测时不需要它）
         $middleware->api(remove: [
             ThrottleRequests::class,
