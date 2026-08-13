@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\V1\AuthController;
+use App\Http\Controllers\V1\NotificationController;
 use App\Http\Controllers\V1\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,4 +35,11 @@ Route::prefix('auth')->group(function (): void {
         Route::post('refresh', [ProfileController::class, 'refresh'])->name('auth.refresh');
         Route::post('profile', [ProfileController::class, 'profileUpdate'])->name('auth.profile.update');
     });
+});
+
+Route::middleware(['auth:api'])->prefix('notifications')->group(function (): void {
+    Route::get('/', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    Route::post('read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
+    Route::delete('{id}', [NotificationController::class, 'destroy'])->name('notifications.destroy');
 });

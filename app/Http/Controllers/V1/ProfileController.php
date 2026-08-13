@@ -12,33 +12,30 @@ use App\Services\Media\MediaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Knuckles\Scribe\Attributes\Authenticated;
+use Knuckles\Scribe\Attributes\Endpoint;
+use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\Response;
+use Knuckles\Scribe\Attributes\ResponseField;
+use Knuckles\Scribe\Attributes\ResponseFromFile;
 use Spatie\MediaLibrary\HasMedia;
 use Throwable;
 use Tymon\JWTAuth\JWTGuard;
 
-/**
- * @group 用户资料
- */
+#[Group('用户资料')]
 final class ProfileController extends AppBaseController
 {
     public function __construct(
         protected MediaService $mediaService,
     ) {}
 
-    /**
-     * 获取当前认证用户信息
-     *
-     * @authenticated
-     *
-     * 返回当前用户资料，包含常用展示字段。
-     *
-     * @responseField data.id 用户 ID
-     * @responseField data.nickname 用户昵称
-     * @responseField data.email 用户邮箱
-     * @responseField data.avatar 用户头像地址
-     *
-     * @responseFile storage/responses/v1/auth/user-profile.json
-     */
+    #[Endpoint('获取当前认证用户信息', '返回当前登录用户的个人详细资料，包含常用展示字段与优惠券数量统计。')]
+    #[Authenticated]
+    #[ResponseField('data.id', 'int', '用户 ID')]
+    #[ResponseField('data.nickname', 'string', '用户昵称')]
+    #[ResponseField('data.email', 'string', '用户邮箱')]
+    #[ResponseField('data.avatar', 'string', '用户头像地址')]
+    #[ResponseFromFile('storage/responses/v1/auth/user-profile.json')]
     public function me(): JsonResponse
     {
         /** @var User $user */
@@ -49,21 +46,15 @@ final class ProfileController extends AppBaseController
     }
 
     /**
-     * 更新用户个人资料
-     *
-     * @authenticated
-     *
      * @throws Throwable
-     *
-     * 返回更新后的用户资料，字段与 `me()` 一致。
-     *
-     * @responseField data.id 用户 ID
-     * @responseField data.nickname 用户昵称
-     * @responseField data.email 用户邮箱
-     * @responseField data.avatar 用户头像地址
-     *
-     * @responseFile storage/responses/v1/auth/user-profile.json
      */
+    #[Endpoint('更新用户个人资料', '更新当前用户的个人资料（昵称、头像等）。')]
+    #[Authenticated]
+    #[ResponseField('data.id', 'int', '用户 ID')]
+    #[ResponseField('data.nickname', 'string', '用户昵称')]
+    #[ResponseField('data.email', 'string', '用户邮箱')]
+    #[ResponseField('data.avatar', 'string', '用户头像地址')]
+    #[ResponseFromFile('storage/responses/v1/auth/user-profile.json')]
     public function profileUpdate(ProfileUpdateRequest $request): JsonResponse
     {
         /** @var User $user */
@@ -86,11 +77,9 @@ final class ProfileController extends AppBaseController
         return $this->sendSuccess(data: new UserProfileResource($freshUser ?? $user));
     }
 
-    /**
-     * 退出登录
-     *
-     * @authenticated
-     */
+    #[Endpoint('退出登录', '销毁当前认证用户的 JWT 访问令牌。')]
+    #[Authenticated]
+    #[Response(['success' => true, 'message' => 'Logout successful'], 200)]
     public function logout(): JsonResponse
     {
         /** @var JWTGuard $guard */
@@ -102,17 +91,10 @@ final class ProfileController extends AppBaseController
         return $this->sendSuccess(is_string($msg) ? $msg : 'Logout successful');
     }
 
-    /**
-     * 刷新访问令牌 (Token)
-     *
-     * @authenticated
-     *
-     * 返回刷新后的访问令牌。
-     *
-     * @responseField data.token 刷新后的访问令牌
-     *
-     * @responseFile storage/responses/v1/auth/refresh-token.json
-     */
+    #[Endpoint('刷新访问令牌 (Token)', '使用当前有效的 JWT 令牌换取新的访问令牌。')]
+    #[Authenticated]
+    #[ResponseField('data.token', 'string', '刷新后的访问令牌')]
+    #[ResponseFromFile('storage/responses/v1/auth/refresh-token.json')]
     public function refresh(): JsonResponse
     {
         /** @var JWTGuard $guard */
