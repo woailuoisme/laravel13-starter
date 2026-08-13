@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Deployer;
 
+use Deployer\Host\Host;
+
 require 'recipe/laravel.php';
 
 /**
@@ -26,10 +28,9 @@ set('shared_files', []);
 set('shared_dirs', []);
 set('writable_dirs', []);
 
-host('production')
-    ->setHostname('47.115.229.8')
-    ->setRemoteUser('root')
-    ->set('labels', ['stage' => 'production']);
+/** @var Host $production */
+$production = host('production');
+$production->setHostname('47.115.229.8')->setRemoteUser('root')->set('labels', ['stage' => 'production']);
 
 function dockerCommand(string $command): string
 {
@@ -65,7 +66,7 @@ task('update-code', function (): void {
     writeln(sprintf('正在拉取代码 (分支: %s)...', $branch));
     $branch
         |> escapeshellarg(...)
-        |> (static fn ($x) => sprintf('git reset --hard && git pull origin %s', $x))
+        |> (static fn (string $x): string => sprintf('git reset --hard && git pull origin %s', $x))
         |> dockerCommand(...)
         |> run(...);
 });
@@ -85,7 +86,9 @@ task('migrate', function (): void {
 desc('Clear and rebuild framework and Filament caches.');
 task('optimize', function (): void {
     writeln('正在构建缓存并优化...');
-    run(dockerCommand('php artisan optimize:clear && php artisan optimize && php artisan filament:optimize && php artisan octane:reload'));
+    run(dockerCommand(
+        'php artisan optimize:clear && php artisan optimize && php artisan filament:optimize && php artisan octane:reload',
+    ));
 });
 
 desc('Restart queue workers and Horizon.');
@@ -105,7 +108,10 @@ task('quick', function (): void {
     $branch = (string) get('branch');
     $branch
         |> escapeshellarg(...)
-        |> (fn ($x) => sprintf('git pull origin %s && php artisan optimize && php artisan octane:reload', $x))
+        |> (static fn (string $x): string => sprintf(
+            'git pull origin %s && php artisan optimize && php artisan octane:reload',
+            $x,
+        ))
         |> dockerCommand(...)
         |> run(...);
 });

@@ -1166,12 +1166,6 @@ count = 1
 
 [[issues]]
 file = "app/Services/Media/MediaService.php"
-code = "invalid-return-statement"
-message = 'Invalid return type for function `App\Services\Media\MediaService::uploadSingle`: expected `Spatie\MediaLibrary\MediaCollections\Models\Media`, but found `unknown-ref(Spatie\MediaLibrary\MediaCollections\Models\Media)`.'
-count = 1
-
-[[issues]]
-file = "app/Services/Media/MediaService.php"
 code = "less-specific-argument"
 message = 'Argument type mismatch for argument #2 of `App\Services\Media\MediaService::updateOrder`: expected `array<int, int>`, but provided type `array<array-key, mixed>` is less specific.'
 count = 1
