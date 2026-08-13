@@ -37,14 +37,36 @@ strict-types = { enabled = false } # 禁用 linter 强制添加，防止与 Pint
 use-specific-expectations = { enabled = false } # 禁用 Pest 断言过度简化，防止误改导致测试行为变化
 final-controller = { enabled = false } # 允许 Controller 基类被子类继承
 
-# --- PHP 8.5 & Laravel 13 最佳实践规则 (全部支持自动修复) ---
-prefer-static-closure = { enabled = true } # [Octane & PHP 8.5] 强制未捕获闭包使用 static，彻底防止内存泄漏
-prefer-arrow-function = { enabled = true } # [PHP 8.5] 简单单行表达式优先使用短箭头函数 fn () => ...
-prefer-first-class-callable = { enabled = true } # [PHP 8.1+] 优先使用一等公民函数语法 $this->method(...)
-prefer-array-spread = { enabled = true } # [PHP 8.x] 数组合并优先使用解构展开运算符 [...$a, ...$b]
-prefer-casts-method = { enabled = true } # [Laravel 13] 强制 Eloquent Model 使用 casts() 方法代替 $casts 属性
+# --- PHP 8.4 ~ 8.5 弃用语法防御与现代化标准 ---
+explicit-nullable-param = { enabled = true } # [PHP 8.4] 强制显式可空形参 ?string $param = null
+deprecated-cast = { enabled = true } # [PHP 8.5] 强制现代化类型强转 (int), (bool), (float), (string)
+braced-string-interpolation = { enabled = true } # [PHP 8.2] 强制使用 {$var} 替代已废弃的 ${var}
+
+# --- PHP 8.0 ~ 8.3 现代语言特性与代码精简 (全量支持自动修复) ---
+sensitive-parameter = { enabled = true } # [PHP 8.2] 敏感参数强制标注 #[SensitiveParameter]
+prefer-first-class-callable = { enabled = true } # [PHP 8.1] 优先一等公民语法 $this->method(...)
+prefer-array-spread = { enabled = true } # [PHP 8.1] 数组合并优先使用解构展开 [...$a, ...$b]
+str-contains = { enabled = true } # [PHP 8.0] 优先使用 str_contains()
+str-starts-with = { enabled = true } # [PHP 8.0] 优先使用 str_starts_with()
+instanceof-stringable = { enabled = true } # [PHP 8.0] 优先使用 $x instanceof Stringable
+no-duplicate-match-arm = { enabled = true } # [PHP 8.0] 自动合并 match 重复分支
+no-redundant-nullsafe = { enabled = true } # 清理 ?->name ?? 中的冗余 ?->
+no-redundant-readonly = { enabled = true } # 清理 readonly class 内部多余的 readonly 属性
+no-redundant-final = { enabled = true } # 清理 final class 内部多余的 final 方法
+lowercase-type-hint = { enabled = true } # 规范统一小写类型注解与强转
+
+# --- 严格比较与赋值优化 (对标 Pint 规则) ---
+identity-comparison = { enabled = true } # [对应 Pint: strict_comparison] 强制使用 === / !== 替代 == / !=
+strict-behavior = { enabled = true } # [严格函数比较] in_array, array_search 等内置函数强制 strict: true
+use-compound-assignment = { enabled = true } # 优先使用复合赋值 +=, .=
+
+# --- Laravel 13 & Octane (PHP 8.5) 最佳实践 ---
+prefer-static-closure = { enabled = true } # [Octane] 闭包优先 static，彻底杜绝内存泄漏
+prefer-arrow-function = { enabled = true } # 简单单行表达式优先使用短箭头函数 fn () => ...
+prefer-casts-method = { enabled = true } # [Laravel 13] Eloquent 强制使用 casts() 方法代替 $casts 属性
 prefer-anonymous-migration = { enabled = true } # [Laravel 13] 强制使用匿名迁移类
 prefer-fake-helper = { enabled = true } # [Laravel 13 & Testing] 统一使用 fake() 辅助函数
+prefer-array-validation-rules = { enabled = true } # [Laravel] 验证规则强制使用结构化数组格式
 no-redundant-use = { enabled = true } # 自动清理无用的 use 导入
 no-unused-closure-capture = { enabled = true } # 自动清理闭包中未使用的 use 变量
 combine-consecutive-issets = { enabled = true } # 自动合并连续的 isset($a) && isset($b)

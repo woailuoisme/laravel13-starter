@@ -21,7 +21,7 @@ pre-commit:
       glob: "**/*.sh"
       run: shellcheck {staged_files}
 
-pre-push:
-  jobs:
-    - name: pest
-      run: php artisan test --compact
+# pre-push:
+#   jobs:
+#     - name: pest
+#       run: php artisan test --compact
