@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
      * By default the package will use the `include`, `filter`, `sort`

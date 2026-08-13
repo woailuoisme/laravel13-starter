@@ -1,34 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
-    |--------------------------------------------------------------------------
-    | Default Broadcaster
-    |--------------------------------------------------------------------------
-    |
-    | This option controls the default broadcaster that will be used by the
-    | framework when an event needs to be broadcast. You may set this to
-    | any of the connections defined in the "connections" array below.
-    |
-    | Supported: "reverb", "pusher", "ably", "redis", "log", "null"
-    |
-    */
+     |--------------------------------------------------------------------------
+     | Default Broadcaster
+     |--------------------------------------------------------------------------
+     |
+     | This option controls the default broadcaster that will be used by the
+     | framework when an event needs to be broadcast. You may set this to
+     | any of the connections defined in the "connections" array below.
+     |
+     | Supported: "reverb", "pusher", "ably", "redis", "log", "null"
+     |
+     */
 
     'default' => env('BROADCAST_CONNECTION', 'null'),
 
     /*
-    |--------------------------------------------------------------------------
-    | Broadcast Connections
-    |--------------------------------------------------------------------------
-    |
-    | Here you may define all of the broadcast connections that will be used
-    | to broadcast events to other systems or over WebSockets. Samples of
-    | each available type of connection are provided inside this array.
-    |
-    */
+     |--------------------------------------------------------------------------
+     | Broadcast Connections
+     |--------------------------------------------------------------------------
+     |
+     | Here you may define all of the broadcast connections that will be used
+     | to broadcast events to other systems or over WebSockets. Samples of
+     | each available type of connection are provided inside this array.
+     |
+     */
 
     'connections' => [
-
         'centrifugo' => [
             'driver' => 'centrifugo',
             'token_hmac_secret_key' => env('CENTRIFUGO_TOKEN_HMAC_SECRET_KEY'),
@@ -61,7 +62,10 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
+                'host' =>
+                    env('PUSHER_HOST') !== null && env('PUSHER_HOST') !== ''
+                        ? env('PUSHER_HOST')
+                        : 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
                 'port' => env('PUSHER_PORT', 443),
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => true,
@@ -84,7 +88,5 @@ return [
         'null' => [
             'driver' => 'null',
         ],
-
     ],
-
 ];

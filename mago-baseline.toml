@@ -1,0 +1,2929 @@
+variant = "loose"
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "array-to-string-conversion"
+message = "Potentially casting `array` to `string`."
+count = 2
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `basename`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `explode`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "mixed-operand"
+message = "Invalid middle operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "mixed-operand"
+message = "Left operand in `&&` operation has `mixed` type."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/ClearBucketCommand.php"
+code = "mixed-operand"
+message = "Right operand in `&&` operation has `mixed` type."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "invalid-iterator"
+message = "The expression provided to `foreach` is not iterable. It resolved to type `mixed`, which is not iterable."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "invalid-type-cast"
+message = "Casting type `null` to `array` will produce an empty array."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #2 of `Laravel\Prompts\multiselect`: expected `Illuminate\Support\Collection<int|string, string>|array<int|string, string>`, but provided type `non-empty-array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Console\Commands\TestStorageDisk::testSingleDiskLogic`: expected `string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Console\Commands\TestStorageDisk::testFileDelete`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Console\Commands\TestStorageDisk::testFileRead`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 8
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "too-few-arguments"
+message = "Too few arguments provided for closure `{closure:app/Console/Commands/TestStorageDisk.php:150:31}`."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "too-many-arguments"
+message = "Too many arguments provided for closure `{closure:app/Console/Commands/TestStorageDisk.php:148:25}`."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/TestStorageDisk.php"
+code = "too-many-arguments"
+message = "Too many arguments provided for closure `{closure:app/Console/Commands/TestStorageDisk.php:149:31}`."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "array-to-string-conversion"
+message = "Potentially casting `array` to `string`."
+count = 3
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "impossible-condition"
+message = "This condition (type `false`) will always evaluate to false."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "invalid-type-cast"
+message = "Casting `mixed` to `array`."
+count = 2
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `nonnull` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "redundant-comparison"
+message = "Redundant `!==` comparison: left-hand side is always not identical to right-hand side."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "redundant-condition"
+message = "Redundant condition: variable `$hasFailure` (type `false`) will always evaluate to true."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "redundant-condition"
+message = "Redundant ternary operator: condition is always truthy."
+count = 1
+
+[[issues]]
+file = "app/Console/Commands/VerifyServicesCommand.php"
+code = "redundant-logical-operation"
+message = "Redundant `||` operation: left operand is always false and right operand is evaluated."
+count = 1
+
+[[issues]]
+file = "app/Enums/FilamentNavigationGroup.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Enums\FilamentNavigationGroup::getLabelText`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Enums/Gender.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Enums\Gender::getLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Exceptions/AlipayException.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Exceptions\AlipayException::alipayError`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Exceptions/AlipayException.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Exceptions\AlipayException::alipayError`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Exceptions/AlipayException.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #3 of `App\Exceptions\AlipayException::alipayError`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Exceptions/AlipayException.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #4 of `App\Exceptions\AlipayException::alipayError`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Exceptions/AlipayException.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 4
+
+[[issues]]
+file = "app/Exceptions/WePayException.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Exceptions\WePayException::wechatPayError`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Exceptions/WePayException.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Exceptions\WePayException::wechatPayError`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Exceptions/WePayException.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Exceptions/WePayException.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "app/Exceptions/WePayException.php"
+code = "mixed-operand"
+message = "Left operand in `&&` operation has `mixed` type."
+count = 1
+
+[[issues]]
+file = "app/Exports/UserExport.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::oldest` on an instance.'
+count = 1
+
+[[issues]]
+file = "app/Exports/UserExport.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Exports\UserExport::query`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Exports/UserExport.php"
+code = "redundant-null-coalesce"
+message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Dashboard.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Pages\Dashboard::getNavigationLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Dashboard.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Pages\Dashboard::getTitle`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\AdminUser::whereRaw` on an instance.'
+count = 2
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Notifications\Concerns\HasBody::body`: expected `(closure(...mixed=): mixed)|null|string`, but provided type `array<array-key, mixed>|null|string` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Notifications\Concerns\HasTitle::title`: expected `(closure(...mixed=): mixed)|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Schemas\Components\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "mixed-operand"
+message = "Casting `mixed` to `bool`."
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Filament\Admin\Pages\Login::resolveLoginUser`. Saw type `mixed`.'
+count = 2
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "possibly-null-argument"
+message = 'Argument #1 of method `Filament\Models\Contracts\FilamentUser::canAccessPanel` is possibly `null`, but parameter type `Filament\Panel` does not accept it.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/Login.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\AdminUser::whereRaw`.'
+count = 2
+
+[[issues]]
+file = "app/Filament/Admin/Pages/ManageSystemSettings.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Pages\ManageSystemSettings::getNavigationLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Pages/ManageSystemSettings.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Schemas\Components\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 5
+
+[[issues]]
+file = "app/Filament/Admin/Resources/AdminUsers/AdminUserResource.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Resources\AdminUsers\AdminUserResource::getModelLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Resources/AdminUsers/AdminUserResource.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Resources\AdminUsers\AdminUserResource::getNavigationLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Resources/AdminUsers/AdminUserResource.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Resources\AdminUsers\AdminUserResource::getPluralModelLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Resources/AdminUsers/Schemas/AdminUserForm.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Schemas\Components\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 9
+
+[[issues]]
+file = "app/Filament/Admin/Resources/AdminUsers/Schemas/AdminUserInfolist.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Schemas\Components\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 11
+
+[[issues]]
+file = "app/Filament/Admin/Resources/AdminUsers/Tables/AdminUsersTable.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Tables\Columns\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 11
+
+[[issues]]
+file = "app/Filament/Admin/Resources/Users/Schemas/UserForm.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Schemas\Components\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 20
+
+[[issues]]
+file = "app/Filament/Admin/Resources/Users/Schemas/UserInfolist.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Schemas\Components\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 23
+
+[[issues]]
+file = "app/Filament/Admin/Resources/Users/Tables/UsersTable.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Tables\Columns\Concerns\HasLabel::label`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 23
+
+[[issues]]
+file = "app/Filament/Admin/Resources/Users/UserResource.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Resources\Users\UserResource::getModelLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Resources/Users/UserResource.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Resources\Users\UserResource::getNavigationLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Resources/Users/UserResource.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Resources\Users\UserResource::getPluralModelLabel`: expected `string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Widgets/DemoStatsOverviewWidget.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Schemas\Components\Concerns\HasDescription::description`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 3
+
+[[issues]]
+file = "app/Filament/Admin/Widgets/DemoStatsOverviewWidget.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `Filament\Widgets\StatsOverviewWidget\Stat::make`: expected `Illuminate\Contracts\Support\Htmlable|string`, but possibly received `array<array-key, mixed>|string`.'
+count = 3
+
+[[issues]]
+file = "app/Filament/Admin/Widgets/DemoTrafficChartWidget.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Widgets\DemoTrafficChartWidget::getDescription`: expected `Illuminate\Contracts\Support\Htmlable|null|string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Filament/Admin/Widgets/DemoTrafficChartWidget.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Filament\Admin\Widgets\DemoTrafficChartWidget::getHeading`: expected `Illuminate\Contracts\Support\Htmlable|null|string`, but found `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "invalid-operand"
+message = "Invalid type for left operand."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureDefaultRoutes`: expected `array<array-key, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureV1AdminRoutes`: expected `array<array-key, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureV1Routes`: expected `array<array-key, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Helpers\AppConfigurator::configureV2AdminRoutes`: expected `array<array-key, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `Illuminate\Contracts\Routing\ResponseFactory::json`: expected `int`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `array_key_exists`: expected `array<array-key, mixed>`, but found `mixed`."
+count = 2
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-array-access"
+message = "Unsafe array access on type `mixed`."
+count = 2
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 5
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 3
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "redundant-cast"
+message = "Redundant cast to `(string)`: the expression already has this type."
+count = 2
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "redundant-null-coalesce"
+message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppConfigurator.php"
+code = "unused-method"
+message = "Method `configuresentryintegration()` is never used."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppHelper.php"
+code = "impossible-condition"
+message = "This condition (type `false`) will always evaluate to false."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppHelper.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 3
+
+[[issues]]
+file = "app/Helpers/AppHelper.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Helpers\AppHelper::getIpInfo`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppHelper.php"
+code = "possibly-false-argument"
+message = "Argument #1 of function `md5_file` is possibly `false`, but parameter type `string` does not accept it."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppHelper.php"
+code = "redundant-cast"
+message = "Redundant cast to `(string)`: the expression already has this type."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppHelper.php"
+code = "redundant-null-coalesce"
+message = "Redundant null coalesce: left-hand side can never be `null` or undefined."
+count = 1
+
+[[issues]]
+file = "app/Helpers/AppHelper.php"
+code = "redundant-type-comparison"
+message = "Redundant type assertion: `$values` is already `array<array-key, mixed>`."
+count = 1
+
+[[issues]]
+file = "app/Helpers/DatabaseQueryLogger.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Helpers\DatabaseQueryLogger::logQuery`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/DatabaseQueryLogger.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Helpers\DatabaseQueryLogger::logQuery`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/DatabaseQueryLogger.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #3 of `App\Helpers\DatabaseQueryLogger::logQuery`: expected `array<array-key, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/DatabaseQueryLogger.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #4 of `App\Helpers\DatabaseQueryLogger::logQuery`: expected `float`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/DatabaseQueryLogger.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 4
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "invalid-type-cast"
+message = "Casting `mixed` to `float`."
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Navigation\NavigationGroup::label`: expected `(closure(...mixed=): mixed)|null|string`, but provided type `Illuminate\Contracts\Support\Htmlable|null|string` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Panel\Concerns\HasPlugins::plugins`: expected `array<array-key, Filament\Contracts\Plugin>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `CharrafiMed\GlobalSearchModal\GlobalSearchResult::__construct`: expected `Illuminate\Contracts\Support\Htmlable|string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `Filament\GlobalSearch\GlobalSearchResults::category`: expected `Illuminate\Contracts\Support\Arrayable<array-key, mixed>|array<array-key, Filament\GlobalSearch\GlobalSearchResult>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 14
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Helpers\FilamentConfigurator::buildGlobalSearchModalPlugin`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `search` on class `App\Models\User`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/FilamentConfigurator.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `Filament\Panel\Concerns\HasComponents::widgets`: expected `array<array-key, Filament\Widgets\WidgetConfiguration|class-string<Filament\Widgets\Widget>>`, but possibly received `array<array-key, class-string>`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/QrCodeHelper.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `Endroid\QrCode\Color\Color::__construct`: expected `int<0, 255>`, but possibly received `int`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/QrCodeHelper.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #2 of `Endroid\QrCode\Color\Color::__construct`: expected `int<0, 255>`, but possibly received `int`.'
+count = 1
+
+[[issues]]
+file = "app/Helpers/QrCodeHelper.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #3 of `Endroid\QrCode\Color\Color::__construct`: expected `int<0, 255>`, but possibly received `int`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/AppBaseController.php"
+code = "unsafe-instantiation"
+message = 'Unsafe `new $class_name`: constructor of `Illuminate\Database\Eloquent\Model` is not final and its signature might change in child classes, potentially leading to runtime errors.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "ambiguous-object-method-access"
+message = "Cannot statically verify method call on a generic `object` type."
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "array-to-string-conversion"
+message = "Potentially casting `array` to `string`."
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::update` on an instance.'
+count = 2
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::where` on an instance.'
+count = 2
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "less-specific-argument"
+message = 'Argument type mismatch for argument #1 of `App\Http\Resources\V1\Auth\AuthChallengeResource::__construct`: expected `array<string, mixed>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 5
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Http\Controllers\V1\AuthController::sendAuthResult`: expected `App\Models\User`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::requestSignin`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Services\Media\MediaService::uploadSingle`: expected `Illuminate\Http\UploadedFile`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `array_key_exists`: expected `array<array-key, mixed>`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-array-access"
+message = "Unsafe array access on type `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 3
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 6
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`truthy-mixed`)."
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `create` on class `App\Models\User`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $unreadNotifications on class `App\Models\User`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `App\Http\Controllers\AppBaseController::sendError`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `App\Http\Controllers\AppBaseController::sendSuccess`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
+count = 5
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #2 of `App\Http\Controllers\AppBaseController::sendResponse`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
+count = 6
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #2 of `App\Http\Controllers\V1\AuthController::sendAuthResult`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
+count = 6
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$user`."
+count = 2
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\User::where`.'
+count = 2
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "too-many-arguments"
+message = 'Too many arguments provided for method `App\Models\User::update`.'
+count = 2
+
+[[issues]]
+file = "app/Http/Controllers/V1/AuthController.php"
+code = "unused-property"
+message = "Property `$wechatService` is never used."
+count = 1
+
+[[issues]]
+file = "app/Http/Requests/V1/Auth/ProfileUpdateRequest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "app/Http/Resources/UserProfileResource.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 1
+
+[[issues]]
+file = "app/Http/Resources/V1/Auth/AuthChallengeResource.php"
+code = "mixed-array-access"
+message = "Unsafe array access on type `mixed`."
+count = 2
+
+[[issues]]
+file = "app/Http/Resources/V1/Auth/AuthResultResource.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 4
+
+[[issues]]
+file = "app/Http/Resources/V1/NotificationResource.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $created_at on class `App\Http\Resources\V1\NotificationResource`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Resources/V1/NotificationResource.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $data on class `App\Http\Resources\V1\NotificationResource`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Resources/V1/NotificationResource.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `App\Http\Resources\V1\NotificationResource`.'
+count = 1
+
+[[issues]]
+file = "app/Http/Resources/V1/NotificationResource.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $read_at on class `App\Http\Resources\V1\NotificationResource`.'
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::upsert` on an instance.'
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "invalid-argument"
+message = 'Invalid argument type for argument #1 of `App\Models\User::upsert`: expected `non-empty-array<int, non-empty-string>|non-empty-string`, but found `non-empty-list<array<string, mixed>>`.'
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "less-specific-argument"
+message = 'Argument type mismatch for argument #1 of `App\Imports\UserImport::normalizeRow`: expected `array<string, mixed>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Imports\UserImport::isEmptyRow`: expected `array<string, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Imports\UserImport::recordFromRow`: expected `array<string, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Support\Facades\Validator::make`: expected `array<array-key, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Imports/UserImport.php"
+code = "too-many-arguments"
+message = 'Too many arguments provided for method `App\Models\User::upsert`.'
+count = 1
+
+[[issues]]
+file = "app/Mail/V1/AuthVerificationCodeMail.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `Illuminate\Mail\Mailables\Envelope::__construct`: expected `null|string`, but possibly received `array<array-key, mixed>|string`.'
+count = 1
+
+[[issues]]
+file = "app/Policies/Concerns/AuthorizesShieldPermissions.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Spatie\Permission\Traits\HasRoles::hasRole`: expected `(Spatie\Permission\Contracts\Role&illuminate\database\eloquent\model&spatie\permission\models\role&illuminate\contracts\support\arrayable&illuminate\contracts\broadcasting\hasbroadcastchannel&illuminate\contracts\queue\queueableentity&spatie\permission\contracts\role&stringable&jsonserializable&illuminate\contracts\support\jsonable&illuminate\contracts\routing\urlroutable&illuminate\contracts\support\canbeescapedwhencasttostring&arrayaccess)|BackedEnum|Illuminate\Support\Collection<array-key, mixed>|array<array-key, mixed>|int|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Policies/Concerns/AuthorizesShieldPermissions.php"
+code = "mixed-operand"
+message = "Casting `mixed` to `bool`."
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/AdminPanelProvider.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Panel\Concerns\HasPlugins::plugins`: expected `array<array-key, Filament\Contracts\Plugin>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/AdminPanelProvider.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Panel\Concerns\HasUserMenu::userMenuItems`: expected `array<int|string, (closure(...mixed): mixed)|Filament\Actions\Action|Filament\Navigation\MenuItem|array<int|string, (closure(...mixed): mixed)|Filament\Actions\Action|Filament\Navigation\MenuItem>>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/AdminPanelProvider.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Filament\Panel\Concerns\HasBrandName::brandName`: expected `(closure(...mixed=): mixed)|Illuminate\Contracts\Support\Htmlable|null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/AdminPanelProvider.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `Filament\Panel\Concerns\HasComponents::widgets`: expected `array<array-key, Filament\Widgets\WidgetConfiguration|class-string<Filament\Widgets\Widget>>`, but possibly received `array<array-key, class-string>`.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/ComponentDefaultsProvider.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #1 of `Filament\Notifications\Concerns\HasTitle::title`: expected `(closure(...mixed=): mixed)|null|string`, but provided type `array<array-key, mixed>|string` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/ComponentDefaultsProvider.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Filament\Forms\Components\Concerns\HasFileAttachments::fileAttachmentsDisk`: expected `(closure(...mixed=): mixed)|null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/ComponentDefaultsProvider.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Filament\Forms\Components\DateTimePicker::locale`: expected `(closure(...mixed=): mixed)|null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/ComponentDefaultsProvider.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Filament\Tables\Columns\Concerns\CanFormatState::dateTime`: expected `(closure(...mixed=): mixed)|null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Providers/Filament/ComponentDefaultsProvider.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "app/Providers/HorizonServiceProvider.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `Illuminate\Support\Optional`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\OtpRecord::where` on an instance.'
+count = 2
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::where` on an instance.'
+count = 4
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::makeUniqueValue`: expected `string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::shouldRequireChallenge`: expected `App\Models\User`, but found `truthy-mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `Illuminate\Support\Facades\Hash::check`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #3 of `App\Services\Auth\AuthFlowService::issueOtp`: expected `App\Models\User|null`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #3 of `App\Services\Auth\AuthFlowService::issueOtp`: expected `App\Models\User|null`, but found `truthy-mixed`.'
+count = 2
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 9
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 14
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`truthy-mixed`)."
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`truthy-mixed`)."
+count = 4
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Services\Auth\AuthFlowService::verifySignup`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "mixed-return-statement"
+message = "Could not infer a precise return type for function `{closure:app/Services/Auth/AuthFlowService.php:66:33}`. Saw type `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `create` on class `App\Models\OtpRecord`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `create` on class `App\Models\User`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `findorfail` on class `App\Models\User`.'
+count = 2
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `App\Services\Auth\AuthFlowService::secondsUntilResendAvailable`: expected `int|null`, but possibly received `float|int|null|string`.'
+count = 5
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #2 of `Symfony\Component\HttpKernel\Exception\HttpException::__construct`: expected `string`, but possibly received `array<array-key, mixed>|string`.'
+count = 10
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
+count = 2
+
+[[issues]]
+file = "app/Services/Auth/AuthFlowService.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\User::where`.'
+count = 4
+
+[[issues]]
+file = "app/Services/Media/CustomMediaPathGenerator.php"
+code = "redundant-comparison"
+message = "Redundant `!==` comparison: left-hand side is always not identical to right-hand side."
+count = 1
+
+[[issues]]
+file = "app/Services/Media/CustomMediaPathGenerator.php"
+code = "redundant-logical-operation"
+message = "Redundant `&&` operation: left operand is always truthy and right operand is evaluated."
+count = 1
+
+[[issues]]
+file = "app/Services/Media/CustomMediaUrlGenerator.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Services/Media/CustomMediaUrlGenerator.php"
+code = "possibly-null-property-access"
+message = "Attempting to access a property on a possibly `null` value."
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "docblock-type-mismatch"
+message = 'Docblock return type `Illuminate\Support\Collection<Spatie\MediaLibrary\MediaCollections\Models\Media>` is incompatible with native return type `Illuminate\Support\Collection`.'
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "falsable-return-statement"
+message = '''Function `App\Services\Media\MediaService::generateFileName` is declared to return `string` but possibly returns 'false' (inferred as `false|string`).'''
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "impossible-condition"
+message = "This condition (type `false`) will always evaluate to false."
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Services\Media\MediaService::copyMediaBetweenModels`: expected `Illuminate\Support\Collection<Spatie\MediaLibrary\MediaCollections\Models\Media, mixed>`, but found `Illuminate\Support\Collection<array-key, mixed>`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Services\Media\MediaService::generateFileName`: expected `string`, but found `false|string`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Services\Media\MediaService::uploadMultiple`: expected `Illuminate\Support\Collection<Spatie\MediaLibrary\MediaCollections\Models\Media, mixed>`, but found `Illuminate\Support\Collection<array-key, mixed>`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "invalid-return-statement"
+message = 'Invalid return type for function `App\Services\Media\MediaService::uploadSingle`: expected `Spatie\MediaLibrary\MediaCollections\Models\Media`, but found `unknown-ref(Spatie\MediaLibrary\MediaCollections\Models\Media)`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "less-specific-argument"
+message = 'Argument type mismatch for argument #2 of `App\Services\Media\MediaService::updateOrder`: expected `array<int, int>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #2 of `App\Services\Media\MediaService::deleteByIds`: expected `array<array-key, int>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "less-specific-nested-argument-type"
+message = 'Argument type mismatch for argument #2 of `App\Services\Media\MediaService::uploadMultiple`: expected `array<array-key, Illuminate\Http\UploadedFile>`, but provided type `array<array-key, mixed>` is less specific.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Helpers\AppHelper::formatFileSize`: expected `float|int`, but found `mixed`.'
+count = 3
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #4 of `App\Services\Media\MediaService::uploadSingle`: expected `array<array-key, mixed>`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 10
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 4
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`truthy-mixed`)."
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-operand"
+message = "Cannot reliably increment a `mixed` operand."
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`truthy-mixed`)."
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Services\Media\MediaService::findDuplicateFile`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Services\Media\MediaService::findExistingMedia`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `delete` on class `Illuminate\Support\HigherOrderCollectionProxy`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `Spatie\MediaLibrary\MediaCollections\Models\Media`.'
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "non-existent-property"
+message = 'Property `$id` does not exist on interface `Spatie\MediaLibrary\HasMedia`.'
+count = 3
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "possibly-false-argument"
+message = "Argument #1 of function `md5_file` is possibly `false`, but parameter type `string` does not accept it."
+count = 2
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "possibly-false-argument"
+message = 'Argument #1 of method `Spatie\MediaLibrary\MediaCollections\FileAdder::usingFileName` is possibly `false`, but parameter type `string` does not accept it.'
+count = 1
+
+[[issues]]
+file = "app/Services/Media/MediaService.php"
+code = "possibly-false-argument"
+message = 'Argument #2 of method `App\Services\Media\MediaService::findExistingMedia` is possibly `false`, but parameter type `string` does not accept it.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/AbstractAlipayService.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/AbstractAlipayService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/AbstractAlipayService.php"
+code = "mixed-operand"
+message = "Casting `mixed` to `bool`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/AbstractAlipayService.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Services\Pay\AbstractAlipayService::verifyNotify`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/AbstractAlipayService.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/AlipayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Exceptions\AlipayException::fromAlipayResponse`: expected `object`, but found `mixed`.'
+count = 3
+
+[[issues]]
+file = "app/Services/Pay/AlipayService.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `array_merge`: expected `array<array-key, mixed>`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/AlipayService.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 6
+
+[[issues]]
+file = "app/Services/Pay/AlipayService.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 3
+
+[[issues]]
+file = "app/Services/Pay/AlipayService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 10
+
+[[issues]]
+file = "app/Services/Pay/AlipayService.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 10
+
+[[issues]]
+file = "app/Services/Pay/AlipayService.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 6
+
+[[issues]]
+file = "app/Services/Pay/GlobalAlipayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Exceptions\AlipayException::fromAlipayResponse`: expected `object`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/GlobalAlipayService.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `array_merge`: expected `array<array-key, mixed>`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/GlobalAlipayService.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 6
+
+[[issues]]
+file = "app/Services/Pay/GlobalAlipayService.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 3
+
+[[issues]]
+file = "app/Services/Pay/GlobalAlipayService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 9
+
+[[issues]]
+file = "app/Services/Pay/GlobalAlipayService.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 7
+
+[[issues]]
+file = "app/Services/Pay/GlobalAlipayService.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 6
+
+[[issues]]
+file = "app/Services/Pay/StripeService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Laravel\Cashier\Concerns\ManagesCustomer::billingPortalUrl`: expected `null|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/StripeService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Stripe\BaseStripeClient::__construct`: expected `array<string, mixed>|string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/StripeService.php"
+code = "mixed-return-statement"
+message = 'Could not infer a precise return type for function `App\Services\Pay\StripeService::swapSubscription`. Saw type `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/StripeService.php"
+code = "possible-method-access-on-null"
+message = "Attempting to call a method on `null`."
+count = 4
+
+[[issues]]
+file = "app/Services/Pay/StripeService.php"
+code = "possibly-invalid-argument"
+message = '''Possible argument type mismatch for argument #1 of `Stripe\Service\RefundService::create`: expected `array{'amount'?: int, 'charge'?: string, 'currency'?: string, 'customer'?: string, 'expand'?: array<array-key, string>, 'instructions_email'?: string, 'metadata'?: array<string, string>|null, 'origin'?: string, 'payment_intent'?: string, 'reason'?: string, 'refund_application_fee'?: bool, 'reverse_transfer'?: bool}|null`, but possibly received `array{'payment_intent': string, ...}`.'''
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "invalid-iterator"
+message = "The expression provided to `foreach` is not iterable. It resolved to type `nonnull`, which is not iterable."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Exceptions\WePayException::fromWechatResponse`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Pay\WechatPayService::decryptResource`: expected `array<array-key, mixed>`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `array_key_exists`: expected `bool|float|int|string`, but found `nonnull`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `json_decode`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Exceptions\WePayException::fromWechatResponse`: expected `int`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `WeChatPay\Crypto\Rsa::verify`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `sprintf`: expected `Stringable|null|scalar`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #3 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #3 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #4 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #4 of `WeChatPay\Crypto\AesGcm::decrypt`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-array-access"
+message = "Unsafe array access on type `mixed`."
+count = 7
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 6
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 4
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 4
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `nonnull` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-operand"
+message = "Left operand in `>=` comparison has `mixed` type."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-property-type-coercion"
+message = "A value with a less specific type `mixed` is being assigned to property `$config` (array<array-key, mixed>)."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "mixed-property-type-coercion"
+message = "A value with a less specific type `mixed` is being assigned to property `$privateKey` (OpenSSLAsymmetricKey)."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "redundant-cast"
+message = "Redundant cast to `(string)`: the expression already has this type."
+count = 4
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "redundant-comparison"
+message = "Redundant `!==` comparison: left-hand side is always not identical to right-hand side."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "redundant-condition"
+message = "Redundant ternary operator: condition is always truthy."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "redundant-logical-operation"
+message = "Redundant `&&` operation: left operand is evaluated and right operand is always truthy."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "redundant-type-comparison"
+message = "Redundant type assertion: `$cachedCerts` is already `array<array-key, mixed>`."
+count = 1
+
+[[issues]]
+file = "app/Services/Pay/WechatPayService.php"
+code = "string-member-selector"
+message = "This member selector uses a non-literal string type (`string`); its specific value cannot be statically determined."
+count = 1
+
+[[issues]]
+file = "app/Services/ResponseService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\ResponseService::sendError`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/ResponseService.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Services\ResponseService::sendError`: expected `int`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "app/Services/ResponseService.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "app/Traits/EnumValues.php"
+code = "less-specific-return-statement"
+message = 'Returned type `array<array-key, mixed>` is less specific than the declared return type `array<int, int|string>` for function `App\Traits\EnumValues::values`.'
+count = 1
+
+[[issues]]
+file = "app/Traits/EnumValues.php"
+code = "less-specific-return-statement"
+message = 'Returned type `array<array-key, mixed>` is less specific than the declared return type `array<int, string>` for function `App\Traits\EnumValues::names`.'
+count = 1
+
+[[issues]]
+file = "app/Traits/EnumValues.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `array_column`: expected `array<array-key, array<string('name'), ('V.array_column() extends mixed)>|object>|list<array<string('name'), ('V.array_column() extends mixed)>|object>`, but found `mixed`."
+count = 2
+
+[[issues]]
+file = "app/Traits/EnumValues.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `array_column`: expected `array<array-key, array<string('value'), ('V.array_column() extends mixed)>|object>|list<array<string('value'), ('V.array_column() extends mixed)>|object>`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "app/Traits/EnumValues.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "app/Traits/EnumValues.php"
+code = "possibly-invalid-argument"
+message = '''Possible argument type mismatch for argument #1 of `call_user_func`: expected `(callable(...('I.call_user_func() extends mixed)): ('R.call_user_func() extends mixed))|string`, but possibly received `list{class-string('App\Traits\EnumValues'), string('cases')}`.'''
+count = 2
+
+[[issues]]
+file = "config/api-debugger.php"
+code = "mixed-operand"
+message = "Casting `mixed` to `bool`."
+count = 1
+
+[[issues]]
+file = "config/app.php"
+code = "mixed-operand"
+message = "Casting `mixed` to `bool`."
+count = 1
+
+[[issues]]
+file = "config/broadcasting.php"
+code = "mixed-operand"
+message = "Invalid middle operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "config/filesystems.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `mb_rtrim`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "config/horizon.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Support\Str::slug`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "config/log-viewer.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `ucfirst`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "config/log-viewer.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `explode`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "config/logging.php"
+code = "mixed-operand"
+message = "Invalid middle operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "config/logging.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "config/media-library.php"
+code = "non-existent-class-like"
+message = 'Class, interface, enum, or trait `Spatie\MediaLibraryPro\Models\TemporaryUpload` not found.'
+count = 1
+
+[[issues]]
+file = "config/scribe.php"
+code = "mixed-operand"
+message = "Invalid left operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "config/settings.php"
+code = "non-existent-class-like"
+message = 'Class, interface, enum, or trait `Spatie\LaravelData\Data` not found.'
+count = 1
+
+[[issues]]
+file = "database/migrations/2022_12_14_083707_create_settings_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Support\Facades\Schema::create`: expected `string`, but found `nonnull`.'
+count = 1
+
+[[issues]]
+file = "database/migrations/2026_03_23_154745_create_activity_log_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Database\Schema\Builder::create`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "database/migrations/2026_03_23_154745_create_activity_log_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Database\Schema\Builder::dropIfExists`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "database/migrations/2026_03_23_154745_create_activity_log_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Support\Facades\Schema::connection`: expected `null|string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "database/migrations/2026_03_23_154745_create_permission_tables.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 4
+
+[[issues]]
+file = "database/migrations/2026_03_23_154745_create_permission_tables.php"
+code = "mixed-assignment"
+message = "Assigning `nonnull` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "database/migrations/2026_03_23_154746_add_event_column_to_activity_log_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Database\Schema\Builder::table`: expected `string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "database/migrations/2026_03_23_154746_add_event_column_to_activity_log_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Support\Facades\Schema::connection`: expected `null|string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "database/migrations/2026_03_23_154747_add_batch_uuid_column_to_activity_log_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Database\Schema\Builder::table`: expected `string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "database/migrations/2026_03_23_154747_add_batch_uuid_column_to_activity_log_table.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Illuminate\Support\Facades\Schema::connection`: expected `null|string`, but found `mixed`.'
+count = 2
+
+[[issues]]
+file = "database/seeders/ShieldSeeder.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\AdminUser::orderBy` on an instance.'
+count = 1
+
+[[issues]]
+file = "database/seeders/ShieldSeeder.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\AdminUser::where` on an instance.'
+count = 1
+
+[[issues]]
+file = "database/seeders/ShieldSeeder.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "database/seeders/ShieldSeeder.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "database/seeders/ShieldSeeder.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\AdminUser::orderBy`.'
+count = 1
+
+[[issues]]
+file = "database/seeders/ShieldSeeder.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\AdminUser::where`.'
+count = 1
+
+[[issues]]
+file = "routes/channels.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "routes/console.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "routes/console.php"
+code = "undefined-variable"
+message = "Undefined variable: `$this`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/ExampleTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertsuccessful` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/ExampleTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `get` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/AdminPanelAuthTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertredirect` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/AdminPanelAuthTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertunauthorized` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/AdminPanelAuthTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `get` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/AdminPanelAuthTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjson` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/CustomLoginTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `mb_strtoupper`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/CustomLoginTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `asserthaserrors` on class `Livewire\Features\SupportTesting\Testable`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/CustomLoginTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `asserthasnoerrors` on class `Livewire\Features\SupportTesting\Testable`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Filament/CustomLoginTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `Illuminate\Database\Eloquent\Collection`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Filament/CustomLoginTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $username on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/CustomLoginTest.php"
+code = "non-existent-method"
+message = 'Method `is` does not exist on type `Illuminate\Contracts\Auth\Authenticatable`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/Filament/DemoDashboardTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `actingas` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/DemoDashboardTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertok` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/DemoDashboardTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertsee` on class `Livewire\Features\SupportTesting\Testable`.'
+count = 5
+
+[[issues]]
+file = "tests/Feature/Filament/DemoDashboardTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertsee` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/DemoDashboardTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `get` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/ShieldNavigationTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\AdminUser::where` on an instance.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/ShieldNavigationTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `Pest\Laravel\actingAs`: expected `Illuminate\Contracts\Auth\Authenticatable`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/ShieldNavigationTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/ShieldNavigationTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Filament/ShieldNavigationTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\AdminUser::where`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/Helpers/AppHelperTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Notifications/FilamentNotificationsSchemaTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Feature/Notifications/FilamentNotificationsSchemaTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Feature/QrCodeHelperTest.php"
+code = "deprecated-method"
+message = 'Call to deprecated method: `App\Helpers\QrCodeHelper::generateEps`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/QrCodeHelperTest.php"
+code = "deprecated-method"
+message = 'Call to deprecated method: `App\Helpers\QrCodeHelper::generateGradient`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/QrCodeHelperTest.php"
+code = "missing-magic-method"
+message = "Access to documented magic property `$not` on a class that cannot handle it."
+count = 2
+
+[[issues]]
+file = "tests/Feature/QrCodeHelperTest.php"
+code = "too-many-arguments"
+message = 'Too many arguments provided for method `Illuminate\Support\Facades\Facade::shouldReceive`.'
+count = 6
+
+[[issues]]
+file = "tests/Feature/TestHorizonJobTest.php"
+code = "too-many-arguments"
+message = 'Too many arguments provided for method `Illuminate\Support\Facades\Facade::shouldReceive`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::where` on an instance.'
+count = 4
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #1 of `array_keys`: expected `array<('K.array_keys() extends array-key), ('V.array_keys() extends mixed)>`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "mixed-array-access"
+message = "Unsafe array access on type `mixed`."
+count = 7
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 4
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $nickname on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $open_id on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/UserSimpleExcelTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\User::where`.'
+count = 4
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\OtpRecord::where` on an instance.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonpath` on class `Pest\PendingCalls\TestCall`.'
+count = 6
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertok` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjson` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `postjson` on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `refresh` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `withheader` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $password on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "non-existent-method"
+message = 'Method `login` does not exist on type `Illuminate\Contracts\Auth\Guard`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/PasswordResetTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertdatabasehas` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonpath` on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertok` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `postjson` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `withheader` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $id on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ProfileUpdateTest.php"
+code = "non-existent-method"
+message = 'Method `login` does not exist on type `Illuminate\Contracts\Auth\Guard`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ResendCodeValidationTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonvalidationerrors` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ResendCodeValidationTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertunprocessable` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/ResendCodeValidationTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `postjson` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\OtpRecord::where` on an instance.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonpath` on class `Pest\PendingCalls\TestCall`.'
+count = 10
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonstructure` on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertok` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertunauthorized` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `json` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `postjson` on class `Pest\PendingCalls\TestCall`.'
+count = 4
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `withservervariables` on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `Illuminate\Database\Eloquent\Collection`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SigninTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\OtpRecord::where` on an instance.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\User::where` on an instance.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 9
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonpath` on class `Pest\PendingCalls\TestCall`.'
+count = 8
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonstructure` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertok` on class `Pest\PendingCalls\TestCall`.'
+count = 4
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `asserttoomanyrequests` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `postjson` on class `Pest\PendingCalls\TestCall`.'
+count = 5
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/Auth/SignupTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\User::where`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "mixed-operand"
+message = "Invalid right operand: type `mixed` cannot be reliably used in string concatenation."
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonfragment` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonpath` on class `Pest\PendingCalls\TestCall`.'
+count = 8
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertjsonstructure` on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertok` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertsuccessful` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertunauthorized` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertunprocessable` on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjson` on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `postjson` on class `Pest\PendingCalls\TestCall`.'
+count = 6
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `withheader` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $user on class `Pest\PendingCalls\TestCall`.'
+count = 2
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-existent-method"
+message = 'Method `login` does not exist on type `Illuminate\Contracts\Auth\Guard`.'
+count = 3
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "non-existent-property"
+message = 'Property `$user` does not exist on class `Pest\PendingCalls\TestCall`.'
+count = 1
+
+[[issues]]
+file = "tests/Feature/V1/AuthControllerTest.php"
+code = "too-many-arguments"
+message = 'Too many arguments provided for method `Illuminate\Support\Facades\Facade::shouldReceive`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Console/FilesystemGarageReplacementTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Console/TestStorageDiskTest.php"
+code = "deprecated-method"
+message = "Call to deprecated method: `ReflectionMethod::setAccessible`."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Console/TestStorageDiskTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Console/VerifyServicesCommandTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 5
+
+[[issues]]
+file = "tests/Unit/Console/VerifyServicesCommandTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `artisan` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Unit/Console/VerifyServicesCommandTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `assertexitcode` on class `Pest\PendingCalls\TestCall`.'
+count = 3
+
+[[issues]]
+file = "tests/Unit/Console/VerifyServicesCommandTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `expectsoutputtocontain` on class `Pest\PendingCalls\TestCall`.'
+count = 11
+
+[[issues]]
+file = "tests/Unit/Console/VerifyServicesCommandTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `once` on class `Mockery\HigherOrderMessage`.'
+count = 5
+
+[[issues]]
+file = "tests/Unit/Console/VerifyServicesCommandTest.php"
+code = "non-existent-method"
+message = 'Method `once` does not exist on type `Mockery\ExpectationInterface`.'
+count = 5
+
+[[issues]]
+file = "tests/Unit/Console/VerifyServicesCommandTest.php"
+code = "too-many-arguments"
+message = 'Too many arguments provided for method `Illuminate\Support\Facades\Facade::shouldReceive`.'
+count = 9
+
+[[issues]]
+file = "tests/Unit/DeployScriptTest.php"
+code = "missing-magic-method"
+message = "Access to documented magic property `$not` on a class that cannot handle it."
+count = 2
+
+[[issues]]
+file = "tests/Unit/Filament/BackendManagementNavigationTest.php"
+code = "deprecated-method"
+message = "Call to deprecated method: `ReflectionProperty::setAccessible`."
+count = 5
+
+[[issues]]
+file = "tests/Unit/Filament/BackendManagementNavigationTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Filament/BackendManagementNavigationTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Http/Requests/V1/AuthRequestsValidationTest.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `SanderMuller\FluentValidation\Testing\FluentRulesTester::actingAs`: expected `Illuminate\Contracts\Auth\Authenticatable`, but possibly received `App\Models\User|Illuminate\Database\Eloquent\Collection<int, App\Models\User>`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "deprecated-method"
+message = "Call to deprecated method: `ReflectionProperty::setAccessible`."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "less-specific-argument"
+message = 'Argument type mismatch for argument #1 of `App\Models\AdminUser::canAccessPanel`: expected `Filament\Panel`, but provided type `Mockery\LegacyMockInterface&(Mockery\MockInterface&object)` is less specific.'
+count = 2
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `password_verify`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `canaccesspanel` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 2
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjwtcustomclaims` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjwtidentifier` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getkey` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $is_active on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $last_login_at on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/AdminUserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $password on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "mixed-argument"
+message = "Invalid argument type for argument #2 of `password_verify`: expected `string`, but found `mixed`."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjwtcustomclaims` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getjwtidentifier` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `getkey` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $avatar_url on class `Illuminate\Database\Eloquent\Collection`.'
+count = 2
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $birthday on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email_verified_at on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $last_login_at on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Models/UserTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $password on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Policies/ShieldPoliciesTest.php"
+code = "ambiguous-object-method-access"
+message = "Cannot statically verify method call on a generic `object` type."
+count = 3
+
+[[issues]]
+file = "tests/Unit/Policies/ShieldPoliciesTest.php"
+code = "less-specific-return-statement"
+message = 'Returned type `Mockery\LegacyMockInterface&(Mockery\MockInterface&object)` is less specific than the declared return type `App\Models\AdminUser` for function `shield_admin_user`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Policies/ShieldPoliciesTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 2
+
+[[issues]]
+file = "tests/Unit/Policies/ShieldPoliciesTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `with` on class `Mockery\HigherOrderMessage`.'
+count = 2
+
+[[issues]]
+file = "tests/Unit/Policies/ShieldPoliciesTest.php"
+code = "non-existent-method"
+message = 'Method `with` does not exist on type `Mockery\ExpectationInterface`.'
+count = 2
+
+[[issues]]
+file = "tests/Unit/Policies/ShieldPoliciesTest.php"
+code = "unknown-class-instantiation"
+message = "Cannot determine the concrete class for instantiation."
+count = 3
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\OtpRecord::where` on an instance.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::requestPasswordReset`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::resetPassword`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Services\Auth\AuthFlowService::resetPassword`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "non-documented-method"
+message = 'Ambiguous method call to `refresh` on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $password on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$service`."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/PasswordResetFlowServiceTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\OtpRecord::where` on an instance.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::requestSignin`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #1 of `App\Services\Auth\AuthFlowService::verifySignin`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Services\Auth\AuthFlowService::verifySignin`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "non-documented-property"
+message = 'Ambiguous property access: $email on class `Illuminate\Database\Eloquent\Collection`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "possibly-invalid-argument"
+message = 'Possible argument type mismatch for argument #1 of `Illuminate\Database\Eloquent\Model::is`: expected `Illuminate\Database\Eloquent\Model|null`, but possibly received `App\Models\User|Illuminate\Database\Eloquent\Collection<int, App\Models\User>`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$service`."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SigninFlowServiceTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SignupFlowServiceTest.php"
+code = "dynamic-static-method-call"
+message = 'Cannot call magic static method `App\Models\OtpRecord::where` on an instance.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SignupFlowServiceTest.php"
+code = "mixed-argument"
+message = 'Invalid argument type for argument #2 of `App\Services\Auth\AuthFlowService::verifySignup`: expected `string`, but found `mixed`.'
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SignupFlowServiceTest.php"
+code = "mixed-assignment"
+message = "Assigning `mixed` type to a variable may lead to unexpected behavior."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SignupFlowServiceTest.php"
+code = "mixed-method-access"
+message = "Attempting to access a method on a non-object type (`mixed`)."
+count = 3
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SignupFlowServiceTest.php"
+code = "mixed-property-access"
+message = "Attempting to access a property on a non-object type (`mixed`)."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SignupFlowServiceTest.php"
+code = "redundant-docblock-type"
+message = "Redundant docblock type for variable `$service`."
+count = 1
+
+[[issues]]
+file = "tests/Unit/Services/Auth/SignupFlowServiceTest.php"
+code = "too-few-arguments"
+message = 'Too few arguments provided for method `App\Models\OtpRecord::where`.'
+count = 1

@@ -2,8 +2,6 @@
 
 use App\Helpers\AppConfigurator;
 use Illuminate\Foundation\Application;
-use Illuminate\Foundation\Configuration\Exceptions;
-use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -18,15 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withEvents(
         discover: [__DIR__.'/../app/Listeners', __DIR__.'/../app/Events'],
     )
-    ->withMiddleware(
-        fn (Middleware $middleware) => AppConfigurator::configureMiddleware(
-            $middleware,
-        ),
-    )
-    ->withSchedule(fn () => AppConfigurator::configureSchedule())
-    ->withExceptions(
-        fn (Exceptions $exceptions) => AppConfigurator::configureExceptions(
-            $exceptions,
-        ),
-    )
+    ->withMiddleware(AppConfigurator::configureMiddleware(...))
+    ->withSchedule(AppConfigurator::configureSchedule(...))
+    ->withExceptions(AppConfigurator::configureExceptions(...))
     ->create();

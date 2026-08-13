@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 return [
     /*
-    |--------------------------------------------------------------------------
-    | WeChat Pay Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure your WeChat Pay settings.
-    |
-    */
+     |--------------------------------------------------------------------------
+     | WeChat Pay Configuration
+     |--------------------------------------------------------------------------
+     |
+     | Here you may configure your WeChat Pay settings.
+     |
+     */
 
     'wechat' => [
         // 公众号/小程序/APP的 APPID
@@ -39,13 +39,13 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Alipay Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here you may configure your Alipay settings.
-    |
-    */
+     |--------------------------------------------------------------------------
+     | Alipay Configuration
+     |--------------------------------------------------------------------------
+     |
+     | Here you may configure your Alipay settings.
+     |
+     */
 
     'alipay' => [
         'app_id' => env('ALIPAY_APP_ID', ''),
@@ -57,13 +57,13 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Global Alipay Configuration
-    |--------------------------------------------------------------------------
-    |
-    | Configuration for cross-border Alipay payments.
-    |
-    */
+     |--------------------------------------------------------------------------
+     | Global Alipay Configuration
+     |--------------------------------------------------------------------------
+     |
+     | Configuration for cross-border Alipay payments.
+     |
+     */
 
     'alipay_global' => [
         'app_id' => env('ALIPAY_GLOBAL_APP_ID', ''),
@@ -76,13 +76,13 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Stripe Configuration (Managed via Cashier)
-    |--------------------------------------------------------------------------
-    |
-    | Basic options for Stripe integration. Full config at config/cashier.php.
-    |
-    */
+     |--------------------------------------------------------------------------
+     | Stripe Configuration (Managed via Cashier)
+     |--------------------------------------------------------------------------
+     |
+     | Basic options for Stripe integration. Full config at config/cashier.php.
+     |
+     */
 
     'stripe' => [
         'key' => env('STRIPE_KEY', ''),

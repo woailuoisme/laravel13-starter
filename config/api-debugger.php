@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Lanin\Laravel\ApiDebugger\Collections\CacheCollection;
 use Lanin\Laravel\ApiDebugger\Collections\MemoryCollection;
 use Lanin\Laravel\ApiDebugger\Collections\ProfilingCollection;

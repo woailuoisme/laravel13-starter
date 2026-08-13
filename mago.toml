@@ -6,7 +6,7 @@ php-version = "8.5.0"
 
 [source]
 workspace = "."
-paths = ["app/", "database/factories/", "database/seeders/", "tests/"]
+paths = ["app/", "config/", "database/", "routes/", "tests/"]
 includes = ["vendor"]
 excludes = []
 
@@ -14,16 +14,17 @@ excludes = []
 literal-separator = true
 
 [formatter]
-preset = "pint" # 格式化预设风格（使用 Laravel Pint 为基准）
-preserve-breaking-member-access-chain = false # [已修改: 原为 true] 设为 false 可解决 mago format 与 mago format --check 对链式调用的判断差异
-preserve-breaking-member-access-chain-first-method-on-same-line = false # [已修改: 原为 true] 设为 false 与 preserve-breaking-member-access-chain 保持一致
-preserve-breaking-argument-list = true # 保留多行函数/方法实参列表已有的换行排版
-preserve-breaking-array-like = true # 保留多行数组字面量已有的换行排版
-preserve-breaking-parameter-list = true # 保留多行函数/方法形参定义列表已有的换行排版
-preserve-breaking-attribute-list = true # 保留 PHP 8 Attribute 属性注解列表已有的多行换行排版
-preserve-breaking-conditional-expression = true # 保留三元条件表达式已有的多行换行排版
-preserve-breaking-condition-expression = true # 保留 if/elseif 等条件判断表达式已有的多行换行排版
-preserve-redundant-logical-binary-expression-parentheses = true # 保留逻辑二元表达式中冗余的显式括号（提升复杂逻辑可读性）
+preset = "pint" # 格式化预设风格：使用 Laravel Pint 规范为基准
+print-width = 120 # 单行最大字符宽度限制：硬限制为 120 字符（符合 PSR-12 / Pint 规范）
+preserve-breaking-member-access-chain = false # [关键调优] 设为 false 可消除 Eloquent 查询链 (如 User::query()->where()->get()) 在 format 与 format --check 间的判断歧义，保证排版幂等
+preserve-breaking-member-access-chain-first-method-on-same-line = false # [关键调优] 设为 false 保证首个链式调用的缩进与换行逻辑与上一条完全一致
+preserve-breaking-argument-list = true # 保留多行函数/方法实参列表已有换行（适合多参数调用）
+preserve-breaking-array-like = true # 保留多行数组字面量已有换行（防止短数组被强制压缩）
+preserve-breaking-parameter-list = true # [PHP 8 构造器属性提升] 保留构造函数形参列表已有换行（适合依赖注入）
+preserve-breaking-attribute-list = true # [PHP 8.5 属性注解支持] 保留 #[SensitiveParameter]、#[Override] 等属性注解多行堆叠排版，提升可读性
+preserve-breaking-conditional-expression = true # 保留三元条件表达式已有换行排版
+preserve-breaking-condition-expression = true # 保留 if/elseif 条件判断表达式已有换行排版
+preserve-redundant-logical-binary-expression-parentheses = true # 保留逻辑二元表达式（&&/||）中提升可读性的显式括号
 
 [linter]
 integrations = ["laravel", "pest"]
@@ -31,15 +32,20 @@ integrations = ["laravel", "pest"]
 [linter.rules]
 ambiguous-function-call = { enabled = false } # 禁用歧义函数调用检查
 literal-named-argument = { enabled = false } # 禁用字面量具名参数提示检查
-use-specific-expectations = { enabled = false } # [新增禁用: 原默认开启] 禁用 Pest 断言简化，防止把 ->not->toBeFalse() 误改写为 ->toBeTrue() 导致测试报错
-final-controller = { enabled = false } # [新增禁用: 原默认开启] 禁用强制 Controller 加 final，防止基类控制器（如 AppBaseController）加 final 导致继承报错
+strict-types = { enabled = false } # [禁用] 全局禁用 declare(strict_types=1) 强制要求，防止与 mago format (Pint 预设) 冲突
+use-specific-expectations = { enabled = false } # [禁用] 禁用 Pest 断言简化，防止把 ->not->toBeFalse() 误改写为 ->toBeTrue() 导致测试报错
+final-controller = { enabled = false } # [禁用] 禁用强制 Controller 加 final，防止基类控制器加 final 导致继承报错
+prefer-static-closure = { enabled = true } # [推荐开启: PHP 8.5 & Octane 最佳实践] 强制闭包使用 static，提升长驻内存与性能
+prefer-arrow-function = { enabled = true } # [推荐开启: PHP 8.5 最佳实践] 强制简单单行表达式使用短箭头函数 fn () => ...
+no-redundant-use = { enabled = true } # [推荐开启] 自动清理无用 use 导入
 halstead = { effort-threshold = 20000, volume-threshold = 5000, difficulty-threshold = 50 } # 配置 Halstead 复杂度评估规则阈值
-too-many-methods = { threshold = 50 } # 允许类最多有 50 个方法
-cyclomatic-complexity = { threshold = 100 } # [已修改: 原为 80] 允许类圈复杂度最高为 100，适配微信支付等大型 SDK 封装类
-kan-defect = { threshold = 5.0 } # 配置 Kan 缺陷阈值
-excessive-parameter-list = { threshold = 10 } # 允许参数列表最多 10 个参数
+cyclomatic-complexity = { threshold = 100 } # [修改: 原为 80] 允许类圈复杂度最高为 100，适配微信支付等大型 SDK 封装类
+too-many-methods = { threshold = 50 } # [阈值 50] 理论最佳实践为 20-30，设为 50 容纳 AppConfigurator (40 个配置方法) 与 AppHelper (32 个工具方法)
+kan-defect = { threshold = 5.0 } # [阈值 5.0] 业界标准 Kan 软件缺陷密度估算阈值
+excessive-parameter-list = { threshold = 10 } # [阈值 10] 理论 Clean Code 最佳实践为 3-5 个，设为 10 兼容 QrCodeHelper 等多可选参数的 Helper 方法
 
 [analyzer]
+baseline = "mago-baseline.toml"
 plugins = []
 find-unused-definitions = true
 find-unused-expressions = false

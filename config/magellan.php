@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Clickbar\Magellan\IO\Generator\Geojson\GeojsonGenerator;
 use Clickbar\Magellan\IO\Generator\WKT\WKTGenerator;
 

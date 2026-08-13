@@ -17,10 +17,10 @@
   "intelephense.diagnostics.duplicateSymbols": false,
   "intelephense.environment.phpVersion": "8.5",
   "intelephense.format.enable": false,
-  "LaravelExtraIntellisense.disableDiagnostics": [
-    "config",
-    "appBinding"
-  ],
+  "LaravelExtraIntellisense.disableDiagnostics": true,
+  "laravel.diagnostics.env": false,
+  "laravel.diagnostics.enabled": false,
+  "laravel.env.diagnostics": false,
   "[php]": {
     "editor.defaultFormatter": "open-southeners.laravel-pint",
     "editor.formatOnSave": true

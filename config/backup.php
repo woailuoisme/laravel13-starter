@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Spatie\Backup\Notifications\Notifiable;
 use Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification;
 use Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification;
@@ -302,17 +304,16 @@ return [
                 MaximumStorageInMegabytes::class => 5000,
             ],
         ],
-
         /*
-        [
-            'name' => 'name of the second app',
-            'disks' => ['local', 's3'],
-            'health_checks' => [
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
-                \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
-            ],
-        ],
-        */
+         * [
+         * 'name' => 'name of the second app',
+         * 'disks' => ['local', 's3'],
+         * 'health_checks' => [
+         * \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
+         * \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
+         * ],
+         * ],
+         */
     ],
 
     'cleanup' => [
@@ -378,5 +379,4 @@ return [
          */
         'retry_delay' => 0,
     ],
-
 ];

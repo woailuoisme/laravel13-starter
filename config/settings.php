@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
 use Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast;
@@ -12,9 +14,7 @@ return [
      * Each settings class used in your application must be registered, you can
      * put them (manually) here.
      */
-    'settings' => [
-
-    ],
+    'settings' => [],
 
     /*
      * The path where the settings classes will be created.

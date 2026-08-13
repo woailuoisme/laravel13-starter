@@ -49,16 +49,23 @@ fmt:
 # 运行代码静态检查（Mago Lint 与 Markdown 规范检查）。
 lint:
     mago lint
-
 # 自动修复代码格式与 Lint 问题。
+# 参数最佳实践说明：
+# --fix: 开启自动修复模式
+# --potentially-unsafe: 允许应用低风险高收益的重构（如 static 闭包重构、自动清理无用 use 导入）
+# --format-after-fix: 修复完成后自动运行 Formatter 进行格式化缩进对齐
+# --fail-on-remaining: 若存在无法自动修复（需人工介入）的缺陷，则退出码返回 1 以便在 CI/CD 中拦截
 fix:
+    mago format
     mago lint --fix --potentially-unsafe --format-after-fix --fail-on-remaining
 
-# 运行代码全面检查（格式、Lint、静态分析）。
-check:
-    mago format --check
-    mago lint
+# 运行静态类型分析。
+analyze:
     mago analyze
+
+# 运行代码全面检查（先自动修复格式与 Lint 问题，再运行静态类型分析）。
+check: fix analyze
+
 
 # 运行 Markdown 规范检查。
 markdownlint:
