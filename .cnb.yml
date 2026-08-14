@@ -9,7 +9,7 @@
 # 镜像: PHP 8.5 + RoadRunner (Octane)，linux/amd64 + linux/arm64
 $:
   # ── 手动触发：多架构构建 (amd64 + arm64) ────────────────────────
-  build_multiarch:
+  web_trigger_multiarch:
     - services:
         - docker
       stages:
@@ -28,7 +28,7 @@ $:
               .
 
   # ── 手动触发：仅 amd64 快速构建 ──────────────────────────────────
-  build_amd64:
+  web_trigger_amd64:
     - services:
         - docker
       stages:
