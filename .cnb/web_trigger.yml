@@ -3,6 +3,10 @@
 
 branch:
   - buttons:
-      - name: Docker 构建并推送
-        description: 构建 PHP 8.5 + RoadRunner 镜像并推送
-        event: web_trigger
+      - name: Docker 构建 (多架构)
+        description: 构建 amd64 + arm64 镜像并推送到 latest
+        event: build_multiarch
+
+      - name: Docker 快速构建 (仅 amd64)
+        description: 仅构建 linux/amd64 镜像并推送到 latest-amd64
+        event: build_amd64

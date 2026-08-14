@@ -32,6 +32,6 @@ ENV APP_NAME=Laravel \
 EXPOSE ${APP_PORT} 6001
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://127.0.0.1:${APP_PORT}/ready || exit 1
+    CMD ["sh", "-c", "curl -f http://127.0.0.1:${APP_PORT}/ready || exit 1"]
 
 CMD ["sh", "-c", "php artisan octane:start --server=roadrunner --host=0.0.0.0 --port=${APP_PORT} --rpc-port=6001 --workers=${OCTANE_WORKERS} --max-requests=${OCTANE_MAX_REQUESTS}"]
