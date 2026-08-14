@@ -23,7 +23,7 @@ $:
               --tag "${REGISTRY}:latest" \
               --file ./Dockerfile \
               --cache-from "type=registry,ref=${REGISTRY}:latest-cache" \
-              --cache-to "type=registry,ref=${REGISTRY}:latest-cache,mode=max" \
+              --cache-to "type=registry,ref=${REGISTRY}:latest-cache,mode=max,image-manifest=true,oci-mediatypes=true" \
               --push \
               .
 
@@ -42,7 +42,7 @@ $:
               --tag "${REGISTRY}:latest-amd64" \
               --file ./Dockerfile \
               --cache-from "type=registry,ref=${REGISTRY}:latest-amd64-cache" \
-              --cache-to "type=registry,ref=${REGISTRY}:latest-amd64-cache,mode=max" \
+              --cache-to "type=registry,ref=${REGISTRY}:latest-amd64-cache,mode=max,image-manifest=true,oci-mediatypes=true" \
               --push \
               .
 
@@ -63,6 +63,6 @@ $:
               --tag "${REGISTRY}:latest" \
               --file ./Dockerfile \
               --cache-from "type=registry,ref=${REGISTRY}:${VERSION}-cache" \
-              --cache-to "type=registry,ref=${REGISTRY}:${VERSION}-cache,mode=max" \
+              --cache-to "type=registry,ref=${REGISTRY}:${VERSION}-cache,mode=max,image-manifest=true,oci-mediatypes=true" \
               --push \
               .
